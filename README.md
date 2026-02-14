@@ -8,7 +8,7 @@
 ## Progress updates:
 
 ### Ayush:
-- [Inspection Codes for solutions](https://www.nrc.gov/docs/ML1233/ML12339A557.pdf) 
+- [Inspection Codes for solutions](https://www.nrc.gov/docs/ML1233/ML12339A557.pdf)
 
 
 ### Swaraag:
