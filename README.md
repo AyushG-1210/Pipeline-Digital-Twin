@@ -12,7 +12,10 @@
 
 
 ### Swaraag:
-
+- GIS Data and Shapefiles (Spatial Data) - https://gis.rrc.texas.gov/gisviewer/
+- Pipeline Permits (T-4) - https://rrcsearch3.neubus.com/esd3-rrc/index.php?_module_=esd&_action_=keysearch&profile=12
+  (How to search for T4 Permits - https://www.rrc.texas.gov/pipeline-safety/permitting-and-mapping/permitting/how-to-search-for-t-4-permits/?utm_source=chatgpt.com)
+- Inspection & Historical Data : There is no single dataset showing inspection history. The Public GIS viewer has data about version history (active, inactive, abandoned). 
 
 
 ### Aditya:
