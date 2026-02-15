@@ -9,6 +9,14 @@
 
 ### Ayush:
 - [Inspection Codes for solutions](https://www.nrc.gov/docs/ML1233/ML12339A557.pdf)
+- [Pipe Standards](https://pandapipe.com/wp-content/uploads/2024/05/API-5L-X65-Standards-Pipe-Chart-Steel-Pipe-SizesThinchnessWeight.pdf)
+- [Pipe standards 2](https://amerpipe.com/products/api-5l-pipe-specifications/)
+- [Edge cases, pipeline near electric power lines](https://ingaa.org/wp-content/uploads/2015/10/24732.pdf)
+- [Material selection and H2S safety](https://farsi.msrpco.com/wp-content/uploads/2019/05/standard-nace-mr0175.pdf)
+ - [H2S guidelines](https://niobium.tech/-/media/niobiumtech/attachments-biblioteca-tecnica/nt_nace_mr0175-does-it-work-for-you.pdf)
+ - [Operating pressure guidelines](https://ttwiki.azurewebsites.net/wiki/pipeline-hub-user-resources/external-corrosion-direct-assessment-procedure-rstreng/additional-information/the-development-of-the-modified-b31g-criterion-rstreng/)
+ - [Pipeline health](https://www.tandfonline.com/doi/epdf/10.1080/23311916.2019.1663682?needAccess=true)
+ - [Pipeline inspection](https://www.ipgmservicios.com/wp-content/uploads/2024/03/API-570-4th-Ed.2016-Addendum-2-2018-Piping-Inspection-Code.pdf)
 
 
 ### Swaraag:
