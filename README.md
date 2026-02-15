@@ -3,6 +3,7 @@
 ## Notes:
 - All research should be **Texas specific**. Our policies and regulations are different from other states, so we need to focus on Texas, since it has the most open data and is the most relevant to us.
 - Before making any changes to the README, fetch the latest version ```git fetch origin master``` and then make changes. Or else we'll have merge conflicts.
+- If you already have changes made to your local and you dont want to lose it, use ```git stash```, then ```git pull origin master```, then ```git stash apply```. This will add your changes to the latest version on the repo.
 - You can make your own branches if you want.
 
 ## Progress updates:
