@@ -6,7 +6,7 @@
 - If you already have changes made to your local and you dont want to lose it, use ```git stash```, then ```git pull origin master```, then ```git stash apply```. This will add your changes to the latest version on the repo.
 - You can make your own branches if you want.
 
-## Progress updates:
+## Progress updates: [Phase 1 - 12/02/2026]
 
 ### Ayush:
 - [Inspection Codes for solutions](https://www.nrc.gov/docs/ML1233/ML12339A557.pdf)
@@ -35,3 +35,14 @@
   - Annual Pipeline System Data
 - Cleaning remaining
 - Not sure about the Hazardous Liquid Incident Flagged Files , need to check in the downloaded raw files.
+
+## Progress updates: [Phase 2 - 17/02/2026]
+
+### Ayush:
+> Task : Clean raw data and extract relevant features for the model.
+
+### Swaraag:
+> Task : Clean GIS data and shapefiles, and extract relevant features for the model.
+
+### Aditya:
+> Task : Create a RAG pipeline to extract information from the standards and guidelines documents.
