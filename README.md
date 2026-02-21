@@ -40,6 +40,11 @@
 
 ### Ayush:
 > Task : Clean raw data and extract relevant features for the model.
+- There's some finanacial data there, we can add a feature to predict the financial impact of a pipeline failure, which can be useful for risk assessment and decision making.
+- Keep natural causes in mind, and we can add that to the GIS data to model the incidents better. 
+- Oil and natural gas are the ones we'll focus on, both models need to accomodate to different contraints.
+- Need to use all data available, only TX data will not suffice for inferences.
+- Might need to use purely physiccal and chemical constants since thers not enough useable data for the ML model, and then use the ML model to predict the risk of failure based on those constants and the GIS data.
 
 ### Swaraag:
 > Task : Clean GIS data and shapefiles, and extract relevant features for the model.
