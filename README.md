@@ -45,6 +45,7 @@
 - Oil and natural gas are the ones we'll focus on, both models need to accomodate to different contraints.
 - Need to use all data available, only TX data will not suffice for inferences.
 - Might need to use purely physiccal and chemical constants since thers not enough useable data for the ML model, and then use the ML model to predict the risk of failure based on those constants and the GIS data.
+>Currently working on a dahsboard to visualize data and make connections faster, so that I dont have to manually go thorugh all the data and find the heading meanings. We can integrate this into the final product as well, so that users can easily understand the data and make informed decisions. Finally made some progress lmao.
 
 ### Swaraag:
 > Task : Clean GIS data and shapefiles, and extract relevant features for the model.
