@@ -49,7 +49,7 @@
 
 ### Swaraag:
 > Task : Clean GIS data and shapefiles, and extract relevant features for the model.
-> Website for all Pipeline layers, Oil & gas wells, Survey boundaries, Operator facilities : https://www.rrc.texas.gov/resource-center/research/data-sets-available-for-download/
+- Website for all Pipeline layers, Oil & gas wells, Survey boundaries, Operator facilities : https://www.rrc.texas.gov/resource-center/research/data-sets-available-for-download/
 
 ### Aditya:
 > Task : Create a RAG pipeline to extract information from the standards and guidelines documents.
