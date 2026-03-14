@@ -3,6 +3,9 @@ chromadb
 sentence-transformers
 pymupdf
 beautifulsoup4
-openai
+google-genai
 fastapi
 uvicorn
+python-dotenv
+tqdm
+numpy
