@@ -1,0 +1,8 @@
+langchain
+chromadb
+sentence-transformers
+pymupdf
+beautifulsoup4
+openai
+fastapi
+uvicorn
