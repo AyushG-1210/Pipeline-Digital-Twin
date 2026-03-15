@@ -1,124 +1,101 @@
 import pandas as pd
-from groq import Groq
-from pathlib import Path
+from google import genai
 import json
 import time
+import sys
+from dotenv import load_dotenv 
+import os
+
+load_dotenv()
 
 # --- CONFIG --- 
-API_KEY = "API_KEY_HERE"
-client = Groq(api_key=API_KEY)
+API_KEY = os.getenv("GEMINI_KEY")
+if not API_KEY:
+    print("ERROR: GEMINI_KEY environment variable is missing.")
+    sys.exit(1)
 
-# Use a valid Groq model (gpt-4o-mini is an OpenAI model, not Groq)
-model_id = 'llama-3.1-8b-instant' 
+client = genai.Client(api_key=API_KEY)
+model_id = 'gemini-2.5-flash' 
 
-IN_DIR = r"C:\Users\anshu\Desktop\Major Project\Cleaned_data"
-OUT_FILE = "Master_Physics_Index.csv"
+IN_FILE = r"C:\Users\anshu\Desktop\Major Project\Data_Cleaning\Cleaned_Physics_Index.csv"
+OUT_FILE = "Master_Physics_Index_Gemini_Refined.csv"
+CACHE_FILE = "gemini_progress_cache.json" # New: Saves progress as it goes
 
-def get_real_headers(file_path):
-    """Skips the trash rows at the top of PHMSA/RRC files."""
+# The exact header string where it died
+RESUME_HEADER = "Unnamed: 2" 
+
+def refine_existing_index():
     try:
-        temp_df = pd.read_excel(file_path, nrows=10, header=None) if file_path.suffix != '.csv' else pd.read_csv(file_path, nrows=10, header=None)
-        header_idx = temp_df.apply(lambda x: x.astype(str).str.contains('ID|YEAR|OPERATOR|PART', case=False).sum(), axis=1).idxmax()
-        df = pd.read_excel(file_path, skiprows=header_idx) if file_path.suffix != '.csv' else pd.read_csv(file_path, skiprows=header_idx)
-        return df.columns.tolist()
-    except:
-        return []
+        df = pd.read_csv(IN_FILE)
+    except FileNotFoundError:
+        print(f"ERROR: Could not find {IN_FILE}")
+        return
 
-def harvest_and_decode():
-    all_data = []
-    unique_headers = set()
+    unique_headers = df['Original_Header'].dropna().unique().tolist()
     
-    # 1. Collect everything
-    for path in Path(IN_DIR).rglob('*.*'):
-        if path.suffix.lower() in ['.csv', '.xlsx', '.xls']:
-            headers = get_real_headers(path)
-            if headers:
-                all_data.append({"filename": path.name, "headers": headers})
-                unique_headers.update(headers)
+    # --- RESUME LOGIC ---
+    if RESUME_HEADER in unique_headers:
+        start_index = unique_headers.index(RESUME_HEADER)
+        print(f"Found resume point at index {start_index}. Skipping earlier headers...")
+        headers_to_process = unique_headers[start_index:]
+    else:
+        print("Resume header not found! Starting from the beginning...")
+        headers_to_process = unique_headers
 
-    # 2. Decode Unique Headers in Batches
-    header_list = list(unique_headers)
-    batch_size = 30
+    # Load previous cache if it exists so we don't overwrite earlier work
     decoded_map = {}
+    if os.path.exists(CACHE_FILE):
+        with open(CACHE_FILE, 'r') as f:
+            decoded_map = json.load(f)
 
-    print(f"Decoding {len(header_list)} unique headers...")
+    batch_size = 40
+    print(f"Refining {len(headers_to_process)} headers starting from '{RESUME_HEADER}'...")
 
-    for i in range(0, len(header_list), batch_size):
-        batch = header_list[i:i+batch_size]
+    for i in range(0, len(headers_to_process), batch_size):
+        batch = headers_to_process[i:i+batch_size]
         
         prompt = f"""
-        Act as a Pipeline Integrity Engineer. For these cryptic PHMSA/RRC headers: {batch}
-        Return a JSON object where each key is the header and the value is a list containing exactly 4 items:
-        [Plain English Name, Physics Utility Score (1-10), Engineering Category, 1-Line Description of Utility]
-        Example: "PARTDCPBTOTAL": ["Miles Protected Bare Steel", 8, "Corrosion", "Defines the boundary condition for the rate of external wall thinning."]
-        Do not use markdown blocks, return ONLY raw JSON format.
+        Act as a Principal Pipeline Integrity Engineer. Refine the utility score and description for these PHMSA/RRC headers: 
+        {batch}
+        
+        Return ONLY a raw JSON object where each key is the exact header and the value is a list of exactly 2 items:
+        [Upgraded Physics Utility Score (1-10), Upgraded 1-Line Description for PINN modeling]
+        
+        Example: "PARTJSTR_UNK_ON": [8, "Flags if strain measurement method is unknown, increasing uncertainty in stress calculations."]
+        Do not change the header key. Do not use markdown blocks, return ONLY raw JSON format.
         """
         try:
-            # Correct Groq syntax for completions
-            response = client.chat.completions.create(
-                model=model_id,
-                messages=[
-                    {"role": "user", "content": prompt}
-                ]
-            )
-
-            # Correct extraction path for Groq/OpenAI structure
-            text = response.choices[0].message.content
-            clean_json = text.replace('```json', '').replace('```', '').strip()
-            decoded_map.update(json.loads(clean_json))
-            time.sleep(1)  
+            response = client.models.generate_content(model=model_id, contents=prompt)
+            clean_json = response.text.replace('```json', '').replace('```', '').strip()
+            
+            # Update map and save to cache immediately
+            new_data = json.loads(clean_json)
+            decoded_map.update(new_data)
+            
+            with open(CACHE_FILE, 'w') as f:
+                json.dump(decoded_map, f)
+                
+            print(f"Batch {i} to {i+len(batch)} processed and cached.")
+            time.sleep(3) 
 
         except Exception as e:
             print(f"Error in batch {i}: {e}")
+            print("Stopping to prevent further errors. Progress is saved in cache.")
+            break
 
-    # 3. Flatten and Save
-    final_rows = []
-    desc_cache = {}
+    # Map updates to DataFrame
+    print("Applying Gemini updates from cache to the dataset...")
+    
+    def update_row(row):
+        header = row['Original_Header']
+        if header in decoded_map and len(decoded_map[header]) == 2:
+            row['Physics_Score'] = decoded_map[header][0]
+            row['Description'] = decoded_map[header][1]
+        return row
 
-    def fetch_description_only(header: str) -> str:
-        if header in desc_cache:
-            return desc_cache[header]
-        prompt = (
-            f"Act as a Pipeline Integrity Engineer. Provide a single plain-English, one-line "
-            f"description for the PHMSA/RRC header '{header}'. Return only the description text."
-        )
-        try:
-            # Secondary API call fix
-            resp = client.chat.completions.create(
-                model=model_id,
-                messages=[
-                    {"role": "user", "content": prompt}
-                ]
-            )
-            desc = resp.choices[0].message.content.strip()
-        except Exception:
-            desc = "No description available."
-        desc_cache[header] = desc
-        return desc
-
-    for entry in all_data:
-        fname = entry['filename']
-        for h in entry['headers']:
-            info = decoded_map.get(h, ["Unknown", 0, "N/A", "No description available."])
-            while len(info) < 4:
-                info.append("N/A")
-
-            if info[3].strip().lower().startswith("no description"):
-                info[3] = fetch_description_only(h)
-
-            final_rows.append({
-                "File": fname,
-                "Original_Header": h,
-                "Clean_Name": info[0],
-                "Physics_Score": info[1],
-                "Category": info[2],
-                "Description": info[3]
-            })
-
-    # Sort by Score (High utility at the top)
-    master_df = pd.DataFrame(final_rows).sort_values(by="Physics_Score", ascending=False)
-    master_df.to_csv(OUT_FILE, index=False)
-    print(f"Successfully created {OUT_FILE}!")
+    updated_df = df.apply(update_row, axis=1)
+    updated_df.to_csv(OUT_FILE, index=False)
+    print(f"Successfully saved refined data to {OUT_FILE}! Keys are untouched.")
 
 if __name__ == "__main__":
-    harvest_and_decode()
+    refine_existing_index()

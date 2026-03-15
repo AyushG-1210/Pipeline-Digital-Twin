@@ -624,27 +624,27 @@ HL AR 2018 Part H.csv,PARTHON36,Number of Stations with Station Pressure Above 3
 HL AR 2018 Part H.csv,PARTHOFF26,Number of Stations with Station Pressure Below 26 psi on High Pressure Lines,7,Leaks,Identifies the number of stations with station pressure below 26 psi on high-pressure lines.
 annual_gas_transmission_gathering_2001.xlsx,B2GON_T,Total Gross gallons of product released,8,Gross Release,The total amount of product released during an incident.
 annual_gas_transmission_gathering_2001.xlsx,B4GON_2,Gathering Lines (Miles),8,Pipeline,Length of gathering lines in miles
-gtggungs2010toPresent.xlsx,Unnamed: 2,Unknown,8,,Depth (measured below grade or at a reference point such as the top of a valve or a tie-in point)
-gtggungs2010toPresent.xlsx,Unnamed: 3,Unknown,9,,Maximum Allowable Working Pressure.
-annual_gas_transmission_gathering_2012.xlsx,PARTA7INTER,Unknown,9,,Operating pressure for the pipeline.
-annual_gas_transmission_gathering_2011.xlsx,PARTDGONBTOTAL,Unknown,8,,Total Pipeline Diameter (inches) or equivalent outside diameter in the case of non-cylindrical shapes.
-HL AR 2024 Part R.csv,Unnamed: 42,Unknown,9,,Operating Pressure.
-annual_gas_transmission_gathering_2012.xlsx,PARTB1RRM2,Unknown,8,,Corrosion in RCPs (Cathodic Protection Systems) and MOLs (Material and Operating Limits) for buried steel pipelines.
-HL AR 2020 Part F to G.csv,PARTF2C2,Unknown,7,,Leak and Loss data.
-HL AR 2020 Part F to G.csv,PARTF4CTOT,Unknown,6,,Total volume of product in a field measured in units of barrels.
-HL AR 2020 Part H.csv,PARTHON10,Unknown,8,,"Pipe coating or pipe lining degradation, failure, or separation."
-annual_gas_transmission_gathering_1997.xlsx,G2M2_3,Unknown,9,,Maximum Allowable Operating Pressure (MAOP) change.
-annual_gas_transmission_gathering_1997.xlsx,G2M1_2,Unknown,9,,Internal Corrosion Rate (ICR) per 1000 feet of pipe.
-HL AR 2020 Part H.csv,PARTHON38,Unknown,8,,Pipeline Pressure Test Results Not Met.
-HL AR 2020 Part H.csv,PARTHON30,Unknown,9,,Maximum Allowable Operating Pressure (MAOP) and Test Pressure.
-annual_gas_transmission_gathering_1997.xlsx,CGOF2,Unknown,6,,Change in Gas/Oil Fractionation.
-HL AR 2020 Part K.csv,PARTKNST125MOREOFF,Unknown,8,,Identification of Known or Probable Material Defects in Materials Used in the Fabricated Products for Pipeline or Gathering System.
-annual_gas_transmission_gathering_1997.xlsx,CTO2,Unknown,9,,"""Critical Operating Condition - Line Pressure Exceeds Design Pressure""."
-HL AR 2020 Part A to E.csv,PARTE1950LF,Unknown,8,,Potential for External Coating Failure Due to Low Temperature and Pressure.
-HL AR 2020 Part A to E.csv,PARTE1990LF,Unknown,8,,Pressure Test of a newly constructed Pipeline Section.
-HL AR 2020 Part A to E.csv,PARTE1990HF,Unknown,9,,Pressure Testing Integrity After Replacement or Repair Evaluation (PARTE) 1990 Hydraulic Flow Test.
-HL AR 2020 Part A to E.csv,PARTE1970LF,Unknown,7,,The header 'PARTE1970LF' is used to specify the Last Failure (LF) of a Part (PARTE) 1970 component.
-HL AR 2020 Part K.csv,PARTK1STNR20LESSUNK,Unknown,8,,"Pressure Test Results: 20% or Less, Unkown (Unknown) Status."
-HL AR 2020 Part A to E.csv,PARTCONETHANOL,Unknown,8,,Concentration of Ethanol in Product (percent).
-HL AR 2020 Part A to E.csv,PARTCONCO2,Unknown,9,,Percentage of CO2 in the pipeline contents.
-HL AR 2020 Part A to E.csv,PARTEPRE40LF,Unknown,9,,Pipe Outside Diameter from last flanged/valved end of pipe to nearest pipeline fitting or pipe end.
+gtggungs2010toPresent.xlsx,Unnamed: 2,Unknown,1,,"Generic placeholder, typically an index or row number, with minimal physical relevance."
+gtggungs2010toPresent.xlsx,Unnamed: 3,Unknown,1,,"Generic placeholder, often an index or sequence number, with minimal physical relevance."
+annual_gas_transmission_gathering_2012.xlsx,PARTA7INTER,Unknown,9,,"Indicates presence or details of internal corrosion, highly relevant for internal corrosion growth and failure models."
+annual_gas_transmission_gathering_2011.xlsx,PARTDGONBTOTAL,Unknown,8,,"Total number of incidents or failures reported to NTSB, crucial for predicting failure probability and consequences."
+HL AR 2024 Part R.csv,Unnamed: 42,Unknown,1,,"Generic placeholder, provides no direct physical insight into pipeline integrity."
+annual_gas_transmission_gathering_2012.xlsx,PARTB1RRM2,Unknown,9,,"Flags the occurrence of a major repair, indicating a significant integrity event and alteration of the pipeline's physical state."
+HL AR 2020 Part F to G.csv,PARTF2C2,Unknown,7,,"Type of secondary coating applied, influencing external corrosion protection mechanisms and effectiveness."
+HL AR 2020 Part F to G.csv,PARTF4CTOT,Unknown,8,,"Total current or voltage related to cathodic protection, directly quantifying the effectiveness of external corrosion control."
+HL AR 2020 Part H.csv,PARTHON10,Unknown,7,,"Specific operational or geometric parameter (e.g., pressure, diameter, wall thickness) for an onshore segment, critical for stress analysis."
+annual_gas_transmission_gathering_1997.xlsx,G2M2_3,Unknown,7,,"Specific physical or operational parameter for gas gathering lines, e.g., pressure, flow rate, or material type, relevant for integrity assessments."
+annual_gas_transmission_gathering_1997.xlsx,G2M1_2,Unknown,7,,"Specific physical or operational parameter for gas gathering lines, e.g., temperature, material grade, or length, relevant for integrity assessments."
+HL AR 2020 Part H.csv,PARTHON38,Unknown,7,,"Specific operational or geometric parameter (e.g., burial depth, soil type, material grade) for an onshore segment, affecting external loads and corrosion."
+HL AR 2020 Part H.csv,PARTHON30,Unknown,7,,"Specific operational or geometric parameter (e.g., fluid velocity, elevation changes, specific component) for an onshore segment, relevant for integrity modeling."
+annual_gas_transmission_gathering_1997.xlsx,CGOF2,Unknown,8,,"Indicates a change in material grade or operating fluid, significantly impacting corrosion rates, material properties, and stress states."
+HL AR 2020 Part K.csv,PARTKNST125MOREOFF,Unknown,8,,"Describes non-seamless pipe with specific dimensions (>12.5"" OD) in an offshore environment, highly relevant for material properties, defect susceptibility, and environmental loading models."
+annual_gas_transmission_gathering_1997.xlsx,CTO2,Unknown,7,,"Location or type of cathodic protection test station, indicating where CP measurements are taken, valuable for spatial CP effectiveness mapping."
+HL AR 2020 Part A to E.csv,PARTE1950LF,Unknown,9,,"Flags pipe manufactured before 1950 using Low Frequency ERW, indicating potentially higher susceptibility to seam weld defects and material degradation mechanisms."
+HL AR 2020 Part A to E.csv,PARTE1990LF,Unknown,7,,"Flags pipe manufactured after 1990 using Low Frequency ERW, distinguishing it from HF-ERW and earlier LF-ERW pipe for material and weld integrity assessment."
+HL AR 2020 Part A to E.csv,PARTE1990HF,Unknown,7,,"Flags pipe manufactured after 1990 using High Frequency ERW, generally indicating more robust seam welds and material properties for integrity models."
+HL AR 2020 Part A to E.csv,PARTE1970LF,Unknown,9,,"Flags pipe manufactured before 1970 using Low Frequency ERW, indicating a vintage potentially prone to manufacturing flaws and specific degradation modes."
+HL AR 2020 Part K.csv,PARTK1STNR20LESSUNK,Unknown,8,,"Identifies steel grade with SMYS less than 20 Ksi and unknown type, critical for accurate material property inputs in stress, strain, and fracture mechanics models."
+HL AR 2020 Part A to E.csv,PARTCONETHANOL,Unknown,9,,"Indicates the presence of ethanol in the transported product, which can drastically alter internal corrosion mechanisms, material compatibility, and fluid properties."
+HL AR 2020 Part A to E.csv,PARTCONCO2,Unknown,9,,"Indicates the presence of CO2 in the transported product, a primary driver of sweet corrosion, fundamentally impacting internal corrosion growth rates."
+HL AR 2020 Part A to E.csv,PARTEPRE40LF,Unknown,9,,"Flags pipe manufactured before 1940 using Low Frequency ERW, representing very old vintage pipe with high likelihood of manufacturing defects and long-term material degradation."

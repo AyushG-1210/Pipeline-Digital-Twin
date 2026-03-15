@@ -1,0 +1,7 @@
+File,Original_Header,Clean_Name,Physics_Score,Category,Description
+Cleaned_Physics_Index.csv,PARTHOFFTOTAL,Total Hours of Particulate Exposure,10,Corrosion,"Quantifies the cumulative duration of internal pipeline exposure to corrosion-inducing solid particulates, crucial for internal corrosion rate modeling."
+Cleaned_Physics_Index.csv,HL AR 2023 Part H.csv,Unknown,0,N/A,Data for Part H of the 2023 Hazardous Liquid Annual Report.
+Cleaned_Physics_Index.csv,Particular Honor Off Total,Unknown,0,N/A,"Quantity deducted from total due to specific, recognized exemptions."
+Cleaned_Physics_Index.csv,10,Unknown,0,N/A,Pipe diameter (inches)
+Cleaned_Physics_Index.csv,Corrosion,Unknown,0,N/A,The deterioration or loss of pipeline material caused by chemical or electrochemical reactions.
+Cleaned_Physics_Index.csv,Represents the particulate honor off for a total condition.,Unknown,0,N/A,"Indicates the status of particulate matter affecting the overall pipeline condition, particularly if issues are unaddressed or problematic."
