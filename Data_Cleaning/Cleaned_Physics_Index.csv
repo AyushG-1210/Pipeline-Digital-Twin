@@ -1,0 +1,650 @@
+File,Original_Header,Clean_Name,Physics_Score,Category,Description
+HL AR 2021 Part J.csv,PARTJSTR_UNK_ON,Jones Strain Transformer Unknown On,10,Measurement,Method of strain measurement unknown for on-pipe application
+HL AR 2023 Part H.csv,PARTHOFFTOTAL,Particular Honor Off Total,10,Corrosion,Represents the particulate honor off for a total condition.
+HL AR 2024 Part F to G.csv,PARTF3A,Part Flow 3A,10,Flow,Represents the total part flow rate.
+HL AR 2024 Part R.csv,PARTRLOCINCOMP,"Real Location, Incompetent",10,Geography,Represents the actual location of an object or feature on the earth's surface.
+annual_gas_transmission_gathering_1996.xlsx,G1M2_4,"Gas, 1, Mile, 2, 4",5,General,Represents a measurement value for a particular category.
+HL AR 2021 Part K.csv,PARTK1STGATH20MORE4LESS,Greater Than 20-Inch Pipeline With Diameter 4-Inch or Less Count,10,Pipeline Diameters,Count of large pipelines with diameters greater than 20 inches and those less than 4 inches.
+HL AR 2022 Part F to G.csv,PARTF1C,Particular Flow 1C,10,Flow,Represents the total particular flow rate.
+annual_hazardous_liquid_2004.xlsx,ERWHM_6,Number of Anomalies with Severity 6,10,Anomalies,Counts anomalies present with a severity level of 6.
+HL AR 2024 Part J.csv,PARTJNSR125MOREON,Part Jnsr 125 More On,9,Corrosion,This field is related to part Jnsr 125 More On and pipeline integrity.
+HL AR 2024 Part K.csv,PARTKST20LESSTOT,KST Pipeline Material,9,Corrosion,Represents the KST material degradation value for a pipeline segment.
+HL AR 2024 Part H.csv,PARTHON58OVER,Particular Honor 58 Over,9,Corrosion,Represents the particulate honor for a 58 over condition.
+HL AR 2024 Part K.csv,PARTKRURALONTOTAL,Rural Pipeline Meters,9,General,A count of pipeline meters in rural areas.
+HL AR 2024 Part K.csv,PARTK1STNR20MORE4_10,Number of Pipelines with Internal Corrosion in more than 20% of 4-inch nominal diameter or smaller pipes for the past 10 years,9,Internal Corrosion,The number of pipelines with internal corrosion in more than 20% of 4-inch nominal diameter or smaller pipes for the past 10 years.
+HL AR 2024 Part H.csv,PARTHOFF48,Total Miles of Epoxy Coated Pipe Offshore,9,Coating,Calculates the total amount of epoxy coated pipe in offshore conditions.
+HL AR 2024 Part H.csv,PARTHOFF58OVER,Offshore Hazardous Over 58-Inch Count,9,Pipeline Diameters,Total number of large offshore pipelines with diameters greater than 58 inches.
+annual_gas_transmission_gathering_1991.xlsx,T1M2_3,1/2-inch Wall Thickness,9,Pipeline Thickness,Represents the wall thickness of a pipeline with a 1/2-inch outer diameter.
+HL AR 2024 Part I.csv,PARTI201019,Incidents (2010-2019),9,Incident,Total incidents reported from 2010 to 2019
+annual_gas_transmission_gathering_2013.xlsx,PARTDTONCUC,Downtime Total On-CUC,6,Time,Represents the total downtime of a facility for On-CUC related reasons.
+annual_gas_transmission_gathering_2013.xlsx,PARTDTONC,"Design, Total, On-Center",9,Design,Determines the centerline of a pipeline.
+annual_gas_transmission_gathering_2013.xlsx,PARTDTOFFCUB,Downtime Total Off-CUB,6,Time,Represents the total downtime of a facility for Off-CUB related reasons.
+annual_gas_transmission_gathering_2013.xlsx,PARTDTOFFC,"Diameter, Outside, at end of Cut, in cubic feet",9,Corrosion,"The diameter at the end of a pipeline cut, expressed in cubic feet."
+annual_gas_transmission_gathering_2013.xlsx,PARTDTCPBTOTAL,Miles Protected Cathodically Protected Bare Steel,9,Corrosion,Defines the boundary condition for the rate of external wall thinning.
+annual_gas_transmission_gathering_2013.xlsx,PARTDTWITOTAL,Miles Protected Wrapped Unprotected,9,Corrosion,Represents the total length of wrapped and unprotected pipes.
+annual_gas_transmission_gathering_2013.xlsx,PARTDTOTOTAL,Total Pipeline Length,9,Pipeline,Represents the total length of all pipelines included in the model.
+annual_gas_transmission_gathering_2010.xlsx,PARTDGONTACUB,"Gross Capacity, Steel Pipe, Cubic",9,Corrosion,Defines the gross internal volume of a steel pipe in cubic units.
+annual_gas_transmission_gathering_2010.xlsx,PARTDGONTBCUC,"Bare Copper, Underground, Continuously Exposed",9,Corrosion,Protective coating for copper underground pipes
+annual_gas_transmission_gathering_2013.xlsx,PARTCOFFHG,Fluid Volume Contained in Offshore Facility,9,Storage,The volume of fluid stored in an offshore facility.
+annual_gas_transmission_gathering_2013.xlsx,PARTCCHECK,Corrosion Check,9,Corrosion,Evaluates the presence of corrosion on the pipeline.
+annual_gas_transmission_gathering_2010.xlsx,PARTDGOFFCPB,Leaks and Breaks for Pipelines with Discontinuing of Corrosion Protection,9,Safety,Represents the number of leaks and breaks for pipelines with discontinuing of corrosion protection.
+HL AR 2024 Part J.csv,PARTJST20MORECRON,Pipe with Joints more than 20 feet or not less than standard operating practices (crushed or other),9,Pipe Joint Integrity,Defines the boundary condition for pipe joints that are greater than 20 feet long or not adhering to standard practices.
+HL AR 2024 Part J.csv,PARTJST20LESSOFF,Pipe with Joints less than 20 feet not less than standard operating practices or less than recommended,9,Pipe Joint Integrity,Defines the boundary condition for pipe joints less than 20 feet long not adhering to standard or recommended practices.
+HL AR 2024 Part J.csv,PARTJST20LESSTOT,Total Less Than 20-Inch Pipeline Count,9,Pipeline Diameters,The total count of pipelines with diameters less than 20 inches.
+HL AR 2024 Part H.csv,PARTHON12,Pipe with Holes or Openings,9,Pipe Corrosion,Presence of holes or openings on the pipe wall.
+HL AR 2024 Part H.csv,PARTHON32,Pipe To Honed Fitting,9,Connection,Defines the boundary condition for pipe-to-honed fitting connection.
+annual_gas_transmission_gathering_2010.xlsx,PARTDTOFFO,Part D - Offshore (beyond 14 miles),9,Offshore,Defines the location of a pipeline in the water beyond 14 miles from the shoreline.
+annual_gas_transmission_gathering_2013.xlsx,PARTDGONTCCPC,Part D - Onshore Gathering (Composite Pipe),9,Gathering,A pipeline segment that transports natural gas from a production site to a processing facility with composite pipe material.
+annual_gas_transmission_gathering_2013.xlsx,PARTDGONTCP,"Gross Capacity, Steel Pipe",9,Corrosion,Defines the gross internal volume of a steel pipe.
+HL AR 2024 Part H.csv,PARTHOFF16,Total Miles of HDPE Coated Pipe Offshore,9,Coating,Calculates the total length of HDPE coated pipe used in offshore waters.
+HL AR 2024 Part H.csv,PARTHOFF34,Total Miles of HDPE Coated Pipe Offshore,9,Coating,Calculates the total length of HDPE coated pipe used in offshore waters.
+HL AR 2024 Part F to G.csv,PARTF2BHCAOUTSIDE,"Fracture Toughness, 2, Bottom Hole Condition, Outside",9,Pipe,"The toughness of a pipeline, measured at the bottom hole, under outside conditions."
+HL AR 2024 Part F to G.csv,PARTF2B2,First Point of Failure (F2B2),9,Failure Analysis,Defines the point of failure for hazardous liquid pipelines.
+HL AR 2024 Part F to G.csv,PARTF4B1,"Flowback 4"" Pipe Length",9,Flowback,Represents the length of flowback pipe in inches for 4 inches OD piping.
+annual_gas_transmission_gathering_2014.xlsx,PARTB1QUANT,Part B1 - Quantities of Liquid,9,Quantities,The amount of liquid transported by a pipeline.
+annual_gas_transmission_gathering_2014.xlsx,PARTB1SBM2,Bends 1 Straight Length (ft),9,Bends,Straight length of pipe after bends 1.
+annual_gas_transmission_gathering_2013.xlsx,PARTDGCUBTOTAL,"Gross Capacity, Total",9,Corrosion,Defines the total internal volume of a pipe.
+annual_gas_transmission_gathering_1991.xlsx,T2M2T,Temperature Reading,9,Measurement,"Provides temperature information, but specifics unclear."
+HL AR 2024 Part F to G.csv,PARTG1B,Part Flow 1B,9,Flow,Represents the total part flow rate.
+annual_gas_transmission_gathering_1991.xlsx,G2M2_1,G2 M2 1,9,Pressure,This field possibly relates to pressure and possibly pipeline integrity.
+annual_gas_transmission_gathering_1991.xlsx,STOT_6,Six-Year Leak Rate,9,Leakage,Reports the total number of leaks over the past six years.
+annual_gas_transmission_gathering_2013.xlsx,PARTDWITOTAL,Depth Weighted Uncertainty,9,Quality,Weights measurement data by depth to represent true uncertainty.
+annual_gas_transmission_gathering_2014.xlsx,PARTB1M2T,"Total miles protected by a coating or wrap, by system",9,Corrosion,Tracks the total length of pipeline protected by a specific coating or wrap by system.
+annual_gas_transmission_gathering_2014.xlsx,PARTCONNG,Connecter Length,9,Geology,Estimates the length of the pipe influenced by connector fluid flow.
+annual_gas_transmission_gathering_1991.xlsx,CTC1,Pipe Length (All Piping),9,Geometry,Represents the length of all piping in the facility.
+annual_gas_transmission_gathering_2009.xlsx,B4TON_4,Bends 4,9,Bends,Number of 4 bends.
+annual_gas_transmission_gathering_2009.xlsx,B4TON_T,Bends 4 Ton,9,Bends,Length of pipe affected by bends 4 ton.
+annual_gas_transmission_gathering_2009.xlsx,B4TOTAL_4,Total of all pipeline segments with known coating deficiencies,9,Coating Deficiency,The total number of pipelines with known coating deficiencies.
+HL AR 2023 Part P.csv,PARTPONCPC,Part Point Of No Current Change,9,Fluid Flow,Represents the point where the current changes
+annual_gas_transmission_gathering_2009.xlsx,B3TOTAL_4,Number of Bends 3,9,Bends,Number of 3 bends.
+HL AR 2023 Part M.csv,PARTMCRUDETOTAL,Miles of Pipelines Transporting Crude,9,Operations,Represents the total miles of pipelines transporting crude oil.
+HL AR 2023 Part M.csv,PARTMHVLOVER150000,"Part M-High-Pressure Line (over 150,000 psi), Steel or Composite",9,High-Pressure,A pipeline that operates at extremely high pressure and is made of steel or composite materials.
+annual_gas_transmission_gathering_2009.xlsx,B3TOTAL_2,Leakage Rate B-Class Two Years,9,Leakage,Reports the total number of leaks over the past two years for pipes classified as B-Class.
+HL AR 2023 Part M.csv,PARTMCO2_TOTAL,Mole % Carbon Dioxide,9,Fluid,Percentage of carbon dioxide in pipeline fluid
+HL AR 2023 Part K.csv,PARTK1NONSTGATH28OVER,Miles K-1 Non-Stainless Coating,9,Coating,Calculates the coating condition for K1 non-stainless pipe with gauge less than 28 mil.
+HL AR 2023 Part K.csv,PARTK1OFFSHORE28OVER,Offshore pipeline mileage with corrosion control in excess of 28 years,9,Corrosion,Determines the length of offshore pipelines with corrosion control that exceeded the service life of 28 years.
+HL AR 2023 Part K.csv,PARTK1OFFSHORETOT,Offshore miles protected by a corrosion control program,9,Corrosion,Determines the total length of offshore pipeline protected by a corrosion control program.
+HL AR 2023 Part K.csv,PARTK2OFFSHORETOT,Miles of Piping (Offshore),9,Geometry,Represents the total length of offhsore piping.
+annual_gas_transmission_gathering_2009.xlsx,B2TOTAL_6,Number of Bends 6,9,Bends,Number of 6 bends.
+HL AR 2023 Part K.csv,PARTK26_8TOTAL,Pipe with K-26 type connections with 8 or more Stub connections or not less than standard operating practices,9,Pipe Joint Integrity,Defines the boundary condition for pipe joints in K-26 type connections with 8 or more stub connections not adhering to standard or recommended practices.
+HL AR 2023 Part L.csv,PARTLCNAVWOFF,"Length, in Feet, at which the pipeline is located in the water outside the canal",9,Location,The length of the pipeline that is located outside a canal and in the water.
+annual_gas_transmission_gathering_2009.xlsx,B2TON_2,Total Length Meters,9,General,A total length of pipeline in meters.
+HL AR 2023 Part K.csv,PARTK1STNR20LESS28OVER,Pipe with K-type connections that meet the Standard Operating Practices but is less than 20 feet or 28 feet or more,9,Pipe Joint Integrity,Defines the boundary condition for K-type pipe connections within designated length limits.
+HL AR 2023 Part K.csv,PARTK1NONST20_28,Miles K-1 Non-Stainless Cathodic Protection,9,Cathodic Protection,Calculates the cathodic protection current required to prevent corrosion for steel in the atmosphere.
+HL AR 2023 Part K.csv,PARTK1STGATH20LESS10_20,Number of Kilometers of Pipeline in Gathering,9,Production,Determines the length of pipeline dedicated to gathering operations.
+HL AR 2023 Part J.csv,PARTJST_UNK_LOW,J-Span Tape Unknown Low Value,9,Leakage,Determines the value of unknown low J-Span tape values.
+annual_gas_transmission_gathering_2009.xlsx,B1TON_1,Pipe Wall Thickness T1,9,Corrosion,Predicts the time to failure for pipe wall thickness T1.
+annual_gas_transmission_gathering_2009.xlsx,B1TON_3,Pipe Wall Thickness T1,9,Corrosion,Represents the predicted time to failure for pipe wall thickness T1.
+annual_gas_transmission_gathering_2009.xlsx,B1TOTAL_3,Number of Bends 3 Incl 4,9,Bends,Total number of 3D bends.
+annual_gas_transmission_gathering_2009.xlsx,B1TOTAL_5,"Total, 1",9,General,Represents a total value for a particular category.
+annual_gas_transmission_gathering_2009.xlsx,B1GOFF_3,Leaks and Breaks for B1 and B1TOS Pipelines,9,Safety,Represents the number of leaks and breaks for offshore pipelines for B1 and B1TOS.
+HL AR 2020 Part N to O.csv,PARTNPREPTITLE,Number of Pre-Preheat Sections,9,Insulation,Number of preheat sections in total pipeline.
+HL AR 2024 Part R.csv,PARTRLOCTRACEWIRE,Right Location Trace Wire,9,Leakage,Determines if the trace wire is in the correct location.
+GT AR 2018 Part I.csv,PARTIONA36,Inservice Inspection Internal Anomalous,9,Corrosion,The level of internal anomalies on a pipeline.
+GT AR 2018 Part I.csv,PARTIONA40,In-Line Inspection (ILI) Non-Buried Runs Above 40,9,Corrosion,Defines above 40 ILI non-buried runs.
+GT AR 2018 Part I.csv,PARTIONB24,In-Line Inspection (ILI) Non-Buried Runs Above 24,9,Corrosion,Defines above 24 ILI non-buried runs.
+GT AR 2018 Part I.csv,PARTIONBTOTAL,Total In-Line Inspection (ILI) Non-Buried Runs,9,Corrosion,Defines the total ILI non-buried runs.
+GT AR 2019 Part I.csv,PARTIONC20,Number of Inspections with CUI 20% or Greater,9,Inspection,Percent of pipe length with CUI 20% or greater.
+GT AR 2019 Part I.csv,PARTIONC26,Internal Inspection of a 26-inch or smaller pipeline,9,Pipe Inspection,Internal inspection of pipelines with diameters smaller than 26 inches.
+GT AR 2018 Part I.csv,PARTIONC38,Inservice Inspection Internal Corrosion,9,Corrosion,The level of internal corrosion on a pipeline.
+HL AR 2024 Part R.csv,PARTRNOTIFINCINFO,Release Notification Information,9,Operations,"Details of release, including time and location."
+HL AR 2024 Part R.csv,PARTRLOCINCORMAP,"Right Location, Internal Corrosion Mapping",9,Corrosion,Determines if internal corrosion mapping is done correctly.
+HL AR 2024 Part R.csv,PARTREXCAVTOTAL,Total External Cathodic Protection Current,9,Corrosion,The total current used for external cathodic protection.
+GT AR 2023 Part S.csv,PARTSHCAC1MILES,Right-of-Way Surface Height Above Canal at one mile,9,Surveillance,"The height of a pipeline above a canal, measured at one mile intervals."
+GT AR 2023 Part S.csv,PARTSHCAC4MILES,Right-of-Way Surface Height Above Canal at 4 miles,9,Surveillance,"The height of a pipeline above a canal, measured at 4 mile intervals."
+GT AR 2023 Part S.csv,PARTSMCAC2TESTLOC,Miles of SMAC C2 Pipe Tested,9,Testing,Represents the miles of SMAC C2 pipes that have been tested.
+GT AR 2023 Part S.csv,PARTSNOTHCAMCAC1TESTLOC,"Segment Not Heat-Treated Cathode Anode, Test Location",9,Material Unknown,Represents test locations for non-heat-treated cathode anode.
+GT AR 2023 Part T.csv,PARTTSBTOT,Total Stress,9,Mechanical,"Combines longitudinal, circumferential, and hoop stresses."
+GT AR 2023 Part T.csv,PARTTOHCAM2,Preheated Pipe Length in CAM-2,9,Preheat,Pipe length preheated in CAM-2 insulation for pipeline construction
+GT AR 2023 Part T.csv,PARTTHCAM1TOT,Total Thickness Loss 1 Through Cathode and Anode,9,Material Loss,Represents total material thickness loss.
+annual_hazardous_liquid_2004.xlsx,ERWHM_3,External Radius - Wall Thickness for T3,9,Corrosion,Reflects the predicted rate of external wall thinning.
+annual_hazardous_liquid_2004.xlsx,ERWLM_1,Elevated Temperature Meters,9,Safety,A count of pipeline miles that are exposed to high temperatures.
+annual_hazardous_liquid_2004.xlsx,ERWLM_3,Electric Resistance Weld (ERW) Line Metric 3,9,Pressure,Defines a line metric used for ERW lines.
+annual_hazardous_liquid_2004.xlsx,CPCONM,Controlled Production Pressure,9,Production,Represents the maximum working pressure for pipeline flow under controlled conditions.
+annual_hazardous_liquid_2004.xlsx,CUCONM,Cubic Feet of Gas Consumed,9,Consumption,Cubic feet of gas consumed by pipelines
+annual_hazardous_liquid_2004.xlsx,HCAOFFM,Highest Cathodic Protection Potential of Offshore,9,Corrosion,Maximum CP potential for offshore
+annual_hazardous_liquid_2004.xlsx,STONM_5,Steel Pipeline Miles,9,General,A calculation of pipeline miles.
+annual_hazardous_liquid_2004.xlsx,REGGATHM,Regulated Gas Gage High,9,Instrument,Represents the highest reported pressure of a gas gathering system.
+annual_hazardous_liquid_2004.xlsx,DINSTM_7,Diameter (inches),9,Material,Inside diameter of the pipe.
+annual_hazardous_liquid_2004.xlsx,ERWLM_6,Electroresistance Weld Lateral Movement,9,Pipe Movement,Indicates the electroresistance weld lateral movement
+annual_hazardous_liquid_2004.xlsx,ERWTMT,Erw Weight and Diameter,9,Pipe,Describes the weight and diameter of pipes with electric resistance welding.
+annual_hazardous_liquid_2004.xlsx,YSGONM,"Yellowstone Group, Oil and Natural Gas",6,Geology,Natural resources found in the geologic formation
+HL AR 2024 Part R.csv,PARTRLOCTRACEMARK,Repair/Replace Location Target,6,Condition Assessment,Indicates the potential impact of a given failure on the integrity of the pipeline.
+annual_hazardous_liquid_2004.xlsx,BA_2,Barrels of Oil 2,9,Transportation,Reports the total number of barrels of oil transported.
+annual_gas_transmission_gathering_1990.xlsx,T1M1T,Tank 1 M1 Total,8,Fluid Loss,Represents the total liquid loss from Tank 1 at a M1 meter.
+HL AR 2024 Part R.csv,PARTRMISCDETER,Remaining Life Determination,8,Corrosion,Determines the remaining life of a section of pipe.
+HL AR 2024 Part P.csv,PARTPOFFCUP,"Pipe Offset, Cup, 100",8,Support,Describes the vertical clearance between the pipe and hangers.
+annual_gas_transmission_gathering_1990.xlsx,T2M2_1,Pipe Wall Thickness at Two-Mile interval,8,Pipe,The wall thickness of a pipeline at three-mile intervals.
+HL AR 2024 Part M.csv,PARTM_ETHANOLTOTAL,Total Ethanol Content of the Liquid in the Pipelines,8,Hazardous Liquid,The total ethanol content of the liquid present in pipelines.
+annual_gas_transmission_gathering_2012.xlsx,PARTB1RRM1,Bend Severity (1-5° @ Reduced Pressure,8,Corrosion,Bend severity for 1-5° bends at reduced pressure
+annual_gas_transmission_gathering_2012.xlsx,PARTB1SMET,Bend Severity (1-5°),8,Corrosion,Bend severity for 1-5° bends
+annual_gas_transmission_gathering_2012.xlsx,PARTCONPG,Operating Pressure Gauge,8,Pressure,The pressure of a pipeline as measured by a gauge.
+annual_gas_transmission_gathering_2011.xlsx,PARTDGONTAC,Part Diameter Gage On Tangent,8,Geometry,Flags that the part diameter is on tangent
+annual_gas_transmission_gathering_2011.xlsx,PARTDTCTOTAL,Miles Protected Coated Steel by Type,5,Corrosion,Identifies the total length of pipeline protected by a specific coating type.
+annual_gas_transmission_gathering_2012.xlsx,PARTDTCUCTOTAL,Days to Critical Crack Total,8,Material Properties,Represents the total days to critical crack
+HL AR 2024 Part M.csv,PARTMHVL100001TO150000,"Part M-High-Pressure Line (100,001 to 150,000 psi), Steel or Composite",8,High-Pressure,A pipeline that operates at high pressure and is made of steel or composite materials.
+annual_gas_transmission_gathering_2001.xlsx,CTO1,Cathodic Reduction Factor,8,Corrosion,Reflects the efficiency of the cathodic protection system.
+annual_hazardous_liquid_2024.xlsx,PARTE1950HF,E-1950 HF,8,Insulation,Calculates the insulation condition for a specific section of pipe with E-1950 material.
+annual_hazardous_liquid_2024.xlsx,PARTDCUPTOTAL,Depth Corrected Uncertainty,5,Quality,Captures the variability in measurement data due to depth.
+annual_hazardous_liquid_2024.xlsx,PARTDCPCTOTAL,Part Dcp C Total,6,Corrosion,This field possibly relates to pipeline integrity and corrosion.
+HL AR 2017 Part A to E.csv,PARTDCPBTOTAL,Miles Protected Bare Steel,8,Corrosion,Defines the boundary condition for the rate of external wall thinning.
+HL AR 2024 Part Q.csv,PARTQ2000TOTAL,Miles Protected Coated Steel,5,Corrosion,Defines the total miles of coated pipe protected by a certain coating program.
+annual_hazardous_liquid_2023.xlsx,PARTCOFFRPP,Miles Coated Offshore,8,Coating,Defines the boundary condition for the rate of coating degradation in offshore waters.
+annual_hazardous_liquid_2023.xlsx,PARTCOFFHVL,Total Coated Hydrogen Volume,6,Coating,Defines the total amount of coated hydrocarbons in the pipe.
+annual_hazardous_liquid_2023.xlsx,PARTCOFFETHANOL,"Offshore Crude, Ethanol",8,Material,Petroleum product in offshore crude oil
+annual_gas_transmission_gathering_2002.xlsx,OFSTREET,Offset - Street,8,Corrosion,Defines the boundary condition for the rate of external wall thinning due to offset near a roadway.
+annual_gas_transmission_gathering_2001.xlsx,CTNF1,Coating Thinning Factor 1,8,General,Describes the rate of coating thinning.
+annual_gas_transmission_gathering_2001.xlsx,CGO2,Critical Gas Operability,8,Operability,Represents the critical gas operability condition for the pipeline.
+annual_gas_transmission_gathering_2001.xlsx,CGNF1,"Control, Gas Flow Network",8,Flow,Monitors and measures real-time flow rates and fluid characteristics to optimize pipeline performance.
+annual_gas_transmission_gathering_2001.xlsx,CGMW1,Gathering system capacity,8,Capacity,Reports the total capacity of a gathering system.
+HL AR 2017 Part F to G.csv,PARTF5C4,Pipe Length Filled with 5C4,5,Fill Material,Length of pipe filled with fill material 5C4
+annual_gas_transmission_gathering_2002.xlsx,B1TOFF_3,Bare Steel To Offshore 3,8,Corrosion,Predicts the rate of external wall thinning for bare steel pipelines under offshore conditions.
+annual_gas_transmission_gathering_2001.xlsx,CGEO1,Cathodic Protection Geometry 1,8,Corrosion,CP Geometry for external coating
+annual_gas_transmission_gathering_2001.xlsx,CGE1,Coating Grade Evaluation 1,8,Coating,Evaluates coating performance based on certain conditions.
+annual_gas_transmission_gathering_2002.xlsx,B2TOFF_2,Leaks and Breaks for B2 TOS Offshore Pipelines,8,Safety,Represents the number of leaks and breaks for offshore pipelines for B2 TOS.
+annual_gas_transmission_gathering_2001.xlsx,B4GOFF,Leaks and Breaks for Pipelines with Operating Pressure Less than 300 psig,8,Safety,Represents the number of leaks and breaks for pipelines with operating pressure less than 300 psig.
+HL AR 2017 Part F to G.csv,PARTF5A,Part F5 A,8,Corrosion,This field is related to part F5 A and possibly pipeline integrity.
+HL AR 2017 Part F to G.csv,PARTF3D,Part F3 - Pipeline Fitting,8,Fitting,A component that connects sections of pipeline.
+HL AR 2017 Part F to G.csv,PARTF2C1,F2C Fluid Flow Influence,8,Geology,Assesses the influence of F2C fluid flow on the pipeline.
+HL AR 2017 Part H.csv,PARTHOFF10,"Hanger Offset, 10",8,Support,Describes the vertical clearance between the pipe and hangers.
+HL AR 2017 Part H.csv,PARTHON42,Design Temperature 42°F (-40°C)°,8,Temperature,The temperature at which a pipeline is designed to operate.
+HL AR 2017 Part H.csv,PARTHON26,Pipes with Partially Protected Offshore Pipe,8,Corrosion,Represents pipes that are partially protected from corrosion.
+annual_gas_transmission_gathering_2002.xlsx,B2GON_4,Liquid Line Mains (Miles),8,Pipeline,Length of liquid pipeline mains in miles
+annual_gas_transmission_gathering_2002.xlsx,B2GON_3,Leaks and Breaks for B2 TOS Offshore Pipelines,8,Safety,Represents the number of leaks and breaks for offshore pipelines for B2 TOS.
+annual_gas_transmission_gathering_2002.xlsx,B2TOTAL_T,Total Bare Steel Length,8,Corrosion,Sum of all bare steel lengths.
+annual_gas_transmission_gathering_2002.xlsx,B2TON_T,Total Bare Steel Length (B2),8,Corrosion,Sum of all bare steel lengths.
+HL AR 2017 Part H.csv,PARTHON22,"Hanger Offset, N, 22",8,Support,Describes the vertical clearance between the pipe and hangers.
+HL AR 2017 Part H.csv,PARTHON20,Design Temperature 20°F (-29°C)°,8,Temperature,The temperature at which a pipeline is designed to operate.
+HL AR 2017 Part H.csv,PARTHON18,Pipeline Hours Operated,8,Operation,Total hours the pipeline has been in operation
+HL AR 2017 Part H.csv,PARTHON14,Pipe To Honed Fitting,8,Connection,Defines the boundary condition for pipe-to-honed fitting connection.
+annual_gas_transmission_gathering_2001.xlsx,B3TOTAL_1,B3 Total 1,8,Load,Represents the total load on a pipeline in some unit of measurement.
+annual_gas_transmission_gathering_2001.xlsx,B3TON_7,3/4-inch Outside Diameter Line Tapping,8,Pressure,Describes tapping on 3/4-inch OD lines.
+HL AR 2017 Part H.csv,PARTHON6,Design Pressure 6,8,Pressure,The pressure at which a pipeline is designed to operate.
+HL AR 2017 Part I.csv,PARTITOTAL,Insulated Metal Pipe Total Length,8,Material,Total length of insulated (coated) metal pipeline
+HL AR 2017 Part H.csv,PARTHOFF44,Number of Hydrostatic Test Failures (44 psi),8,Hydrotesting,Number of hydrostatic tests that failed at 44 psi.
+HL AR 2017 Part H.csv,PARTHOFF42,Temperature 42°F (-40°C),8,Temperature,The temperature at which a pipeline is designed to operate.
+HL AR 2017 Part K.csv,PARTK1STNR20LESS4LESS,K-Factor for TN20°C with External Loads,8,Thermal,"Considers the thermal expansion characteristics, external loads, and temperature."
+HL AR 2017 Part K.csv,PARTKNST125LESSOFF,K-1 Non-Stainless 125 Less Than 28,8,Cathodic Protection,Calculates the cathodic protection required for pipe lengths less than 28 mil.
+HL AR 2017 Part K.csv,PARTKSTNR20LESSON,"Part K-System, 1-Inch or 0.75-Inch (20 feet or less, 10 foot or less depth)",5,System,A series of interconnected pipelines that transport a particular product overland and to and from storage facilities.
+HL AR 2017 Part K.csv,PARTK2OFFSHORE6LESS,Miles of Piping with Length Less than 6 Miles Offshore,8,Geometry,Indicates the total length of offhsore piping with a length of less than 6 miles.
+HL AR 2017 Part K.csv,PARTK1STGATH20MORE28OVER,"Partially K1 Storage Gathering, 20-28",8,Piping,Designed for use in storage environments to withstand extreme loads and pressures.
+HL AR 2017 Part K.csv,PARTK1STNR20LESS4_10,K1 Strength Number 20 Less 4,8,Mechanical Strength,Represents the K1 strength number 20 less 4
+HL AR 2017 Part M.csv,PARTMNONHVLLESS50000,Pipeline Miles Non-High Pressure,8,Safety,The length of pipelines under non-high pressure.
+HL AR 2017 Part M.csv,PARTMCRUDE100001TO150000,Crude Oil Transportation Distance,8,Transportation,"The total length of crude oil pipelines that have been in operation for 100,000 to 150,000 hours."
+HL AR 2017 Part L.csv,PARTLECRESOFF,Leak Detection Capability,8,Corrosion,Detection capability of pipeline leaks and corrosion
+HL AR 2017 Part M.csv,PARTM_ETHANOL100001TO150000,Miles of Pipelines Transporting Ethanol (100000-150000 Gallon Tanks),8,Operations,Represents the miles of pipelines transporting ethanol in tanks.
+HL AR 2017 Part M.csv,PARTM_ETHANOL50001TO100000,"Methanol 5,000,001 to 10,000,000 gallons/year",8,Corrosion,The amount of methanol used by a pipeline.
+HL AR 2017 Part M.csv,PARTMCO2_OVER150000,"Pipes with M CO2 value greater than 150,000",8,Internal,"Represents pipes with M CO2 values greater than 150,000."
+HL AR 2017 Part M.csv,PARTMHVLTOTAL,Moving Head Velocity,8,Flow,Estimates the flow velocity in the pipeline.
+HL AR 2017 Part Q.csv,PARTQ1990LF,1990 LF Gas Pipe,8,Pipeline Length,Represents the length of a 1990-foot gas pipe.
+HL AR 2017 Part Q.csv,PARTQ1970LF,1970 LF Gas Pipe,8,Pipeline Length,Represents the length of a 1970-foot gas pipe.
+HL AR 2017 Part Q.csv,PARTQPRE40LF,Pre-40 LF Gas Pipe,8,Pipeline Length,Represents the length of a pre-40-foot gas pipe.
+HL AR 2017 Part Q.csv,PARTQ2020HF,2019 Hazardous Fluid Quantities,8,Hazard,The amount of hazardous fluids a pipeline contained in 2019.
+HL AR 2017 Part Q.csv,PARTQ2000HF,2000 HP Compressor Station,8,Compressor Station,Represents a compressor station with 2000 horsepower.
+HL AR 2017 Part Q.csv,PARTQ1980HF,Years of Age at 1980,8,Material,Years of age when subject pipeline was placed in service.
+HL AR 2017 Part Q.csv,PARTQUNKWNHF,Quantity of Unknown Hazardous Fluid,8,Safety,Indicates the unknown amount of hazardous fluids present.
+HL AR 2017 Part P.csv,PARTPOTHER,Other Pipelines Total,8,Material,Total length of non-insulated metal pipeline
+HL AR 2017 Part P.csv,PARTPCUCTOTAL,Pipeline Cut Count Total,8,Corrosion,The total number of pipeline cuts.
+HL AR 2017 Part P.csv,PARTPCUBTOTAL,Pipe Cubic Total,8,Mechanical,Defines the cubic total of pipes used at a facility.
+HL AR 2017 Part P.csv,PARTPCPBTOTAL,"Pipeline Protection, Physical Condition and Pigging Behavior Total",8,Protection,Protection and behavior of a pipeline
+HL AR 2017 Part P.csv,PARTPOFFTOTAL,Total Pipeline Operating Pressure,8,Pressure,The operating pressure of a pipeline.
+annual_gas_transmission_gathering_2000.xlsx,CTOF1,Critical Temperature Factor,8,Thermal Stress,Accounts for the loss of physical properties of materials due to thermal loading.
+annual_hazardous_liquid_2009.xlsx,ERWTM_6,Average External Wall Temperature 6,8,Temperature,The average external temperature of a pipeline.
+annual_gas_transmission_gathering_2000.xlsx,CGCD2,Corrosion Growth Calculation Distance,8,Corrosion,The distance that corrosion is likely to grow over a set period.
+annual_hazardous_liquid_2009.xlsx,ERWTM_3,External Corrosion Meters,8,Corrosion,The length of the pipeline that is subject to external corrosion.
+annual_hazardous_liquid_2009.xlsx,ERWTM_1,External Corrosion Meters,8,Corrosion,A calculation of meters that may be subject to external corrosion.
+annual_hazardous_liquid_2009.xlsx,ERWLM_7,Electric Resistance Welded Line Miles,8,Piping,Reports the total length of electric resistance welded pipes.
+annual_hazardous_liquid_2009.xlsx,ERWLM_4,ERW Longitudinal Mechanical Defect (4) Score,8,Mechanics,Evaluates the risk of mechanical failure due to defects in ERW welds
+annual_hazardous_liquid_2009.xlsx,ERWHM_8,Elevated Temperature and Pressure Whiting,8,Corrosion,Predicts the rate of external wall thinning as a function of pipeline operating temperature and pressure.
+annual_hazardous_liquid_2009.xlsx,ERWHM_7,External Radius - Wall Thickness for T7,8,Corrosion,Estimates the predicted rate of external wall thinning.
+annual_hazardous_liquid_2009.xlsx,II5_2,In-Line Inspection 5,5,Integrity Management,In-line inspection information
+annual_hazardous_liquid_2009.xlsx,II2_1,In-Line Inspection 2,5,Integrity Management,In-line inspection information
+annual_hazardous_liquid_2009.xlsx,VTM_5,Concrete Material (Length in Miles),8,Material,Length of pipeline laid in concrete material
+annual_hazardous_liquid_2009.xlsx,DINSTM_6,Internal Diameter of the Minimum Allowable Operating Pressure (MAOP) Steam Line,8,Materials,Determines the internal diameter of the steam line at minimum allowable operating pressure.
+annual_gas_transmission_gathering_2000.xlsx,G2M1T,Gas Gathering System Pipe,8,Flow,Represents the volume of gas transported through the gathering system.
+annual_gas_transmission_gathering_2000.xlsx,G1M2_7,Gas Gathering System Pipe,8,Flow,Represents the volume of gas transported through the gathering system.
+annual_hazardous_liquid_2009.xlsx,DINSTM_2,DIN (Tubular Material Strength),8,Material,Evaluates the tensile strength of DIN tubular material
+annual_hazardous_liquid_2009.xlsx,CPBOFFM,Cathodic Protection Offshore,8,Corrosion,CP potential for offshore
+annual_gas_transmission_gathering_2000.xlsx,T1M1_6,Pipe Wall Thickness at One-Mile interval,8,Pipe,The wall thickness of a pipeline at one-mile intervals.
+HL AR 2018 Part N to O.csv,PARTNPREPFAX,Miles of Piping with Non-Pressure Testing,8,Testing,Represents the miles of piping that were not pressure tested.
+GT AR 2024 Part I.csv,PARTIOFF58OVER,"Offshore Oil Flow, 58 Over",5,Material,Petroleum product extracted offshore and transported via pipe
+GT AR 2024 Part I.csv,PARTIOFF52,Pipe with Internal Corrosion of Flange,8,Pipe Corrosion,Presence of corrosion on a flange within a pipe wall.
+GT AR 2024 Part I.csv,PARTIOFF48,"Pipe Offset, 48",8,Support,Describes the vertical clearance between the pipe and hangers.
+GT AR 2024 Part I.csv,PARTIOFF46,Pipe To Offshore Fitting,8,Connection,Defines the boundary condition for pipe-to-offshore fitting connection.
+GT AR 2024 Part I.csv,PARTIOFF26,Leaks and Breaks for Pipline with Pressure Reduction to 150 psig or less,8,Safety,Represents the number of leaks and breaks for pipelines with pressure reduction to 150 psig or less.
+GT AR 2024 Part I.csv,PARTIOFF8,Internal Corrosion of Fittings 8 (not including flanges),8,Pipe Corrosion,Presence of corrosion on fittings other than flanges.
+GT AR 2024 Part I.csv,PARTIONC24,Miles Insulated,8,Insulation,Defines the boundary condition for the rate of heat loss through insulation.
+GT AR 2024 Part I.csv,PARTIONB38,Internal/External Dents,8,Dents,Assesses the extent of internal/external dents on the pipeline.
+GT AR 2024 Part I.csv,PARTIONA30,"Pipe Offset, One, A, 30",8,Support,Describes the vertical clearance between the pipe and hangers.
+GT AR 2024 Part I.csv,PARTIONA10,Miles of Pipelines Operated at Reduced Operating Parameters,8,Operations,Represents the miles of pipelines operated at reduced operating parameters.
+GT AR 2023 Part I.csv,PARTIONB4LESS,B4 Fluid Flow Influence,8,Geology,Assesses the influence of B4 fluid flow on the pipeline.
+GT AR 2023 Part T.csv,PARTTPHCAM2,Part T - Underground Gas Storage (2 million gallons capacity or more),8,Storage,Defines the capacity of an underground gas storage facility in relation to its volume.
+GT AR 2023 Part T.csv,PARTTRRHCAM2,Total Treated Rheology Controlled Air M2,8,Fluid Treatment,Represents the total volume of fluid treated for rheology control in a M2 air meter.
+GT AR 2023 Part S.csv,PARTSNOTHCAMCAC3TESTLOC,Part Snothcamcac 3 Test Loc,8,Unknown,This field possibly relates to a type of gas.
+GT AR 2023 Part S.csv,PARTSMCAC4MILES,Segment Miles of Cathodic Protection Anode 4,8,Anode Performance,Represents the distance with cathodic protection anode.
+GT AR 2023 Part S.csv,PARTSMCAC1MILES,Pipeline Miles Steel,8,General,The length of steel pipelines in miles.
+GT AR 2023 Part S.csv,PARTSHCAC3TESTLOC,"Segment Heat-Treated Cathode Anode 3, Total Test Location",8,Material Unknown,Represents test locations for heat-treated cathode anode.
+GT AR 2023 Part S.csv,PARTSHCAC3MILES,Pipeline SHCAC 3 miles,8,Corrosion,Represents the rate of pipe material degradation in the first 3 miles of a pipeline.
+GT AR 2024 Part I.csv,PARTIONA38,Part Iona 38,8,Corrosion,This field possibly relates to part Iona 38 and pipeline integrity.
+annual_gas_transmission_gathering_2024.xlsx,PARTDGOFFCI,Pipe To Offshore Fitting,8,Connection,Defines the boundary condition for pipe-to-offshore fitting connection.
+annual_gas_transmission_gathering_2024.xlsx,PARTDGOFFCUB,Percent of pipeline segments with known defects,8,Defects,The percentage of pipeline segments that have known defects.
+annual_gas_transmission_gathering_2024.xlsx,PARTDGOFFCPC,PART DGOFFCPC,8,Compressor,Represents the compressed process condition.
+annual_gas_transmission_gathering_2024.xlsx,PARTDPTOTAL,Part Dp Total,8,Corrosion,This field possibly relates to pipeline integrity and corrosion.
+annual_gas_transmission_gathering_2024.xlsx,PARTDGCUCTOTAL,Depth Corrected Uncertainty with External Loads,8,Quality,Takes into account the uncertainty due to both depth and external loads.
+annual_gas_transmission_gathering_2024.xlsx,PARTDGOFFO,Offshore Pipelines Meters,8,General,The total length of pipelines in offshore locations.
+annual_gas_transmission_gathering_2024.xlsx,PARTDGOFFC,Total Defective Offshore Coated Pipe,8,Coating,Defines the total amount of defective coated steel pipes in offshore waters.
+annual_gas_transmission_gathering_2024.xlsx,PARTDOTOTAL,Total Pipeline Nominal Diameter,8,Pipe,The nominal diameter of a pipeline.
+annual_gas_transmission_gathering_2024.xlsx,PARTBCLASS12MILESTOTAL,Bend Class 1-2 (12 miles) Total,8,Geometry,Total number of Class 1-2 bends (12 miles)
+annual_gas_transmission_gathering_2024.xlsx,PARTBCLASS34MILESON,High-pressure line mileage in class 3 or 4,8,Pressure,Reports the length of pipelines classified within hazard categories 3 or 4 based on pressure.
+annual_gas_transmission_gathering_2024.xlsx,PARTDTONTOTAL,Downstream Tonnage Total,8,Transportation,Reports the total tonnage transported downstream.
+annual_gas_transmission_gathering_2024.xlsx,PARTCOGNAME,Gauge Pressure Nominal,8,Pressure,The normal pressure at which a process operates.
+annual_gas_transmission_gathering_2024.xlsx,PARTCOFFPG,Percent of pipeline segments with coated pipe,8,Pipeline Coating,The percentage of pipeline segments that have coated pipes.
+annual_gas_transmission_gathering_2024.xlsx,PARTCONOG,Operating Pressure,8,Pressure,The maximum pressure a pipeline is designed to operate under.
+annual_gas_transmission_gathering_2024.xlsx,PARTCONLFG,Condition of Line Gas,8,Fabrication,Assessing the condition of line gas pipelines.
+HL AR 2024 Part K.csv,PARTKST_UNK_125MOREHCA,Partially Known Stiffener Unknown 125 More Hca,8,Fabrication,Tracks different stiffener unknown related metrics with specific criteria.
+HL AR 2024 Part J.csv,PARTJST_UNK_125LESSOFF,J-Span Tape Unknown 125-Off,8,Leakage,Determines the value of unknown 125 Off J-Span tape values.
+HL AR 2024 Part R.csv,PARTRLOCLOCMARK,Relocation Marker,8,Quality,Indicates the marker to be used for relocation of the feature.
+HL AR 2024 Part R.csv,PARTRLOCMAPMARK,Relocated or Replaced Total Count,8,Relocation and Replacement,Total count of pipelines that have been relocated or replaced.
+HL AR 2024 Part R.csv,PARTREXCAVPROTSHORE,Partially Re-excavated Protected Shore,8,Integrity Management,Partially re-excavated protected shore
+annual_gas_transmission_gathering_2011.xlsx,PARTDGOFFWI,Partially Protected Offshore Pipe,7,Corrosion,Pipes that are partially protected from corrosion.
+HL AR 2018 Part Q.csv,PARTQ2020LF,Liquid fuel leakage rate per year per system (2020),7,Leakage,Calculates the liquid fuel leakage rate per year per pipeline system for the year 2020.
+annual_gas_transmission_gathering_2011.xlsx,PARTDGCPCTOTAL,Total Cathodic Protection Distance,7,Cathodic Protection,Total length of pipe coated with cathodic protection system.
+annual_gas_transmission_gathering_2011.xlsx,PARTDGOFFTOTAL,Offshore Damage Totals,7,Damage,The total number of damage incidents on offshore pipelines.
+annual_gas_transmission_gathering_2012.xlsx,PARTB192MILESON,"Partially Faced Pipe, 192 Miles On",7,Piping,Has an internally-lined pipe to protect against corrosion and wear.
+GT AR 2021 Part I.csv,PARTIONC42,Inner Diameter (42 in.),7,Material,Pipeline inner diameter is 42 inches.
+GT AR 2021 Part I.csv,PARTIONC34,Inner Diameter (34 in.),7,Material,Pipeline inner diameter is 34 inches.
+HL AR 2024 Part R.csv,PARTRTOTDAMAGES,Total Damage Ratio,7,Material Properties,Indicates the total damage potential of the fluid within the steel
+annual_gas_transmission_gathering_1999.xlsx,CGC2,Coating Group Category Two,7,Coat Group,Represents the coating group category two
+annual_gas_transmission_gathering_1999.xlsx,STOT_5,5-Year Corrosion Growth Estimate,7,Corrosion,Estimates the total corrosion growth over 5 years.
+HL AR 2018 Part M.csv,PARTM_ETHANOLOVER150000,Part M Ethanol Over 150000,7,Unknown,"This field possibly relates to ethanol over 150,000."
+GT AR 2022 Part I.csv,PARTIONB20,Piping Insulation,7,Corrosion,Represents the condition of the insulating material on the pipeline.
+HL AR 2023 Part J.csv,PARTJNSNR125LESSTOT,Join/Seam Number 125 Less,7,Fabrication,Details all joints/seams in the pipeline where length does not meet criteria.
+HL AR 2023 Part J.csv,PARTJNSR125LESSON,"Junction, Valve, or Other Non-pipeline feature with unknown characteristics 125 or less",7,Feature,A feature on a pipeline that is unknown or has fewer than 125 characteristics.
+GT AR 2022 Part I.csv,PARTIONA18,Average Axial Stress,7,Mechanical,Indicates the average stress induced by external loads.
+annual_gas_transmission_gathering_2011.xlsx,PARTDGONTBCI,Pipeline Dgo Non-Tbc I,7,Fabrication,Provides detailed information about non-tbc DGo pipelines.
+annual_gas_transmission_gathering_2011.xlsx,PARTDGONTBCUB,Diameter @ Greatest Offset Bend,7,Geometry,Pipeline inner diameter at the greatest offset bend
+HL AR 2021 Part A to E.csv,PARTDONTOTAL,Diameter of Pipe Not in Trench,7,Fabrication,Describes the diameter of pipelines not installed in trenches.
+HL AR 2021 Part A to E.csv,PARTCOFFCRUDE,Offshore Crude Oil,7,Material,Petroleum product extracted from ocean
+GT AR 2022 Part I.csv,PARTIONC52,Part Ionization C52,7,Fluid Flow,Flags that the part ionization C52
+annual_gas_transmission_gathering_2005.xlsx,B4GON_1,B4G Pipe Length for T1,7,Geology,Estimates the pipe length influenced by B4G fluid flow.
+HL AR 2023 Part K.csv,PARTKNST125LESSHCA,"Miles of Piping that is Not Steel or Not HCA, with Length Less than 125 Miles",5,Geometry,"Represents the total miles of piping that is not steel or not high-carbon-allow (HCA), with length less than 125 miles."
+HL AR 2023 Part K.csv,PARTKNST125MOREHCA,Pipes with KNST125 or higher,7,Corrosion,Represents pipes with corrosion rates equal to or higher than KNST125.
+HL AR 2020 Part K.csv,PARTK128OVERTOTAL,Miles K1-28 OVERTOTAL,7,Cathodic Protection,Total cathodic protection for K1-28 sections of pipe.
+HL AR 2020 Part K.csv,PARTK1OFFSHORE20_28,"Partially K1 Offshore Pipe, 20-28",7,Piping,Designed for use in offshore environments to withstand extreme loads and pressures.
+HL AR 2018 Part L.csv,PARTLSEGMILESTOTALON,Length of Segment Miles Total On,7,Pipe Length,Represents total length of a pipeline segment.
+annual_gas_transmission_gathering_2012.xlsx,PARTB1M1T,B1 Maximum Operating Pressure,7,Pressure,The maximum pressure that can be safely applied to a pipeline.
+annual_gas_transmission_gathering_2012.xlsx,PARTDTONWI,Days to No Wall Inside,7,Material Properties,Indicates the days to no wall inside
+GT AR 2023 Part I.csv,PARTIONA6,Miles of Pipelines Operated at Reduced Pressure,7,Operations,Represents the miles of pipelines operated at reduced pressure.
+HL AR 2023 Part K.csv,PARTK1STGATH20LESS4LESS,K-Factor for TG20°C with External Loads,7,Thermal,Combines thermal expansion and external loads.
+HL AR 2023 Part K.csv,PARTK1STGATH20MORETOT,Kilometers of Gathering Lines 20+ Total,7,General,The total kilometers of gathering lines over 20 inches.
+annual_gas_transmission_gathering_2005.xlsx,B3TON_4,Bare Steel Length (B3T) 4,7,Corrosion,Length of the fourth bare steel pipe in a group of three.
+HL AR 2023 Part H.csv,PARTHOFF28,Hot Spot Factor,7,Mechanical,Assesses the severity of thermal stresses in the pipe.
+HL AR 2023 Part K.csv,PARTK1STGATH20MORE4_10,K-Factor for TG20°C with External Loads,7,Thermal,Combines thermal expansion and external loads.
+annual_gas_transmission_gathering_2012.xlsx,PARTCOFFOG,Coated Offshore Pipe Length,7,Coating,Represents the length of coated offshore pipe in inches.
+HL AR 2020 Part Q.csv,PARTQTOTALHF,Quality of Total High Flux,7,Corrosion,Defines the quality of the total high flux.
+HL AR 2019 Part A to E.csv,PARTDCUBTOTAL,"Diameter of Pipe Covered, Total",7,Pipe Geometry,Represents total diameter of covered pipe.
+HL AR 2018 Part L.csv,PARTLHIGHPOPON,Pipeline High Population Zone,5,Corrosion,Represents the population density and high pipe material degradation within a high population zone.
+HL AR 2021 Part A to E.csv,PARTEPRE40TOTAL,Pipes Exposed to 40 ft or greater of Water,7,Corrosion,Pipes exposed to water level at 40 ft or greater.
+HL AR 2018 Part K.csv,PARTK2OFFSHORE6_8,"Partially K2 Offshore Pipe, 6-8",7,Piping,Designed for use in offshore environments to withstand extreme loads and pressures.
+HL AR 2021 Part A to E.csv,PARTE1970HF,Extruded 17% Chromium Steel Material E1970,7,Material Property,Material property for extruded 17% Chromium Steel E1970.
+annual_gas_transmission_gathering_2000.xlsx,G1M1_5,Gathering system mileage,7,Mileage,Reports the total mileage of a gathering system.
+HL AR 2024 Part R.csv,PARTRLOCABANDON,Abandoned Meters,7,Safety,The length of abandoned pipeline.
+HL AR 2024 Part R.csv,PARTRMISCTOTAL,Pipe Reintroduction Total,7,Reintroduction,Represents the total length of pipeline reintroduced for service.
+HL AR 2023 Part K.csv,PARTK1NONST28OVER,"Pipe with 1-inch or larger non-welded, non-stress joint over 30 feet",7,Pipe Joint Integrity,"Defines the boundary condition for non-welded, non-stress joints 1-inch and larger over 30 feet long."
+HL AR 2023 Part K.csv,PARTK1STNR20LESSTOT,K-Factor for T120°C with Load,7,Thermal,Takes into account the thermal expansion characteristics and external loads.
+annual_gas_transmission_gathering_2006.xlsx,B1GOFF_1,B1 Girth Weld Off-Grade,7,Weld,Describes an off-grade weld for B1 girths.
+annual_gas_transmission_gathering_2012.xlsx,PARTDGONTBO,Degree of Bend (0-360),7,Bends,Degree of bend in the pipeline.
+GT AR 2023 Part T.csv,PARTTSMEHCAM2,Number of Cathodic Protection Anodes 2,5,Corrosion,Number of anodes installed for cathodic protection on a specific size of pipe.
+annual_gas_transmission_gathering_1990.xlsx,G1M2_5,Gathering Pipeline Segment 1 Mile or 2 Miles (5% slope),7,Gathering,A pipeline segment that transports natural gas from a production site to a processing facility.
+HL AR 2021 Part A to E.csv,PARTE2000LF,Part E2 for Low-Frequency Eddy Current Examination,7,Examination,Describes low-frequency eddy current examination for pipeline.
+annual_gas_transmission_gathering_2005.xlsx,B2TON_6,Bare Steel Length 6,7,Corrosion,Length of the second bare steel pipe in a group of six.
+annual_gas_transmission_gathering_2012.xlsx,PARTDGONTCWI,Diameter of Gathering Line,7,Pressure,Describes the diameter of a gathering line.
+annual_gas_transmission_gathering_2012.xlsx,PARTDGONTCCUC,Part D - Onshore Gathering (Composite Pipe with a cathodic protection current),7,Gathering,A pipeline segment that transports natural gas from a production site to a processing facility with composite pipe material and cathodic protection.
+annual_gas_transmission_gathering_2012.xlsx,PARTDGONTCCUB,Part Diameter to Coating Thickness Ratio Calculation,7,General,Calculates ratio of pipeline diameter to coating thickness.
+annual_gas_transmission_gathering_2005.xlsx,B2TON_1,Bare Steel Length (B2T) 1,7,Corrosion,Length of the bare steel pipe in a specific field.
+annual_gas_transmission_gathering_2005.xlsx,B2TOFF_T,Bends 2 per Mile to Turn Off,7,Geometry,Number of bends per mile for pipeline turn-off
+annual_gas_transmission_gathering_2005.xlsx,B2TOFF_6,Blockage/Isolation Offsets 6,7,Blockage and Isolation,Offset from the midpoint of a blockage or isolation valve
+annual_gas_transmission_gathering_2005.xlsx,B2GON_5,B2G Pipe Length for T5,7,Geology,Estimates the pipe length influenced by B2G fluid flow.
+annual_gas_transmission_gathering_2005.xlsx,B2GON_2,Leak Detection Efficiency,7,Leak Detection,"A measure of the success in detecting leaks, where higher effectiveness indicates better detection."
+annual_gas_transmission_gathering_2012.xlsx,PARTDCTOTAL,Miles of Piping with Direct Burial,7,Corrosion,Indicates the total length of piping that is directly buried.
+annual_gas_transmission_gathering_2012.xlsx,PARTDGCTOTAL,Diameter Greatest @ Total,7,Geometry,Pipeline inner diameter at the greatest offset bend
+annual_gas_transmission_gathering_2005.xlsx,B1TON_7,Bends 1 per Mile to Turn On,7,Geometry,Number of bends per mile for onshore pipelines turn-on
+HL AR 2023 Part F to G.csv,PARTF5CTOT,Total Number of Anomalies,7,Anomalies,Reports the total number of anomalies found.
+annual_hazardous_liquid_2004.xlsx,SYSTEM_TYPE,Pipeline System Type,7,Pipeline,"Type of pipeline system (e.g., gas, liquid, etc.)"
+annual_hazardous_liquid_2004.xlsx,ERWTM_8,ERW Thickness Margin 8,7,Corrosion,ERW thickness margin 8
+HL AR 2018 Part K.csv,PARTKNSTNR125MOREON,Knot Strength (KnstnR) 125 More Than,7,Corrosion,"Calculation of the Knot Strength parameter (KnstnR), 125 more than the minimum value."
+HL AR 2021 Part A to E.csv,PARTE2010LF,E2010 Leak Frequency for Non-Sour Service,7,Leakage,Describes the likelihood of leaks using E2010 for non-sour service.
+annual_hazardous_liquid_2004.xlsx,STOFFM_2,Surface Temperature Off Flange Medium-2,7,Thermodynamics,The average surface temperature of a flange.
+annual_hazardous_liquid_2004.xlsx,ERWHM_1,Electrical Resistant Weld Length Metric,7,Measurement,Electrical weld length metric for a pipe with specific diameter.
+HL AR 2023 Part F to G.csv,PARTF5AOTH,Miles of Piping with F5 Category 1 and 3 Coatings,7,Corrosion,Indicates the length of piping protected by F5 Category 1 and 3 coatings.
+annual_gas_transmission_gathering_2006.xlsx,B1GOFF_5,Blockage/Isolation Offsets 5,7,Blockage and Isolation,Offset from the midpoint of a blockage or isolation valve
+annual_hazardous_liquid_2004.xlsx,DINSTM_9,Minimum Allowable Operating Pressure Above,7,Pressure,Reports the minimum allowable operating pressure for the pipeline above this point.
+annual_hazardous_liquid_2004.xlsx,DINSTM_4,Diameter at In-Line Inspection (4 in.),7,Geometry,Pipeline inner diameter at ILI is 4 inches.
+annual_hazardous_liquid_2004.xlsx,II4_1,II4 Pipe Material Strength,7,Material,Evaluates the tensile strength of II4 pipe material
+annual_hazardous_liquid_2004.xlsx,ERWLM_5,Electrical Resistant Weld Length Metric 5,7,Measurement,Electrical weld length of pipe size five.
+annual_hazardous_liquid_2004.xlsx,BT2COM,Bare Steel To Commencement of Coatings,7,Corrosion,Specifies the boundary condition at the start of the pipeline's coatings.
+HL AR 2021 Part F to G.csv,PARTF1D,Part F1 D,7,Corrosion,This field possibly relates to part F1 D and pipeline integrity.
+HL AR 2021 Part F to G.csv,PARTF3C,Miles of Piping with F3 Coatings,7,Corrosion,Indicates the total length of piping protected by F3 coatings.
+HL AR 2023 Part F to G.csv,PARTF4C2,Particular Flow 4C2,7,Flow,Represents the total particular flow rate for a 4C2 meter.
+annual_gas_transmission_gathering_2004.xlsx,CGNF2,Compressor Fouling Factor (F2),7,Compressor,Represents the factor used to calculate compressor fouling power.
+annual_gas_transmission_gathering_1997.xlsx,OST,Remaining Strength at Failure,7,Material Properties,Estimates the remaining strength of the pipe at failure.
+HL AR 2024 Part K.csv,PARTKST_UNK_125MORETOT,K Stubs (unknown) with more than 125 Total Stub connections,7,Pipe Joint Integrity,The presence of K-type stubs (a type of pipe connection) with more than 125 total stub connections.
+HL AR 2024 Part J.csv,PARTJCLSRTOTAL,Total pipeline joints ruptured per system,7,Rupture,Tracks the number of pipeline joints ruptured per pipeline system.
+annual_gas_transmission_gathering_1990.xlsx,T1M2_6,Time to Metal 2,6,Material Properties,Indicates the time to metal 2
+HL AR 2018 Part Q.csv,PARTQ2000LF,Pipe Q2000LF,6,Corrosion,Represents the rate of pipe material degradation in a high corrosion zone.
+HL AR 2019 Part A to E.csv,PARTA5COMMODITY,Commodity (Gas/Liquid) A5,6,Commodity,Indicates if the commodity being transported matches the pipeline's designation for commodity A5.
+GT AR 2021 Part I.csv,PARTIOFF32,Offshore Integrity,6,Offshore Integrity,A measure of the integrity of the pipeline based on offshore operations.
+GT AR 2021 Part I.csv,PARTIOFF42,Offshore Pipe Length 42,6,Length,Represents the length of offshore pipe in inches for 42 inches OD piping.
+HL AR 2023 Part K.csv,PARTKST20MORETOT,K-Factor for ST20°C with External Loads,6,Thermal,Considers the thermal expansion characteristics and external loads.
+annual_gas_transmission_gathering_2005.xlsx,CTMW1,Miles With Cathodic Protection Current,6,Cathodic Protection,Miles of pipe with cathodic protection current applied.
+annual_gas_transmission_gathering_1999.xlsx,G2M2_6,G2M2 Level 6,6,Leak Detection,A measure of pipeline leak detection sensitivity.
+annual_gas_transmission_gathering_1996.xlsx,T2M1_1,T2 M1 1,6,Unknown,This field possibly relates to pipeline integrity.
+annual_gas_transmission_gathering_1996.xlsx,G1M2T,Gravity Factor,9,Flow,Estimates the gravity-influenced flow in the pipeline.
+annual_gas_transmission_gathering_2011.xlsx,PARTDGONTACPB,Depth Corrected Gradient Pressure,9,Pigging,Represents the pressure difference along the pipeline.
+GT AR 2022 Part I.csv,PARTIONA46,Length of Anionic Polymer for pH Control,6,Cleaning,Describes anionic-based solution for pipeline cleaning.
+GT AR 2022 Part I.csv,PARTIONA12,Pipe Inspection Gauge A12,6,Material Property,Pig inspection gauge (A12) used for pipeline pigs used in inspection and cleaning operations.
+HL AR 2023 Part J.csv,PARTJSTNR20LESSON,Joule-Thomson Coefficient (20°C) @ Reduced Pressure,10,Fluid,Joule-Thomson coefficient at 20°C and reduced pressure
+HL AR 2023 Part J.csv,PARTJONTOTAL,Joint Total,8,Welding,Evaluates the performance of all pipe joints
+GT AR 2022 Part I.csv,PARTIONA58OVER,Part Ionization A58 Over,6,Fluid Flow,Flags that part ionization A58 is over
+GT AR 2022 Part I.csv,PARTIONA52,Insulated Operating Nominal Temperature,9,Thermal,"Indicates the temperature at which the pipeline operates, taking into account the presence of insulation."
+annual_gas_transmission_gathering_2019.xlsx,PARTA4ZIP,A4Z Insulation,9,Insulation,Evaluates the performance of A4Z insulation
+annual_gas_transmission_gathering_2002.xlsx,B3TON_2,B3 Ton 2,9,Load,Represents the load on a specific point of the pipeline in tons.
+annual_hazardous_liquid_2018.xlsx,PARTE2010HF,Part E2 for High-Frequency Eddy Current Examination,9,Examination,Describes high-frequency eddy current examination for pipeline.
+annual_gas_transmission_gathering_2019.xlsx,PARTBCLASS12MILESOFF,B class 12 miles offshore,6,Pipeline Condition,A measure of the pipeline condition based on the location and B class.
+annual_gas_transmission_gathering_2019.xlsx,PARTB1PROBT,Probability of Breakaway,6,Electrochemistry,Calculates the probability of breakaway.
+annual_gas_transmission_gathering_2008.xlsx,B2TON_3,"B2 Gas, Offshore, 3 Inch Diameter",6,Material,Gas extracted from 3-inch diameter pipeline in offshore
+annual_gas_transmission_gathering_2008.xlsx,B2GOFF_4,"B2 Gas, Offshore, 4 Inch Diameter",6,Material,Gas extracted from 4-inch diameter pipeline in offshore
+annual_gas_transmission_gathering_2008.xlsx,B2GON_6,3/4-inch Outside Diameter Line Gathering,6,Pressure,Describes gathering on 3/4-inch OD lines.
+annual_gas_transmission_gathering_1994.xlsx,CGCD1,Cg Code Dl,6,General,Details Cg Code Dl related metrics.
+annual_hazardous_liquid_2018.xlsx,PARTE2000HF,E2000 High Flux,9,Corrosion,Estimates the average flow velocity in a pipeline using the E2000 method.
+annual_gas_transmission_gathering_2019.xlsx,PARTCOFFLFG,Part Coff Lfg,6,Unknown,This field possibly relates to part Coff Lfg and pipeline integrity.
+annual_gas_transmission_gathering_2018.xlsx,PARTDGPTOTAL,Parts Per Million Dissolved Gas Total,6,Material Properties,Represents the parts per million dissolved gas total
+HL AR 2022 Part A to E.csv,PARTCONHVL,Conductivity Horizontal,9,Fluid Flow,Represents the horizontal conductivity of the soil or water
+annual_gas_transmission_gathering_2018.xlsx,PARTDGOFFCUC,Partially Double-Butt Welding Offshore Pipe,6,Piping,A type of welding technique for joining pipes in offshore environments to ensure strength and safety.
+annual_gas_transmission_gathering_2008.xlsx,B3GON_5,Baffle 3 GOFF (5 inch),6,Compressor,Represents the 5 inch baffle 3 gas off condition.
+annual_gas_transmission_gathering_2008.xlsx,B3GOFF_9,Baffle 3 GOFF (9 inch),6,Compressor,Represents the 9 inch baffle 3 gas off condition.
+annual_hazardous_liquid_2018.xlsx,PARTE1960HF,Partially E1960HF,6,Integrity Management,Partially E1960 HF
+annual_gas_transmission_gathering_2018.xlsx,PARTDGONTCCI,"Ductile Iron, Galvanize, Continuously Exposed",8,Material,Steel coating for ductile iron pipes
+annual_gas_transmission_gathering_2018.xlsx,PARTDGONTCCPB,Design Gas Operated (Cathodic Protection Boundary),9,Pressure,Defines the cathodic protection boundary condition for gas operated systems
+annual_gas_transmission_gathering_2018.xlsx,PARTDGONTBC,Design Gas Operated (Cathodic Protection Boundary for Bare Carbon Steel),9,Pressure,Defines the cathodic protection boundary condition for bare carbon steel gas operated systems
+annual_hazardous_liquid_2019.xlsx,PARTE1960TOTAL,External Corrosion 1960 Total Miles,6,Corrosion,Reports the total miles with external corrosion from 1960.
+HL AR 2020 Part F to G.csv,PARTF4B2,High Pressure Pipe 1.5 to 2 inch,6,Materials,Represents high-pressure pipes with diameters between 1.5 and 2 inches.
+HL AR 2024 Part H.csv,PARTHOFF8,Offshore pipeline mileage without corrosion control,6,Corrosion,Records the length of offshore pipelines lacking corrosion control.
+HL AR 2024 Part H.csv,PARTHONTOTAL,Total Horizontal Runs with Cathodic Protection,6,Corrosion,Defines the total runs with CP.
+HL AR 2024 Part H.csv,PARTHON_OTHER_PIPE_MILE_TOTAL,"Partially Faced Pipe, Other, Total Miles",6,Piping,Has an internally-lined pipe to protect against corrosion and wear.
+annual_gas_transmission_gathering_2008.xlsx,B1TOTAL_4,Gas distribution system compressor station total,6,Station,Reports the total number of compressor stations in a gas distribution system.
+HL AR 2020 Part F to G.csv,PARTF4B,Miles of Piping with F4 Category 3 Coatings,6,Corrosion,Indicates the length of piping protected by F4 Category 3 coatings.
+HL AR 2020 Part F to G.csv,PARTF4A11,Flange 4A or 11,6,Flange,Presence of 4A or 11 type flanges.
+HL AR 2020 Part F to G.csv,PARTF4A1TOT,"Partially Faced Pipe, 4A, 1 Total",6,Piping,Has an internally-lined pipe to protect against corrosion.
+HL AR 2020 Part F to G.csv,PARTF3B,Flow Factor B,6,Fluid,Factor used in calculating flow rate for specific fluid properties.
+HL AR 2020 Part F to G.csv,PARTF6A,6-A,6,Corrosion,Defines the 6-A condition.
+HL AR 2020 Part F to G.csv,PARTF5C2,F5 Curve Type 2,6,Fluid Flow,Represents the type 2 F5 curve for the fluid flow
+annual_gas_transmission_gathering_2008.xlsx,B1TON_4,B1Ton 4,6,Capacity,This field represents the capacity of B1Ton 4.
+annual_gas_transmission_gathering_2008.xlsx,B1TOFF_6,B1 T Joint Off-Grade for 6-inch and larger,6,Weld,Describes an off-grade weld for T joints and 6-inch and larger.
+annual_gas_transmission_gathering_2008.xlsx,B1TOFF_5,Barrels Off-peak Factor 5,6,Fluid Flow,Calculates the amount of fluid off-peak factor.
+annual_gas_transmission_gathering_1991.xlsx,G1M2_3,Gathering Pipeline Segment 1 Mile or 2 Miles (3% slope),6,Gathering,A pipeline segment that transports natural gas from a production site to a processing facility.
+HL AR 2020 Part F to G.csv,PARTF2B,Miles of Gas Pipe in Buried and Unburied Above Ground,6,Environmental,Represents miles of gas pipe in buried and unburied above ground.
+HL AR 2020 Part F to G.csv,PARTF4BHCAOUTSIDE,"Partially Faced Pipe, 4B, HCA, Outside",6,Piping,Has an internally-lined pipe to protect against corrosion and wear.
+HL AR 2021 Part P.csv,PARTPTOTMILES,"Partially Faced Pipe, Total Miles",6,Piping,Has an internally-lined pipe to protect against corrosion and wear.
+HL AR 2024 Part H.csv,PARTHON40,H2S Operating Condition,6,Material Properties,Indicates the H2S operating condition for the pipeline.
+annual_gas_transmission_gathering_2008.xlsx,B1GON_6,1-inch Outside Diameter Line Gathering,6,Pressure,Describes gathering on 1-inch OD lines.
+annual_gas_transmission_gathering_2008.xlsx,B1GON_4,Gathering Lines On Meters,6,General,The length of the gathering lines that are currently in service.
+HL AR 2024 Part I.csv,PARTI200009,Integrity Index,9,Risk Factor,Quantifies the probability of an incident due to piping stress and corrosion.
+HL AR 2022 Part F to G.csv,PARTF6C,Flange 6C,6,Flange,Presence of 6C type flanges.
+HL AR 2022 Part F to G.csv,PARTF6BHCAOUTSIDE,Miles of Gas Pipe in Buildings Exposed to Environmental Elements Outside,6,Environmental,Represents miles of gas pipe in buildings exposed to environmental elements outside.
+HL AR 2022 Part F to G.csv,PARTF5BHCAOUTSIDE,5-BHCA Outside,6,Corrosion,Defines the total BHCA rate outside for 5-BHCA outside lines.
+HL AR 2022 Part F to G.csv,PARTF4C4,Miles of Piping with F4 Category 4 Coatings,6,Corrosion,Indicates the length of piping protected by F4 Category 4 coatings.
+annual_gas_transmission_gathering_1999.xlsx,T1M1_1,Temperature 1 at Milepoint 1.1,6,Condition,Temperature measured at mile marker 1.1 on route 1.
+HL AR 2021 Part P.csv,PARTPONCPB,Pore Pressure Coefficient,9,Geology,Estimates the pore pressure increase due to fluid flow.
+HL AR 2021 Part M.csv,PARTMCO2_100001TO150000,MCO2 Total,6,Corrosion,Represents the MCO2 total value for a pipeline.
+HL AR 2021 Part M.csv,PARTMCO2_LESS50000,Miles Protected Coated Steel (LT 50000 psi),10,Corrosion,"Defines the boundary condition for the rate of external wall thinning for coated steel up to 50,000 psi (3,447 bar)."
+HL AR 2020 Part K.csv,PARTK1STNR20MOREUNK,Pipe Length: 20+ inches,6,Measurement,Total length of all piping above 20 inches.
+HL AR 2021 Part K.csv,PARTK120_28TOTAL,K-Factor for T120°C,9,Thermal,Represents the thermal expansion characteristics of the pipe material.
+HL AR 2021 Part K.csv,PARTK1NONSTGATH4_10,Kilometers of Non-Steel Gathering Lines 4-10,6,General,The total kilometers of non-steel gathering lines with a diameter between 4 and 10 inches.
+annual_hazardous_liquid_2009.xlsx,II3_2,In-Line Inspection Type 3,6,Material Property,In-Line Inspection Type 3 (3.2) data used in inspection and cleaning operations.
+annual_hazardous_liquid_2009.xlsx,II2_5,II-2: 5% slope,6,Incline,The percentage of a pipeline that is elevated above the surrounding terrain.
+annual_hazardous_liquid_2009.xlsx,VTM_6,Vehicular traffic mileage,6,Traffic,Tracks mileage subjected to vehicular traffic.
+annual_hazardous_liquid_2009.xlsx,BT1NUM1,Number of Barrels Transported,6,Transportation,Number of barrels transported through the pipeline
+annual_hazardous_liquid_2009.xlsx,DINSTM_10,"Depth Inversion and Integrity Management, 10",6,Integrity Management,Depth of pipe inversion for integrity management
+annual_hazardous_liquid_2009.xlsx,DINSTM_3,"Depth Inversion and Integrity Management, 3",6,Integrity Management,Depth of pipe inversion for integrity management
+annual_hazardous_liquid_2009.xlsx,ERWHMT,ERW Height Measurement,6,Corrosion,ERW height measurement
+annual_hazardous_liquid_2009.xlsx,BT2NUM4,BT2 Number 4,8,Operating Condition,BT2 pressure at location 4
+annual_hazardous_liquid_2009.xlsx,CUBONM,Cube Nominal,6,Production,Describes the size of the pipeline's cube or storage unit.
+GT AR 2018 Part I.csv,PARTIONA4LESS,Pipes with Internal Anomaly Less than 1 inch,6,Internal,Represents pipes with internal anomalies smaller than 1 inch.
+GT AR 2018 Part I.csv,PARTIONC12,Partially Empty 12 Inch Pipeline C,6,Operational,Tracks instances where 12-inch pipelines are not filled up to their capacity.
+GT AR 2018 Part I.csv,PARTIOFF20,"Duplicate header, assuming it's 20-inch OD Pipeline",6,Pipeline Size,Represents the diameter of a 20-inch outer diameter pipeline.
+GT AR 2018 Part I.csv,PARTIOFF16,Particular Offshore 16,6,Fluid Loss,Represents the volume of particulate material lost from a well or pipeline for a 16 hour period.
+GT AR 2018 Part I.csv,PARTIOFF14,Part I Offshore (14 miles or less),6,Offshore,Defines the location of a pipeline in the water 14 miles or less from the shoreline.
+GT AR 2023 Part S.csv,PARTSNOTHCAMCAC4MILES,Total SNOTHCA Distance in Miles,6,Corrosion,Reports the total miles of pipeline with SNOTHCA degradation.
+GT AR 2023 Part S.csv,PARTSNOTHCAMCAC2MILES,"Part S - Onshore Pipeline Segment, Composite, AC, ACAC (2 miles or less)",6,Onshore,A pipeline segment that transports non-hazardous liquid overland with composite pipe material.
+GT AR 2023 Part S.csv,PARTSHCAC2TESTLOC,Segment lengths that have been hydrostatically tested,6,Testing,Determines the length of pipeline segments that have been hydrostatically tested.
+GT AR 2023 Part S.csv,PARTSHCAC2MILES,Pipeline SHCAC 2 miles,8,Corrosion,Represents the rate of pipe material degradation in the first 2 miles of a pipeline.
+HL AR 2024 Part R.csv,PARTRMARKFADE,Roughness Mark Fade,8,Corrosion,Represents the rate of corrosion or the roughness of the pipe surface after some unknown period of time.
+annual_gas_transmission_gathering_1990.xlsx,YR,Number of Years,5,General,An overall metric that represents the age of integrity issues.
+annual_gas_transmission_gathering_1990.xlsx,T1M2_1,Tank 1 Meter 2 Pipe,8,Flow,Represents the volume of fluid transported through the pipe.
+annual_gas_transmission_gathering_1990.xlsx,T1M2_5,Mileage,7,Pipeline Length,Total length of the pipeline in miles.
+annual_gas_transmission_gathering_1990.xlsx,G1M1_1,Gauge 1 M1 1,8,Instrument,Represents the pressure measured by a gauge at a M1 meter.
+HL AR 2020 Part H.csv,PARTHOFF_OTHER_PIPE_DETAIL,Partially Decorated/Coated Offshore/Other Pipe Detail,5,Integrity Management,Partially decorated/coated offshore pipe detail
+annual_gas_transmission_gathering_2008.xlsx,B3GOFF_8,Third B3 Girth Weld Off-Grade,5,Weld,Describes an off-grade weld for B3 girths.
+annual_gas_transmission_gathering_2008.xlsx,B3GON_4,Number of Anomalies with Severity 4,5,Anomalies,Indicates the presence of anomalies with a severity level of 4.
+annual_gas_transmission_gathering_2012.xlsx,PARTA4STREET,Partially Aerial 4,5,Integrity Management,Partially aerial 4
+annual_gas_transmission_gathering_2012.xlsx,PARTA7INTRA,"Partially Coated Pipe, Internal A7",5,Piping,Has a protective interior coating to prevent corrosion and wear.
+HL AR 2018 Part Q.csv,PARTQ1960HF,Type of Pipe: 1960H,8,Material,Pipe material: 1960H - a carbon steel type for high-pressure applications.
+GT AR 2022 Part I.csv,PARTIONB36,Part Ionization B36,5,Fluid Flow,Characterizes the part ionization B36
+annual_gas_transmission_gathering_1996.xlsx,T2M1_3,Temperature (2-1° to 3°),8,Fluid,Fluid temperature at 2-1° to 3° bends
+annual_gas_transmission_gathering_1996.xlsx,T2M1_6,Temperature (2-1° to 6°),8,Fluid,Fluid temperature at 2-1° to 6° bends
+annual_gas_transmission_gathering_1999.xlsx,G2M2T,Geometry 20 Mile to Turn,8,Geometry,Geometry factor to reduce the severity of bends at 20 miles to turn
+HL AR 2018 Part P.csv,PARTPOFFCPB,Pigging (Off-System Cathodic Protection Boundary),5,Pigging,Defines the off-system cathodic protection boundary for pigging
+GT AR 2022 Part I.csv,PARTIONB10,Length of Anionic Polymer for B10 pH Control,5,Cleaning,Describes anionic-based solution for pipeline cleaning.
+annual_gas_transmission_gathering_2008.xlsx,B3GOFF_7,"Ball Valve 3, Gas Off, 7",8,Control,Acts as a shutoff valve to maintain safety and control the flow of fluid.
+annual_gas_transmission_gathering_2018.xlsx,PARTDGWITOTAL,Damage Grade for General Wear and Internal,9,Wear and Erosion,Evaluates the level of general wear and internal damage on the pipeline.
+GT AR 2022 Part I.csv,PARTIONB58OVER,"Partially Interior Coated Pipe, NB 58",8,Piping,Has a protective interior coating to prevent corrosion and wear.
+GT AR 2022 Part I.csv,PARTIONB_OTHER_PIPE_DETAIL,"Ion Blasting, Other Pipe Detail",5,Cleaning,Cleaning method for unknown pipe parts using ion blasting
+GT AR 2021 Part I.csv,PARTIONC16,Insular Cathodic Corrosion Current 16,9,Electrochemistry,Measures the corrosion current at an insulator.
+GT AR 2021 Part I.csv,PARTIONC18,Longitudinal Stress,10,Mechanical,"Indicates the stress induced by external loads, e.g. bending and compression."
+HL AR 2023 Part J.csv,PARTJNSNR125MORETOT,Joint Nozzle for 125 psi and more Total,5,Joint,Describes the connection method for joint nozzles.
+annual_gas_transmission_gathering_2005.xlsx,B4TON_2,4-inch OD Pipeline,8,Pipeline Size,Represents the diameter of a 4-inch outer diameter pipeline.
+GT AR 2022 Part I.csv,PARTIONB26,Insular Cathodic Corrosion Current B-26,9,Electrochemistry,Measures the corrosion current at an insulator.
+HL AR 2020 Part F to G.csv,PARTF2C3,"Flowback 2"" Pipe Length",8,Flowback,Represents the length of flowback pipe in inches for 2 inches OD piping.
+annual_gas_transmission_gathering_2011.xlsx,PARTDGONTACPC,Gathering Lines Meters,7,General,The length of the gathering lines in meters.
+HL AR 2018 Part P.csv,PARTPOFFCUB,Offshore Cubic Meters,7,Offshore Transportation,The total volume of offshore pipeline operations.
+GT AR 2022 Part I.csv,PARTIONB44,Pipe Inspection Gauge NB44,5,Material Property,Pig inspection gauge (NB44) used for pipeline pigs used in inspection and cleaning operations.
+HL AR 2023 Part J.csv,PARTJSTR20LESSON,Joule-Thomson Coefficient (20°C),10,Fluid,Joule-Thomson coefficient at 20°C
+GT AR 2021 Part I.csv,PARTIONCADDITIONAL,Pigging (P-Section Internal Coating Additional),8,Pigging,Evaluates the internal coating additional performance for P-section in pigging operations
+GT AR 2021 Part I.csv,PARTIONC_OTHER_PIPE_DETAIL,In-Line Inspection Results of Other Pipe,5,Inspection,Provides in-line inspection results for pipes not used for hazardous liquid or gas transmission.
+GT AR 2021 Part I.csv,PARTIONC40,Pipe Inspection Gauge C40,5,Material Property,Pig inspection gauge (C40) used for pipeline pigs used in inspection and cleaning operations.
+GT AR 2021 Part I.csv,PARTIONC46,"Partially Internal Coated Pipe, 46",8,Piping,Has a protective interior coating to prevent corrosion.
+GT AR 2021 Part I.csv,PARTIONC48,Insular Cathodic Corrosion Current 48,9,Electrochemistry,Measures the corrosion current at an insulator.
+GT AR 2022 Part I.csv,PARTIONC8,Pipe Inspection Gauge C8,5,Material Property,Pig inspection gauge (C8) used for pipeline pigs used in inspection and cleaning operations.
+HL AR 2021 Part Q.csv,PARTQ1960LF,Qualification (1960) Longitudinal Seam,7,Welding,Evaluates the weld qualifications for longitudinal seams (1960)
+GT AR 2022 Part I.csv,PARTIOFF38,Offshore Pipe Length 38,8,Length,Represents the length of offshore pipe in inches for 38 inches OD piping.
+GT AR 2022 Part I.csv,PARTIONC_OTHER_PIPE_MILE_TOTAL,Other Pipe Inspection,7,Material Property,Total distance other type of pipelines (not A12)
+HL AR 2023 Part I.csv,PARTIPRE20,Partially Internal Pressure 20,9,Operational,Details instances where internal pressure meets a specific criterion.
+HL AR 2018 Part M.csv,PARTMCO2_50001TO100000,Materials CO2 Line 50001 to 100000,8,Mechanical,Defines the materials used for lines with a diameter between 50001 and 100000 pounds of CO2.
+annual_gas_transmission_gathering_2011.xlsx,PARTDGONTAP,Design Gas Operated (TAP),5,Pressure,Defines the TAP condition for gas operated systems
+annual_gas_transmission_gathering_2011.xlsx,PARTDGONTAO,"Design Gas Operated (TAP, Off-System Cathodic Protection Boundary)",5,Pressure,Defines the TAP and off-system cathodic protection boundary condition for gas operated systems
+annual_gas_transmission_gathering_2011.xlsx,PARTDGONTBCPB,Days Gas Off Not Below Critical Pressure,8,Maintenance,Indicates the number of days the pipeline has been offline with gas below critical pressure.
+annual_gas_transmission_gathering_2002.xlsx,B3TON_1,"Ball Valve 3, Gas On, 1",9,Control,Acts as a shutoff valve to maintain safety and control the flow of fluid.
+annual_gas_transmission_gathering_2018.xlsx,PARTDGOTOTAL,Partially Detached Go Total,8,Fabrication,Identifies instances where pipelines are partially moved away.
+annual_gas_transmission_gathering_2019.xlsx,PARTB192MILESTOTAL,Total Miles of Bare Steel Lines Under 192 Regulation,5,Regulation,Miles of bare steel distribution lines subject to PHMSA's 49 CFR Part 192 regulation.
+HL AR 2020 Part Q.csv,PARTQ1950LF,Quarterly Leak Frequency 1950,9,Leakage,Determines the leak frequency in the quarter 1950.
+annual_gas_transmission_gathering_1999.xlsx,KNLKG,Knuckle,7,Bend,Describes a pipeline bend with knuckle section.
+annual_gas_transmission_gathering_1991.xlsx,T1M1_4,Third Party Impact 1,8,Blockage and Isolation,Third party impact information
+HL AR 2018 Part K.csv,PARTK2STLESS6LESS,Less than 6-Inch Pipeline Kilometers,7,Pipeline Diameters,The total length of pipelines with diameters less than 6 inches.
+HL AR 2024 Part H.csv,PARTHON48,Number of High-Pressure Pipelines in Block 48,5,Pipeline Pressure,The number of high-pressure pipelines present in block 48.
+HL AR 2024 Part H.csv,PARTHOFF14,Part HOFF 14,5,Corrosion,This field is related to part HOFF 14 and possibly pipeline integrity.
+HL AR 2023 Part K.csv,PARTK1STGATH20MORE10_20,Pipe Length: 20-10 inches,7,Measurement,Total length of piping in the range of 20-10 inches.
+GT AR 2023 Part S.csv,PARTSNOTHCAMCAC1MILES,"Segment Miles No THC, A/C, CAC",5,Unknown,"Counts the number of segment miles without temperature measurement, air, or corrosion allowance coating."
+annual_gas_transmission_gathering_1990.xlsx,G1M1_6,Minimum Operating Pressure,9,Thermal,Describes the lowest operating pressure the pipeline can handle.
+annual_gas_transmission_gathering_2008.xlsx,B1TOFF_2,Baffle 1 TOFF (2 inch),6,Compressor,Represents the 2 inch baffle 1 total off condition.
+annual_gas_transmission_gathering_2008.xlsx,B1TOFF_7,B1TOFF (7day avg),8,Insulation,Defines the insulation performance at 7 day average
+GT AR 2023 Part T.csv,PARTTQTOT,Pipeline Tq Total,5,Measurement,Details total pipeline length under category TQ.
+GT AR 2023 Part T.csv,PARTTPTOT,Total Pipe Thickness,10,Piping,Reports the total thickness of pipeline pipe.
+HL AR 2019 Part H.csv,PARTHON4LESS,High Pressure Gas Operating Hours (Less than 46hr avg),7,Pressure,Defines the operating hours for high pressure gas pipelines at less than 46 hours average
+HL AR 2022 Part F to G.csv,PARTF1B,High Pressure Gas Operating Hours (1B),7,Pressure,Defines the operating hours for high pressure gas pipelines at 1B
+annual_gas_transmission_gathering_2008.xlsx,B1GOFF_6,Baffle 1 GOFF (6 inch),6,Compressor,Represents the 6 inch baffle 1 gas off condition.
+annual_gas_transmission_gathering_2008.xlsx,B1GON_5,Bare Steel Gon 5,10,Corrosion,Defines the rate of external wall thinning for 5gpa stress level on bare steel pipelines.
+GT AR 2023 Part T.csv,PARTTSBHCAM2,"Transportation System, Beneath the High-Pressure Control Valve at Milepost 2",7,Infrastructure,Underground control system for a pipeline
+GT AR 2023 Part T.csv,PARTTOTOT,Partially Detached Total,9,Fabrication,Identifies partial detachment of pipelines.
+annual_gas_transmission_gathering_2008.xlsx,B1GON_T,Gas distribution system gas-on time,7,Gas On,Records the total hours gas has flowed in a distribution system.
+HL AR 2020 Part F to G.csv,PARTF4C3,Pipe Fittings (4C),6,Measurement,Number of pipe fittings for a specific size and pipe material.
+HL AR 2020 Part F to G.csv,PARTF5C1,Miles of Piping with F5 Category 1 Coatings,7,Corrosion,Represents the length of piping protected by F5 Category 1 coatings.
+HL AR 2023 Part F to G.csv,PARTGMRC,Gravimetric Mass Rate Corrosion,10,Electrochemistry,Measures the rate of corrosion through mass.
+annual_hazardous_liquid_2004.xlsx,CUBOFFM,Cubic Feet of Gas Lost,9,Release,Cubic feet of gas lost due to accidents
+annual_hazardous_liquid_2004.xlsx,CUCOFFM,Cathode to Cathode Off-peak Factor,8,Electrochemistry,Represents the cathode to cathode distance.
+HL AR 2023 Part F to G.csv,PARTF6G,Pipe Fitting 6 inch,9,Connection,Specifies the boundary condition for 6in fittings.
+annual_hazardous_liquid_2004.xlsx,STOFFM_5,Stone Material Offshore (Length in Miles),6,Material,Length of offshore pipeline laid in stone material
+annual_hazardous_liquid_2004.xlsx,STOFFM_6,Offshore Pipe Flange Connection,7,Leakage,Describes connections between off-shore pipelines and production facilities
+annual_hazardous_liquid_2004.xlsx,ERWTM_7,Erw Tm 7,5,Material,This field contains information about the material in Erw Tm 7.
+annual_hazardous_liquid_2004.xlsx,STONM_9,Number of Straight Pipe (9),5,Measurement,Length of the ninth straight pipe in the system.
+annual_hazardous_liquid_2004.xlsx,II4_3,Number of Inspections with 1-3 H2S defects,5,Inspection,Number of inspections with 1-3 H2S defects per length of pipe.
+HL AR 2024 Part J.csv,PARTJNS125LESSCLSR,Joints 125 Less,5,Mechanical,Number of joints less than 125 used at a facility
+annual_hazardous_liquid_2004.xlsx,II1_4,Number of Inspections with 1-3 CUI defects,5,Inspection,Number of inspections with 1-3 CUI defects per length of pipe.
+annual_hazardous_liquid_2004.xlsx,BA_4,Battery Average 4,5,Power Source,Represents the average voltage of a battery.
+annual_hazardous_liquid_2004.xlsx,BA_7,Battery Average 7,5,Power Source,Represents the average voltage of a battery.
+annual_hazardous_liquid_2004.xlsx,BA_8,Battery Average 8,5,Power Source,Represents the average voltage of a battery.
+annual_gas_transmission_gathering_1999.xlsx,G2M1_5,Geometry 2 Mile to 1-5°,6,Geometry,Geometry factor to reduce the severity of 1-5° bends
+annual_gas_transmission_gathering_2008.xlsx,B2TOTAL_3,Leak Rate Factor,8,Leak Rate,Estimate of leaks per unit of time based on history. A higher value indicates more frequent leaks.
+GT AR 2022 Part I.csv,PARTIONB22,In-line inspection anomalies for non-destructive testing of coated pipelines,7,Inspection,Represents in-line inspection anomalies related to non-destructive testing of coated pipelines.
+annual_hazardous_liquid_2009.xlsx,HCAMT,Hydrogen Cathodic Absorption Measurement Time,8,Electrochemistry,Measures the time required for hydrogen absorption.
+annual_hazardous_liquid_2009.xlsx,VTM_1,Void Thermal Factor,8,Fluid Flow,Represents the void formation and expansion in the piping system.
+annual_gas_transmission_gathering_2023.xlsx,PARTDTONCPC,Partially Decorated/Coated Onshore CP,7,Integrity Management,Partially decorated/coated onshore CP
+annual_gas_transmission_gathering_2015.xlsx,PARTDGONTACUC,Design Gas Operated (Cathodic Protection Area under Cathodic Control),9,Pressure,Evaluates the cathodic protection area under cathodic control for gas operated systems
+annual_hazardous_liquid_2009.xlsx,STOFFM_9,Stock Tank Oil Cut (M9) (API),8,Fluid Loss,Represents the stock tank oil cut measured in API gravity for a M9 meter.
+annual_hazardous_liquid_2009.xlsx,STOFFM_10,Maximum Allowable Operating Pressure Above,9,Pressure,Estimates the maximum allowable operating pressure for the pipeline above this point.
+annual_gas_transmission_gathering_1995.xlsx,CGOF1,Cathode to Ground Off-peak Factor 1,7,Electrochemistry,Determines the cathode to ground distance.
+HL AR 2017 Part H.csv,PARTHON24,2 1/4-inch OD Pipe,8,Pipeline Size,Represents the diameter of a 2 1/4-inch outer diameter pipeline.
+HL AR 2017 Part H.csv,PARTHON28,Highest Operating Pressure (28 psig),9,Material,Highest operating pressure for pipeline is 28 psig
+HL AR 2017 Part H.csv,PARTHOFF30,Partially Hanged Off 30,7,Operational,Details instances where pipelines with hangers are more than 30% off.
+annual_hazardous_liquid_2009.xlsx,STOFFM_14,Short Term Exposure (14 Day avg),9,Material,Evaluates the risk of material failure due to short term exposure
+HL AR 2023 Part Q.csv,PARTQTOTALLF,"Partially Coated Pipe, Total Length",8,Piping,Has a protective exterior coating to prevent corrosion and wear.
+HL AR 2020 Part M.csv,PARTMNONHVL50001TO100000,High Voltage Test Level 50001-100000,9,Pressure,Defines the high voltage level used in electrical impulse testing between 50001 and 100000
+annual_hazardous_liquid_2009.xlsx,CPCOFFM,Coated Pipe Corrosion Offshore,10,Corrosion,Predicts the rate of external wall thinning for coated pipelines under offshore conditions.
+annual_hazardous_liquid_2009.xlsx,STOFFM_7,Number of Straight Pipe (7),8,Measurement,Length of the seventh straight pipe in the system.
+annual_hazardous_liquid_2008.xlsx,II4_5,Internal I.D. 4.5 inch,9,Material Property,Internal diameter of pipeline.
+annual_gas_transmission_gathering_2006.xlsx,PFAX,Flow Indicator,10,Monitoring,Monitors and measures real-time flow rates through the pipe to identify changes or issues.
+HL AR 2020 Part A to E.csv,PARTEUNKNLF,Fluid Enthalpy Unknown,8,Fluid Properties,Indicates the unknown enthalpy of the fluid
+HL AR 2017 Part F to G.csv,PARTF6E,Miles of Gas Pipe Exposed to Environmental Elements,8,Environmental,Represents miles of gas pipe exposed to environmental elements.
+HL AR 2017 Part F to G.csv,PARTGTOTMILES,Total Miles,8,General,Represents the total length of the pipeline.
+annual_hazardous_liquid_2008.xlsx,ERWHM_4,Emergency Response Water Hazard,7,Safety,Indicates the presence and type of water hazard near the pipeline.
+HL AR 2019 Part K.csv,PARTK1NONST4LESS,K1 Non Standard Lower,9,Mechanical Strength,Represents the lower bound non-standard value of K1 for the pipe material
+HL AR 2022 Part M.csv,PARTM_ETHANOLLESS50000,"M_Ethanol (Less than 50,000)",8,Material,"Defines the M-Ethanol performance at less than 50,000"
+annual_gas_transmission_gathering_2004.xlsx,B1GON_1,Bare Steel Gon 1,10,Corrosion,Predicts the rate of external wall thinning for 1gpa stress level on bare steel pipelines.
+annual_gas_transmission_gathering_2016.xlsx,PARTB192MILESOFF,Barrel 192 Miles Off,7,Fluid Flow,Represents the distance from a barrel.
+annual_hazardous_liquid_2008.xlsx,STONM_12,Number of Straight Pipe (12),8,Measurement,Length of the twelfth straight pipe in the system.
+HL AR 2022 Part K.csv,PARTK1STGATH20LESSTOT,Total Pipe Length under 20,8,Measurement,Total length of all piping under 20 inches.
+HL AR 2020 Part A to E.csv,PARTEPRE40HF,EPR (Equivalent Penetration Rate) 40 HF,10,Corrosion,Determines the rate of external wall thinning for pipes with equivalent penetration rate 40 HF.
+HL AR 2020 Part A to E.csv,PARTE1940LF,E 1940 LF,9,Material,Method for determining the internal and external surface roughness of pipe
+annual_gas_transmission_gathering_1993.xlsx,G2M1_6,Gauge 2 Meter 1 Mile 6,8,Measurement,A measure of the length of pipelines within a specific gauge and meter category.
+annual_gas_transmission_gathering_2007.xlsx,B1TOTAL_6,Leak Rate Factor,6,Leak Rate,Estimate of leaks per unit of time based on history. A higher value indicates more frequent leaks.
+annual_gas_transmission_gathering_1992.xlsx,HSTATE,Hydrant State Indicator,9,Monitoring,Monitors and measures real-time fluid characteristics to identify potential issues.
+GT AR 2018 Part I.csv,PARTIONB32,Partially Empty 48 Inch and larger Pipeline B2,6,Operational,Tracks instances where pipelines between 48 and 60 inches in diameter are not filled up to their capacity.
+GT AR 2018 Part I.csv,PARTIOFF22,Pigging (Off-System (22) Internal Coating),7,Pigging,Evaluates the off-system internal coating performance for (22) in pigging operations
+hl2010toPresent.xlsx,IYEAR,Number of Years in Service,6,Time,Calculates the number of years the pipeline has been in operation
+annual_gas_transmission_gathering_1996.xlsx,STOT_4,MILES WITH SEISMIC THREAT,7,Seismic Threat,Distance of pipe that can be subjected to seismic activity.
+annual_hazardous_liquid_2019.xlsx,PARTDONCUC,"Don Copper, Underground, Continuously Exposed",6,Corrosion,Protective treatment for copper underground pipes
+annual_hazardous_liquid_2019.xlsx,PARTCONCRUDE,Condition Rating for Corrosion Unmitigated,9,Corrosion,Assesses the level of remaining life of the pipeline due to unmitigated corrosion.
+HL AR 2024 Part H.csv,PARTHOFF38,Number of Hydrostatic Test Failures (38 psi),8,Hydrotesting,Number of hydrostatic tests that failed at 38 psi.
+HL AR 2023 Part J.csv,PARTJNS125MOREOFF,Joints Near 125 More Off,7,Welding,Represents the distance between joint defects.
+HL AR 2023 Part J.csv,PARTJNSNR125MOREON,"Joint and Seal Nozzle, Snubbing, 125 More on Pipe",7,Repair,Method of connecting pipes for pipeline protection
+GT AR 2021 Part I.csv,PARTIOFF12,"Partially Offset Pipe, 12 ft",8,Piping,"Has an offset joint to support the pipe, allowing it to withstand pressure and temperature changes."
+annual_gas_transmission_gathering_2002.xlsx,B3TOFF_5,Breakaway Current Off-peak Factor 5,7,Electrochemistry,Calculates the current required before breakaway occurs.
+annual_gas_transmission_gathering_2002.xlsx,B3TOFF_3,Breakaway Current Off-peak Factor 3,7,Electrochemistry,Calculates the current required before breakaway occurs.
+annual_gas_transmission_gathering_2005.xlsx,B4TON_1,B4Ton 1,7,Capacity,This field possibly represents the capacity of B4Ton 1.
+annual_gas_transmission_gathering_2005.xlsx,DGON,D GON Insulation Performance,8,Insulation,Evaluates the insulation performance of D GON
+annual_gas_transmission_gathering_1996.xlsx,G1M2_6,Gas Line Length (Miles),5,Pipeline,Length of gas pipelines in miles
+annual_gas_transmission_gathering_1991.xlsx,T1M1_7,Temperature 1 at Milepoint 1.7,9,Condition,Temperature measured at mile marker 1.7 on route 1.
+annual_hazardous_liquid_2018.xlsx,PARTE2020HF,Estimated 2020 High Pressure Gas Volume (HHV MMBTU/1000 cu ft.),9,Materials,Calculates the estimated high-pressure gas volume based on the HHV in MMBTU/1000 cu ft.
+annual_hazardous_liquid_2018.xlsx,PARTE1990TOTAL,Error for Elevation 1990 Total,6,General,Indicates an error in the elevation for the year 1990 total.
+annual_hazardous_liquid_2018.xlsx,PARTE1980HF,Fluid Enthalpy 1980,9,Fluid Properties,Indicates the fluid enthalpy in 1980
+GT AR 2022 Part I.csv,PARTIOFF24,"Partially Offset Pipe, 24 ft",8,Piping,"Has an offset joint to support the pipe, allowing it to withstand pressure and temperature changes."
+GT AR 2022 Part I.csv,PARTIOFF36,Interfacial Oxygen Consumption,8,Material Properties,Characterizes the interfacial oxygen consumption of the fluid
+GT AR 2022 Part I.csv,PARTIONC14,Particular Ion Concentration 14,9,Fluid Treatment,Represents the ion concentration of a particular chemical.
+HL AR 2018 Part M.csv,PARTMHVLLESS50000,Partially Manufactured Pipe Length Less Than 50000,5,Integrity Management,Partially manufactured pipe length less than 50000
+HL AR 2024 Part H.csv,PARTHOFF6,"Offshore, Flowline, 6 Inch Diameter",8,Material,Petroleum product in offshore flowline with diameter of 6 inches
+annual_gas_transmission_gathering_1991.xlsx,G1M1_3,1 1/2-inch OD Pipe,8,Pipeline Size,Represents the diameter of a 1 1/2-inch outer diameter pipeline.
+HL AR 2024 Part R.csv,PARTRLOCLOCERROR,Relocation of Location Error,5,General,Indicates an error in the relocation of the pipeline location.
+HL AR 2023 Part K.csv,PARTKNSTNR125LESSON,Pipe Nominal Diameter (125),8,Measurement,Nominal diameter of pipes between 12.5 and 15 inches.
+HL AR 2018 Part M.csv,PARTMNONHVL100001TO150000,Part M for Nominal Wall Thickness 100001 to 150000,9,Pipe,Describes the type of piping material used based on wall thickness.
+HL AR 2023 Part K.csv,PARTK1STGATH20MOREUNK,Part K1 Stg Ath 20 More Unknown,8,Unknown,This field possibly relates to a type of gas.
+HL AR 2023 Part K.csv,PARTK1NONSTUNK,Non-Steel Underground Pipe 1 inch,8,Materials,Represents non-steel underground pipes with a diameter of 1 inch.
+HL AR 2019 Part H.csv,PARTHON44,Number of Hydrostatic Test Failures (44 psi) per 1000 ft Length,9,Hydrotesting,Number of hydrostatic tests that failed at 44 psi per 1000 ft length.
+HL AR 2019 Part H.csv,PARTHON16,Number of Hydrostatic Test Failures (16 psi),9,Hydrotesting,Number of hydrostatic tests that failed at 16 psi.
+annual_gas_transmission_gathering_1991.xlsx,G1M2_1,Pipe Length,5,Measurement,Length of the first mainline branch.
+annual_gas_transmission_gathering_2008.xlsx,B1GOFF_4,First B1 Girth Weld Off-Grade,8,Weld,Describes an off-grade weld for B1 girths.
+annual_gas_transmission_gathering_2008.xlsx,B1GOFF_2,B1 Girth Weld Off-Grade for 2-inch,8,Weld,Describes an off-grade weld for 2-inch B1 girths.
+HL AR 2020 Part F to G.csv,PARTF5B1,Number of Field Measured Pipe Failure,7,Failure,Number of field measured pipe failures
+annual_gas_transmission_gathering_2019.xlsx,PARTDCITOTAL,Direct Current Intermittent,9,Measurement,Non-continuous DC electricity measurement device
+GT AR 2023 Part T.csv,PARTTQHCAM1,"Partially Decorated/Coated Above Grade, CAM1",7,Integrity Management,Partially decorated/coated above grade CAM1
+HL AR 2024 Part J.csv,PARTJST_UNK_125LESSCLSR,Joule-Thomson Slope Unknown,10,Fluid Flow,Unknown Joule-Thomson slope for fluid under certain conditions.
+HL AR 2024 Part J.csv,PARTJNS125MORECRON,Joints Near 125 More Cron,6,Welding,Represents the distance between joint defects.
+HL AR 2022 Part F to G.csv,PARTF6F,Pipe Fittings (6),6,Measurement,"Number of pipe fittings (elbows, tees, etc.) for a specific size."
+annual_hazardous_liquid_2004.xlsx,STOFFM_1,Stock Tank Oil Cut (M1) (API),9,Fluid Loss,Represents the stock tank oil cut measured in API gravity for a M1 meter.
+annual_hazardous_liquid_2004.xlsx,ERWTM_4,Maximum Allowable Operating Temperature Above,10,Thermal Stress,Evaluates the maximum allowable operating temperature for the pipeline above this point.
+annual_hazardous_liquid_2004.xlsx,BT1COM,Bend Transition 1 Common,5,Bend,Describes transition condition for bend 1.
+annual_hazardous_liquid_2004.xlsx,II4_4,Impedance of 2 Electrodes 4,8,Electrochemistry,Measures the impedance between electrodes.
+annual_gas_transmission_gathering_2008.xlsx,B3GON_1,Block 3 Gallons On 1,5,General,Identifies incidents where more than 1 gallon of liquid has leaked out in Block 3.
+HL AR 2022 Part A to E.csv,PARTDONCUB,Particular Donut CUB,7,Flow,Represents the total part flow rate for a donut CUB meter.
+annual_gas_transmission_gathering_1994.xlsx,DGOUT,Discharge Valve,6,Safety,"Relieves excess pressure in the system, preventing overpressure and potential leaks."
+annual_hazardous_liquid_2019.xlsx,PARTDONCUP,Condition Rating for Damage/Other,7,Damage/Other,Rates the extent of damage/other types of degradation on the pipeline.
+HL AR 2023 Part J.csv,PARTJST20LESSLOW,Number of Leaks 20- Less Than 1 gal/min,6,Safety,The number of leaks detected between 20 and less than 1 gallon per minute.
+annual_gas_transmission_gathering_2015.xlsx,PARTDTONO,Pipe To Nozzle,8,Connection,Defines the boundary condition for this type of pipe-to-nozzle connection.
+HL AR 2020 Part P.csv,PARTPCUPTOTAL,Parts Per Million Copper Total,7,Fluid Properties,Represents the parts per million copper total
+HL AR 2024 Part K.csv,PARTK2STLESS6_8,Percent 6th Edition 1981 of Total KM2 with Station Pressure 1/16 PSI or Less,6,Inspections,Determines the percentage of 6th edition 1981 of total KM2 with station pressure 1/16 psi or less.
+annual_hazardous_liquid_2008.xlsx,STONM_14,Number of Stations with MAOP Greater Than 1400 psi,6,Leaks,Delineates the number of stations with a higher MAOP than 1400 psi.
+annual_hazardous_liquid_2008.xlsx,STONM_2,Stone Material (Length in Miles),5,Material,Length of pipeline laid in stone material
+annual_hazardous_liquid_2007.xlsx,II1_2,Material failure during in-line inspection tool operation,7,Material,"Reports material failure during an in-line inspection tool's operation, which may result in a loss of control or separation of the inspection tool."
+annual_hazardous_liquid_2007.xlsx,II1_1,Material failure during normal pipeline operation,7,Material,Reports material failure during normal pipeline operation.
+annual_gas_transmission_gathering_2024.xlsx,PARTDTONP,Pipe to Nozzle,8,Connection,Defines the boundary condition for this type of pipe-to-nozzle connection.
+HL AR 2022 Part Q.csv,PARTQUNKWNLF,Uncalibrated Temperature,8,Fluid,Temperature without calibration or validation
+HL AR 2017 Part K.csv,PARTK2NONST6LESS,Percent 6th Edition 1981 of Total KM2 with Station Pressure 1/16 PSI or Less and Non-Storage,6,Inspections,Calculates the percentage of 6th edition 1981 of total KM2 with station pressure 1/16 psi or less and classified as non-storage.
+annual_gas_transmission_gathering_2006.xlsx,B3GOFF_5,Block 3 Gallons Off 5,5,Detection,Identifies instances where the threshold for 5 gallons off has been breached.
+annual_gas_transmission_gathering_2001.xlsx,B2GOFF_3,Second B2 Girth Weld Off-Grade,6,Weld,Describes an off-grade weld for B2 girths.
+annual_gas_transmission_gathering_1999.xlsx,G1M1_4,Gas Line Mains (Miles),5,Pipeline,Length of gas pipeline mains in miles
+HL AR 2019 Part F to G.csv,PARTF1DOTH,Part F1 Doth,5,Corrosion,This field possibly relates to part F1 Doth and pipeline integrity.
+HL AR 2019 Part K.csv,PARTKNSTR125MOREON,Number of Anomalies with Severity 1 through 5,5,Anomalies,Counts anomalies present with severity ratings from 1 to 5.
+GT AR 2018 Part I.csv,PARTIONA26,Anomalous Zone Count,6,Anomaly Identification,Number of anomalous zones identified in a pipeline segment.
+GT AR 2018 Part I.csv,PARTIONA16,Anomalous Zone Count,6,Anomaly Identification,Number of anomalous zones identified in a pipeline segment.
+annual_hazardous_liquid_2010.xlsx,PARTDCUOTOTAL,Miles of Piping with Uncovered Exposed Steel,8,Corrosion,Indicates the total length of piping with uncoated or exposed steel.
+GT AR 2018 Part I.csv,PARTIONA_OTHER_PIPE_MILE_TOTAL,Anomalous Zone Count,6,Anomaly Identification,Number of anomalous zones identified in a pipeline segment.
+HL AR 2024 Part K.csv,PARTKST_UNK_125LESSTOT,Unknown Material 125 Less Total,5,Material Unknown,Represents unknown material with total less than 125%.
+HL AR 2024 Part K.csv,PARTKST_UNK_125LESSOFF,Unknown Material 125 Less Off,5,Material Unknown,Represents unknown material with less than 125% off.
+annual_gas_transmission_gathering_2013.xlsx,PARTB1PROBM1,Number of Break-Through 1st Class Lines (1st Edition),5,Leaks,Identifies the number of break-through lines for a previous edition.
+HL AR 2024 Part Q.csv,PARTQUNKWNTOTAL,Number of Unknown or Uncertain Quality Pipeline Joints,5,Leaks,Identifies the number of unknown or uncertain quality pipeline joints.
+HL AR 2020 Part Q.csv,PARTQ2010HF,Total 2010 High Pressure Gas Volume (HHV MMBTU/1000 cu ft.),9,Materials,Determines the total high pressure gas volume based on the HHV in MMbtu/1000cuft.
+HL AR 2019 Part A to E.csv,PARTE1970TOTAL,Estimated 1970 High Pressure Gas Volume (HHV MMBTU/1000 cu ft.),8,Materials,Determines the estimated high-pressure gas volume for the year 1970.
+HL AR 2018 Part K.csv,PARTKST20LESSHCA,Number of High-Pressure KM1 Line Segments with Station Pressure 20 psi or Less,7,Leaks,Counts the number of high-pressure KM1 line segments with a station pressure of 20 psi or less.
+HL AR 2018 Part K.csv,PARTK1NONSTGATHUNK,Number of KM1 Non-Storage Lines Exposed to H2S >10 PPM for a Period of Time,8,Leaks,Counts the number of KM1 non-storage lines exposed to H2S > 10 ppm for a specified period.
+HL AR 2018 Part K.csv,PARTK1STNR20MORETOT,Number of KM1 Line Segments with Station Pressure Above 20 psi,7,Leaks,Counts the number of KM1 line segments with a station pressure above 20 psi.
+annual_gas_transmission_gathering_2000.xlsx,T1M2_2,Total Miles of Gas Pipeline 2nd Class with Operating Pressure Greater Than 400 psi,9,Leaks,Calculates the total miles of gas pipeline classified as 2nd class with operating pressure greater than 400 psi.
+HL AR 2018 Part K.csv,PARTK1OFFSHORE10_20,Particular Offshore 10/20 K1,8,Fluid Loss,Represents the volume of particulate material lost from a well or pipeline for a 10/20 K1 meter.
+HL AR 2018 Part K.csv,PARTK2STMORE6LESS,Pipe K2S for 6-inch and more but less than 36-inch,5,Pipe,Describes a type of piping material used on pipelines.
+HL AR 2020 Part Q.csv,PARTQPRE40HF,Number of Anomalies with Severity 1 through 5,5,Anomalies,Counts anomalies present with severity ratings from 1 to 5.
+HL AR 2018 Part H.csv,PARTHON36,Number of Stations with Station Pressure Above 36 psi on High Pressure Lines,7,Leaks,Identifies the number of stations with station pressure above 36 psi on high-pressure lines.
+HL AR 2018 Part H.csv,PARTHOFF26,Number of Stations with Station Pressure Below 26 psi on High Pressure Lines,7,Leaks,Identifies the number of stations with station pressure below 26 psi on high-pressure lines.
+annual_gas_transmission_gathering_2001.xlsx,B2GON_T,Total Gross gallons of product released,8,Gross Release,The total amount of product released during an incident.
+annual_gas_transmission_gathering_2001.xlsx,B4GON_2,Gathering Lines (Miles),8,Pipeline,Length of gathering lines in miles
+gtggungs2010toPresent.xlsx,Unnamed: 2,Unknown,8,,Depth (measured below grade or at a reference point such as the top of a valve or a tie-in point)
+gtggungs2010toPresent.xlsx,Unnamed: 3,Unknown,9,,Maximum Allowable Working Pressure.
+annual_gas_transmission_gathering_2012.xlsx,PARTA7INTER,Unknown,9,,Operating pressure for the pipeline.
+annual_gas_transmission_gathering_2011.xlsx,PARTDGONBTOTAL,Unknown,8,,Total Pipeline Diameter (inches) or equivalent outside diameter in the case of non-cylindrical shapes.
+HL AR 2024 Part R.csv,Unnamed: 42,Unknown,9,,Operating Pressure.
+annual_gas_transmission_gathering_2012.xlsx,PARTB1RRM2,Unknown,8,,Corrosion in RCPs (Cathodic Protection Systems) and MOLs (Material and Operating Limits) for buried steel pipelines.
+HL AR 2020 Part F to G.csv,PARTF2C2,Unknown,7,,Leak and Loss data.
+HL AR 2020 Part F to G.csv,PARTF4CTOT,Unknown,6,,Total volume of product in a field measured in units of barrels.
+HL AR 2020 Part H.csv,PARTHON10,Unknown,8,,"Pipe coating or pipe lining degradation, failure, or separation."
+annual_gas_transmission_gathering_1997.xlsx,G2M2_3,Unknown,9,,Maximum Allowable Operating Pressure (MAOP) change.
+annual_gas_transmission_gathering_1997.xlsx,G2M1_2,Unknown,9,,Internal Corrosion Rate (ICR) per 1000 feet of pipe.
+HL AR 2020 Part H.csv,PARTHON38,Unknown,8,,Pipeline Pressure Test Results Not Met.
+HL AR 2020 Part H.csv,PARTHON30,Unknown,9,,Maximum Allowable Operating Pressure (MAOP) and Test Pressure.
+annual_gas_transmission_gathering_1997.xlsx,CGOF2,Unknown,6,,Change in Gas/Oil Fractionation.
+HL AR 2020 Part K.csv,PARTKNST125MOREOFF,Unknown,8,,Identification of Known or Probable Material Defects in Materials Used in the Fabricated Products for Pipeline or Gathering System.
+annual_gas_transmission_gathering_1997.xlsx,CTO2,Unknown,9,,"""Critical Operating Condition - Line Pressure Exceeds Design Pressure""."
+HL AR 2020 Part A to E.csv,PARTE1950LF,Unknown,8,,Potential for External Coating Failure Due to Low Temperature and Pressure.
+HL AR 2020 Part A to E.csv,PARTE1990LF,Unknown,8,,Pressure Test of a newly constructed Pipeline Section.
+HL AR 2020 Part A to E.csv,PARTE1990HF,Unknown,9,,Pressure Testing Integrity After Replacement or Repair Evaluation (PARTE) 1990 Hydraulic Flow Test.
+HL AR 2020 Part A to E.csv,PARTE1970LF,Unknown,7,,The header 'PARTE1970LF' is used to specify the Last Failure (LF) of a Part (PARTE) 1970 component.
+HL AR 2020 Part K.csv,PARTK1STNR20LESSUNK,Unknown,8,,"Pressure Test Results: 20% or Less, Unkown (Unknown) Status."
+HL AR 2020 Part A to E.csv,PARTCONETHANOL,Unknown,8,,Concentration of Ethanol in Product (percent).
+HL AR 2020 Part A to E.csv,PARTCONCO2,Unknown,9,,Percentage of CO2 in the pipeline contents.
+HL AR 2020 Part A to E.csv,PARTEPRE40LF,Unknown,9,,Pipe Outside Diameter from last flanged/valved end of pipe to nearest pipeline fitting or pipe end.
