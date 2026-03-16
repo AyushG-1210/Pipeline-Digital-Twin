@@ -82,3 +82,14 @@ tzdata==2025.3
 uritemplate==4.2.0
 urllib3==2.6.3
 watchdog==6.0.0
+langchain
+chromadb
+sentence-transformers
+pymupdf
+beautifulsoup4
+google-genai
+fastapi
+uvicorn
+python-dotenv
+tqdm
+numpy
