@@ -1,5 +1,8 @@
 # Major Projor : Pipeline Digital Twin
 
+## Working of Components:
+
+
 ## Notes:
 - All research should be **Texas specific**. Our policies and regulations are different from other states, so we need to focus on Texas, since it has the most open data and is the most relevant to us.
 - Before making any changes to the README, fetch the latest version ```git fetch origin master``` and then make changes. Or else we'll have merge conflicts.
@@ -62,4 +65,5 @@
 > Task : Integrate the cleaned data and the RAG pipeline to create a PINN model.
 
 ### Aditya:
->Task : Upgrade RAG pipeline to include web scraping for latest/unknown questions.  
+>Task : Upgrade RAG pipeline to include web scraping for latest/unknown questions. 
+- Dont forget to mention the working of the RAG pipeline in the README in the "Working of Components" section.
