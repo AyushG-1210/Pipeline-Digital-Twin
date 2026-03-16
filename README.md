@@ -55,3 +55,11 @@
 
 ### Aditya:
 > Task : Create a RAG pipeline to extract information from the standards and guidelines documents.
+
+
+## Progress updates: [Phase 3 - 15/03/2026]
+### Ayush:
+> Task : Integrate the cleaned data and the RAG pipeline to create a PINN model.
+
+### Aditya:
+>Task : Upgrade RAG pipeline to include web scraping for latest/unknown questions.  
