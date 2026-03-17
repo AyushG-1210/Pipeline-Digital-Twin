@@ -54,7 +54,8 @@
 > Task : Clean GIS data and shapefiles, and extract relevant features for the model.
 - Website for all Pipeline layers, Oil & gas wells, Survey boundaries, Operator facilities : https://www.rrc.texas.gov/resource-center/research/data-sets-available-for-download/
 - some drawbacks of these datasets are : all the data is static and there's no data on Real-time sensor data, Pipeline condition / inspection data among some others as well. Acc to the requirement on the dashboard we will need to work our way around it. Rest everything is present on the website.
-- Yet to make coordinate mappings
+- Created an environment using Google Earth API from Google Cloud to extract soil profiles, contents, pipelines : status type and ID etc. - file name = environment.py
+       > creates a new csv file in google drive everytime it runs to retrieve the data. 
 
 ### Aditya:
 > Task : Create a RAG pipeline to extract information from the standards and guidelines documents.
