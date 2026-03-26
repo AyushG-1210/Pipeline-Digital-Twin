@@ -1,0 +1,24 @@
+{
+  "PARTJSTR_UNK_ON": {
+    "Metadata": {
+      "Original_Header": "PARTJSTR_UNK_ON",
+      "Clean_Name": "Strain Transformer Unknown On-Pipe",
+      "Physics_Score": 10,
+      "Category": "Measurement",
+      "Description": "Flags if strain measurement method is unknown, increasing uncertainty in stress calculations."
+    },
+    "Statistical_Signature": {
+      "Data_Type": "float64",
+      "Mean": 42.5,
+      "Min": 0.0,
+      "Max": 105.2,
+      "Std_Dev": 12.1,
+      "Sparsity_Percentage": "4.2%",
+      "Sample_Values": [40.1, 45.3, 0.0]
+    },
+    "Temporal_Context": {
+      "Extracted_Year": 2021,
+      "Calculated_Age": 5
+    }
+  }
+}
