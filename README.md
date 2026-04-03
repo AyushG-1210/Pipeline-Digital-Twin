@@ -65,7 +65,20 @@
 ## Progress updates: [Phase 3 - 15/03/2026]
 ### Ayush:
 > Task : Integrate the cleaned data and the RAG pipeline to create a PINN model.
+- Tried to make the basic RAG work but realized we need to switch to a different model of system that integrates multiple models, and also creates better relationships in the way of a graph RAG. 
+- All data is now ready to be handled and we can start working on the decoding system pipeline.
 
 ### Aditya:
 >Task : Upgrade RAG pipeline to include web scraping for latest/unknown questions. 
 - Dont forget to mention the working of the RAG pipeline in the README in the "Working of Components" section.
+
+## Progress updates: [Phase 4 - 4/04/2026]
+### Ayush:
+
+### Aditya:
+>Task : Port the old RAG system to a new graph based model to handle all data types.
+
+## Swararaag: 
+>Task : Create the agentic feedback system that decodes the RAG outputs and packages into tensors for the model to evaluate.
+
+
