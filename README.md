@@ -78,7 +78,12 @@
 ### Aditya:
 >Task : Port the old RAG system to a new graph based model to handle all data types.
 
-## Swararaag: 
+## Swaraag: 
 >Task : Create the agentic feedback system that decodes the RAG outputs and packages into tensors for the model to evaluate.
+>
+
+PROGRESS UPDATE : ( 02.05.2026 )
+Graph-Based Ingestion - 
+Python pipeline to map the 620-header PHMSA Excel dataset into Neo4j nodes. This transformed messy, legacy flat-file columns into an interconnected graph database, ensuring vital historical relationships remained intact.
 
 
