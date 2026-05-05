@@ -83,13 +83,13 @@
 >
 
 PROGRESS UPDATE : ( 02.05.2026 )
-Graph-Based Ingestion - 
+- Graph-Based Ingestion - 
 Python pipeline to map the 620-header PHMSA Excel dataset into Neo4j nodes. This transformed messy, legacy flat-file columns into an interconnected graph database, ensuring vital historical relationships remained intact.
-GEE API Scraping - 
+- GEE API Scraping - 
 Observed successful execution of a Python connector interfacing with Google Earth Engine. The script utilized pipeline GPS coordinates to extract historical soil moisture and surface temperature data, accurately appending these environmental features to all 5,831 incident nodes in the Neo4j graph.
-Output Generation - 
+- Output Generation - 
 The extraction process successfully flattened the enriched graph properties into a mathematical matrix. It generated the required input_tensor.npy file with an observed shape of (5831, 4), perfectly meeting the [N, features] dimensional requirements for the DeepONet branch net.
-Verification (Shape & Null Check) - 
+- Verification (Shape & Null Check) - 
 Automated diagnostics verified the structural integrity of the exported tensor. The checks confirmed the array contains exactly zero NaN values via zero-filling imputation and is correctly cast to float32, ensuring full compatibility with the neural operator architecture constraints.
 
 
