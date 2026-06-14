@@ -4,7 +4,7 @@ from roboflow import Roboflow
 
 def main():
     print("Initializing Roboflow client...")
-    rf = Roboflow(api_key="QuA7SbtLrKOoW5qGOtMU")
+    rf = Roboflow(api_key="")
     
     print("Accessing project...")
     workspace = rf.workspace("adityas-workspace-6hmkd")
