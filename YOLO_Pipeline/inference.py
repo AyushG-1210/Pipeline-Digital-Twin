@@ -2,8 +2,10 @@ import os
 import sys
 import json
 import subprocess
+# pyrefly: ignore [missing-import]
 import cv2
 import numpy as np
+# pyrefly: ignore [missing-import]
 from ultralytics import YOLO
 
 def check_video_decodable(video_path):

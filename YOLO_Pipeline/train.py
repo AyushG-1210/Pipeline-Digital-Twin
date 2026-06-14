@@ -1,5 +1,6 @@
 import os
 import shutil
+# pyrefly: ignore [missing-import]
 import ultralytics.cfg
 
 # Wrapper to intercept and remove 'grayscale' from overrides to bypass
@@ -12,6 +13,7 @@ def patched_check(base, custom, e=None, allowed_custom_keys=None):
 
 ultralytics.cfg.check_dict_alignment = patched_check
 
+# pyrefly: ignore [missing-import]
 from ultralytics import YOLO
 
 def main():
