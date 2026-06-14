@@ -1,13 +1,4 @@
-from sentence_transformers import SentenceTransformer
-
-
-model = SentenceTransformer("BAAI/bge-large-en")
-
-
 def create_embeddings(chunks):
-
-    for chunk in chunks:
-
-        chunk["embedding"] = model.encode(chunk["text"]).tolist()
-
+    # Chroma DB's collection automatically handles embedding generation using the same BAAI/bge-large-en model,
+    # so we pass chunks through to avoid redundant model loading and computation.
     return chunks
