@@ -147,13 +147,14 @@ JSON Output Contract Preservation: Evaluates and exports the single frame that y
 - Executed(powershell):
 .\YOLO_Pipeline\venv\Scripts\python.exe ./YOLO_Pipeline/inference.py ./YOLO_Pipeline/test_video.mp4
 - Verified the output schema in visual_insights.json:
-json
+```json
 {
   "frame_id": 0,
   "corrosion_detected": false,
   "severity_score": 0.0,
   "mask_coordinates": []
 }
+```
 - Tested the FFmpeg transcode fallback by inputting a corrupted dummy file:
   - Program successfully detected OpenCV decoding failure.
   - Dynamically resolved FFmpeg binary path.
