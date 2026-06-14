@@ -1,3 +1,9 @@
 ./venv/
 .env
 chroma_db/
+yolov8n-seg.pt
+YOLO_Pipeline/venv/
+YOLO_Pipeline/dataset/
+YOLO_Pipeline/runs/
+YOLO_Pipeline/weights/
+YOLO_Pipeline/test_video.mp4
