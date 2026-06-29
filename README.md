@@ -79,7 +79,7 @@ To ensure strict dimensional alignment and prevent gradient shape compilation fa
               ┌──────────────────────────────┐
               │   Branch 1: Soil (GRF)       │ ──► [Batch, 50]  ┐
               └──────────────────────────────┘                  │
-              ┌──────────────────────────────┐                  │   Element-wise
+              ┌──────────────────────────────┐                  │    Element-wise
               │   Branch 2: Fluid (GRF)      │ ──► [Batch, 50]  ┼──► Multiplication
               └──────────────────────────────┘                  │    [Batch, 128]
               ┌──────────────────────────────┐                  │         │
@@ -88,7 +88,7 @@ To ensure strict dimensional alignment and prevent gradient shape compilation fa
                                                                     Dot Product Mapping
                                                                     ───────┬───────────
                                                                            ▼
-              ┌──────────────────────────────┐                       Multi-Variable Output
+              ┌──────────────────────────────┐                        Multi-Variable Output
               │   Trunk Net: Space-Time Grid │ ──► [M, 3] ─────────►  [Concentration, Potential]
               └──────────────────────────────┘
 
