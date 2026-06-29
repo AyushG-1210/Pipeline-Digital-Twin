@@ -1,0 +1,16 @@
+Hazardous Liquid Annual PHMSA F7000 1.1  Rev. 03-2007 - Annual Report data file fields not on the form
+
+
+*******************************************************************************************************************
+The following field is mileage of baseline assesments completed by year. 
+Part K.h not on the form.
+*******************************************************************************************************************
+BA_8	NUMBER  -- Part K - Mileage of Baseline Assessments completed between January 1, 2009 and December 31, 2009
+
+
+*******************************************************************************************************************
+Field Name not on the form as follow
+*******************************************************************************************************************
+
+DOR 	DATE, 	-- Date report received in PHMSA Pipeline Safety office 
+DOE	DATE	-- Date report entered in the system. 

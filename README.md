@@ -93,6 +93,7 @@ Automated diagnostics verified the structural integrity of the exported tensor. 
 ## Progress updates: [Phase 5 - 19/05/2026]
 ### Ayush:
 > Task : Port standards data to ColPali and build/train the PINN model and evaluate its performance on dummy data.
+- Moving from DeepONet to MIONet since we have multiple input data types, and we can use the graph RAG to create better relationships between the data and the standards.
 
 ### Aditya:
 > Task : Build the YOLOv8 model to detect pipeline failures from images and videos, and handle edge cases.
