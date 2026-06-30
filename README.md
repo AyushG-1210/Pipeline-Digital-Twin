@@ -139,7 +139,7 @@ If you utilize the AmorFlux architectural framework or system design pipelines i
 @misc{Gouda2026:AmorFlux,
   author       = {Ayush Gouda and Aditya Prakash and Swaraag Hebbar N.},
   title        = {{AmorFlux: Multi-Branch Physics-Informed Neural Operators with GraphRAG for Amortized Pipeline Corrosion Prognostics}},
-  howpublished = {\url{https://github.com/AyushG-1210/AmorFlux}},
+  howpublished = {\url{https://github.com/AyushG-1210/Pipeline-Digital-Twin}},
   year         = {2026},
   month        = {August}
 }
