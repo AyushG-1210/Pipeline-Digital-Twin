@@ -33,6 +33,22 @@ The framework orchestrates three deeply integrated data and deep learning layers
 
 ---
 
+## Working of Components
+
+### Hybrid Vector-Graph RAG Pipeline
+To provide robust contextual reasoning across both structured data (like PHMSA pipeline incident logs) and unstructured text (like API-5L standards), AmorFlux uses a hybrid GraphRAG architecture augmented with live web search capabilities:
+
+1. **Semantic Vector Search (ChromaDB)**
+   Unstructured documents are parsed, chunked, and embedded into a persistent local ChromaDB using the `BAAI/bge-large-en` model. When an operator asks a question, this layer identifies the top semantically relevant chunks.
+
+2. **Graph Traversal (Neo4j AuraDB)**
+   During document ingestion, a Gemini LLM extracts specialized `Operator`, `Pipeline`, `Incident`, and `Location` entities from the text chunks, pushing them into a Neo4j knowledge graph. When vector chunks are retrieved by ChromaDB, the system fetches 1-hop relationship facts (e.g., *Operator owns Pipeline*) from the graph and seamlessly injects this structured context alongside the raw text.
+
+3. **Web Scraping Fallback**
+   For temporal queries (e.g., "latest news", "2026") or highly specific edge-cases where the local vector confidence falls below a strict threshold (L2 Distance > 1.2), the system dynamically routes the query to a DuckDuckGo web search. It scrapes live HTML, filters out boilerplate, and extracts semantic snippets via an ephemeral vector search before returning it to the generation LLM.
+
+---
+
 ## Core Mathematical Framework
 
 AmorFlux maps the physical degradation of the pipeline wall boundary layer box by continuously solving the mass-transport equations coupled with non-linear electrochemical reaction kinetics.
