@@ -59,7 +59,7 @@
   > creates a new csv file in google drive everytime it runs to retrieve the data. 
 
 ### Aditya:
-> Task : Create a RAG pipeline to extract information from the standards and guidelines documents.
+> Task : Create a RAG pipeline to extract information from the standards and guidelines documents.:= Done
 
 
 ## Progress updates: [Phase 3 - 15/03/2026]
@@ -69,14 +69,14 @@
 - All data is now ready to be handled and we can start working on the decoding system pipeline.
 
 ### Aditya:
->Task : Upgrade RAG pipeline to include web scraping for latest/unknown questions. 
+>Task : Upgrade RAG pipeline to include web scraping for latest/unknown questions. := Done 
 - Dont forget to mention the working of the RAG pipeline in the README in the "Working of Components" section.
 
 ## Progress updates: [Phase 4 - 4/04/2026]
 ### Ayush:
 
 ### Aditya:
->Task : Port the old RAG system to a new graph based model to handle all data types.
+>Task : Port the old RAG system to a new graph based model to handle all data types. := Done
 
 ## Swaraag: 
 >Task : Create the agentic feedback system that decodes the RAG outputs and packages into tensors for the model to evaluate.
@@ -96,7 +96,7 @@ Automated diagnostics verified the structural integrity of the exported tensor. 
 - Moving from DeepONet to MIONet since we have multiple input data types, and we can use the graph RAG to create better relationships between the data and the standards.
 
 ### Aditya:
-> Task : Build the YOLOv8 model to detect pipeline failures from images and videos, and handle edge cases.
+> Task : Build the YOLOv8 model to detect pipeline failures from images and videos, and handle edge cases. :-  Done . 
 
 ### Swaraag:
 
