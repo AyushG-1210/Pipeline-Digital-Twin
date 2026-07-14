@@ -1,10 +1,14 @@
-import pandas as pd
 import os
+import pandas as pd
+from dotenv import load_dotenv
 from neo4j import GraphDatabase
 
+# Load variables from the .env file
+load_dotenv()
+
 # 1. Neo4j Connection Credentials
-URI = "neo4j+ssc://5b58c7e0.databases.neo4j.io"
-AUTH = ("5b58c7e0", "1MicthVv2tKboUcSp5o4OUlIByAlEMMKh6Y1PVSS8WE")
+URI = os.getenv("NEO4J_URI")
+AUTH = (os.getenv("NEO4J_USER"), os.getenv("NEO4J_PASSWORD"))
 
 def build_graph_schema(tx, batch):
     """
