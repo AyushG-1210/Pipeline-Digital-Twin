@@ -1,14 +1,19 @@
+import os
 import ee
+from dotenv import load_dotenv
 from neo4j import GraphDatabase
 
+# Load variables from the .env file
+load_dotenv()
+
 # 1. Neo4j Credentials
-URI = "neo4j+ssc://5b58c7e0.databases.neo4j.io"
-AUTH = ("5b58c7e0", "1MicthVv2tKboUcSp5o4OUlIByAlEMMKh6Y1PVSS8WE")
+URI = os.getenv("NEO4J_URI")
+AUTH = (os.getenv("NEO4J_USER"), os.getenv("NEO4J_PASSWORD"))
 
 # 2. Initialize Earth Engine
 print("Initializing Google Earth Engine...")
 try:
-    ee.Initialize(project='pipeline-digital-twin-490415') 
+    ee.Initialize(project=os.getenv("GEE_PROJECT")) 
 except Exception as e:
     print("GEE Initialization failed.")
     raise e
