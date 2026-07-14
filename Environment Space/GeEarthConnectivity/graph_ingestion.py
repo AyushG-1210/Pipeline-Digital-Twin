@@ -3,8 +3,8 @@ import os
 from neo4j import GraphDatabase
 
 # 1. Neo4j Connection Credentials
-URI = "neo4j+ssc://5b58c7e0.databases.neo4j.io"
-AUTH = ("5b58c7e0", "1MicthVv2tKboUcSp5o4OUlIByAlEMMKh6Y1PVSS8WE")
+URI = "neo4j+s://10f7e049.databases.neo4j.io"
+AUTH = ("10f7e049", "NdvtSPf-zfEILkh3pexAj0XAAbOVUZeTEgFhMY0OIrg")
 
 def build_graph_schema(tx, batch):
     """
