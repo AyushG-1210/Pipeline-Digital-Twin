@@ -1,10 +1,15 @@
+import os
 import numpy as np
 import pandas as pd
+from dotenv import load_dotenv
 from neo4j import GraphDatabase
 
+# Load variables from the .env file
+load_dotenv()
+
 # Neo4j Credentials
-URI = "neo4j+ssc://5b58c7e0.databases.neo4j.io"
-AUTH = ("5b58c7e0", "1MicthVv2tKboUcSp5o4OUlIByAlEMMKh6Y1PVSS8WE")
+URI = os.getenv("NEO4J_URI")
+AUTH = (os.getenv("NEO4J_USER"), os.getenv("NEO4J_PASSWORD"))
 
 def generate_deeponet_tensor():
     print("Extracting spatial and climate features from Neo4j...")
