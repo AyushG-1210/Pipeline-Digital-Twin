@@ -109,4 +109,6 @@ Automated diagnostics verified the structural integrity of the exported tensor. 
 >Task : Work on converging the PINN Model.
 - Got first iteration of model convergence, working on tuning the weights and the branches.
 - Ready to submit data shapes to data engineering team, will provide exact requirements as soon as I figure out which variables are needed for the model to converge.
-
+- Shapes submitting to RAG and DB team.
+- Changed the models input dims to match real world shapes (from `[Batch, 50]` to `[Batch, 4]` for soil dims). Got the model to converge with these weights, and committing this to multiple repos as a rollback version.
+- Working on changing trinaing phase 2 (L-BFGS) to a higher collocation to make sure the results arent just overfit and the model is actually learning.
