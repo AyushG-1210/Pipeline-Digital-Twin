@@ -1,3 +1,4 @@
+import os
 import chromadb
 from chromadb.utils import embedding_functions
 
@@ -6,8 +7,12 @@ embedding_function = embedding_functions.SentenceTransformerEmbeddingFunction(
     model_name="BAAI/bge-large-en"
 )
 
-# Persistent database
-client = chromadb.PersistentClient(path="./chroma_db")
+# Persistent database path resolved dynamically relative to this file
+DB_DIR = os.path.dirname(os.path.abspath(__file__))
+RAG_DIR = os.path.dirname(DB_DIR)
+CHROMA_PATH = os.path.join(RAG_DIR, "chroma_db")
+
+client = chromadb.PersistentClient(path=CHROMA_PATH)
 
 collection = client.get_or_create_collection(
     name="pipeline_docs",
