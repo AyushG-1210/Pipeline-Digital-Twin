@@ -104,7 +104,7 @@ Automated diagnostics verified the structural integrity of the exported tensor. 
 
 
 
-## Progress updates: [Phase 6 - 14/07.2026]
+## Progress updates: [Phase 6 - 14/07/2026]
 ### Ayush:
 >Task : Work on converging the PINN Model.
 - Got first iteration of model convergence, working on tuning the weights and the branches.
