@@ -111,4 +111,23 @@ Automated diagnostics verified the structural integrity of the exported tensor. 
 - Ready to submit data shapes to data engineering team, will provide exact requirements as soon as I figure out which variables are needed for the model to converge.
 - Shapes submitting to RAG and DB team.
 - Changed the models input dims to match real world shapes (from `[Batch, 50]` to `[Batch, 4]` for soil dims). Got the model to converge with these weights, and committing this to multiple repos as a rollback version.
-- Working on changing trinaing phase 2 (L-BFGS) to a higher collocation to make sure the results arent just overfit and the model is actually learning.
+- Working on changing training phase 2 (L-BFGS) to a higher collocation to make sure the results arent just overfit and the model is actually learning.
+
+
+## Progress updates: [Phase 7 - 22/08/2026]
+>Task : Finalize the PINN Model.
+- Objective-accuracy misalignment: training the weak form longer lowers weak_total
+(2.08e-2 -> 1.16e-2) while flux error rises (0.54 -> 1.36). 5/5 seeds, monotone.
+- Weak form can't identify the solution without the FDM anchor: C_l2 ~0.99, negative
+x_corr. Strong form under the same ablation gets 0.109.
+- Strong form beats weak on everything except op_corr. Awkward, since weak was the
+method under test, but that's the result.
+- L-BFGS dropped. Degraded results in every instance tested.
+- W_RES_C sweep cut from the paper — n=1 per weight on the pre-loss dataset, fails
+the standard I set for everything else.
+- Anchor share figure needs re-measuring on m2_bs64_matched seeds. The old 80-86%
+came from 5 draws on two pre-multiseed checkpoints and I'd quoted the top of the
+distribution. Real medians ~85% and ~67%, ranges 40-86% and 49-75%.
+- Target: TMLR. Retitled around identifiability rather than misalignment — "only one
+form identifies the solution" is a stronger claim than "both misbehave."
+- Writing order: results first (4->5->6), intro last.

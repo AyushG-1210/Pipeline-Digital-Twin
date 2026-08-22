@@ -7,3 +7,5 @@ YOLO_Pipeline/dataset/
 YOLO_Pipeline/runs/
 YOLO_Pipeline/weights/
 YOLO_Pipeline/test_video.mp4
+/Paper
+/venv

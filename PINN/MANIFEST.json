@@ -1,0 +1,37 @@
+{
+  "saved": "2026-08-21T18:51:13.663125",
+  "weights": {
+    "W_RES_C": 10.0,
+    "W_RES_PHI": 1.0,
+    "W_ANCHOR": 1.0,
+    "W_BOUNDS": 100.0,
+    "W_SMOOTH": 2.0,
+    "W_IC_C": 1.0,
+    "W_ENDS_C": 1.0,
+    "W_ENDS_PHI": 1.0
+  },
+  "physics": {
+    "D_global": 1e-09,
+    "k_rate": 2.07e-07,
+    "alpha": 0.5,
+    "F": 96485.0,
+    "R": 8.314,
+    "T": 298.15,
+    "E_eq": -0.44,
+    "E_corr": -0.44,
+    "t_max": 31536000.0,
+    "n_electrons": 2.0,
+    "C_bulk": 1.0,
+    "L_x": 10.0
+  },
+  "arms": {
+    "weak_bs128": "modes=2, bs=128, 300+900, 7200 steps, seeds 42-46",
+    "weak_bs64_matched": "modes=2, bs=64, 164+491, 7205 steps, seeds 42-46",
+    "weak_bs64_full": "modes=2, bs=64, 300+900, 13200 steps, seeds 42-46",
+    "m5": "modes=5, bs=64, 200+600, seeds 42-46 (+42 replicate)",
+    "strong": "strong form, bs=32, 82+246, 7216 steps, W_BC 1/10/100, seeds 42-43",
+    "anchor_ablation": "weak, W_ANCHOR=0, bs=64, matched+full, seeds 42-43",
+    "strong_anchor": "strong, W_ANCHOR=0, W_BC=1, bs=32, seeds 42-43"
+  },
+  "hardware": "NVIDIA A100 MIG slice, 20,096 MiB (GI 2, CI 0), driver 470.199.02"
+}
