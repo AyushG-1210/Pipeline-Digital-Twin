@@ -1,0 +1,33 @@
+{
+  "tag": "s42c",
+  "seed": 42,
+  "reconstructed": true,
+  "note": "checkpoint from the original run; JSON rebuilt after the original cell died in the train-set evaluation",
+  "weights_identical": true,
+  "max_abs_dw": 0.0,
+  "rel_l2_weights": 0.0,
+  "hold": {
+    "C_l2": 0.11532863229513168,
+    "flux_err": 0.28394609689712524,
+    "x_corr": 0.25489579894217373,
+    "op_corr": 0.9655544410763008
+  },
+  "s42a_hold": {
+    "C_l2": 0.11532863229513168,
+    "flux_err": 0.28394609689712524,
+    "x_corr": 0.25489579894217373,
+    "op_corr": 0.9655544410763008
+  },
+  "abs_diffs": {
+    "C_l2": 0.0,
+    "flux_err": 0.0,
+    "x_corr": 0.0,
+    "op_corr": 0.0
+  },
+  "across_seed_spread": {
+    "C_l2": 0.11357235163450241,
+    "flux_err": 0.9470874667167664,
+    "x_corr": 0.18669245953518904,
+    "op_corr": 0.007721540574028185
+  }
+}

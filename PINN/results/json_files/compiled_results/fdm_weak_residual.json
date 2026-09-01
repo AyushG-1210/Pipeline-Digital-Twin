@@ -1,0 +1,15 @@
+{
+  "n": 16,
+  "steady_state": true,
+  "fdm_residual": {
+    "res_C_plain": 3.6571483974512375e-07,
+    "res_phi_plain": 2.2911870019015623e-06,
+    "res_C_dual": 8.744252255610263e-08,
+    "res_phi_dual": 1.531778593744093e-06
+  },
+  "trained_reference": {
+    "res_C": 0.0015,
+    "res_phi": 0.001
+  },
+  "ratio_C": 0.00024380989316341584
+}

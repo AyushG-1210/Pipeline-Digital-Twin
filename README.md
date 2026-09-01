@@ -187,28 +187,38 @@ Both spatially varying couplings were introduced deliberately: an earlier revisi
 
 Accuracy is evaluated against a 2D Finite Difference Method (FDM) numerical baseline on held-out samples.
 
-All figures are **median [min–max] across seeds**, with $n$ stated. Single-run numbers are not reported: a same-seed, same-config replicate differed as much as different seeds did, so run-to-run variance exceeds most configuration differences in this setup.
+All figures are **median [min–max] across seeds**, with $n$ stated. Training is bit-reproducible at a fixed seed: retraining seed 42 in a fresh process reproduced the stored checkpoint exactly (max$|\Delta w| = 0$), and held-out metrics matched to machine precision. Within-seed variance is therefore zero, and all spread reported below is seed sensitivity rather than run noise. Single-run numbers are not reported because a single seed is not representative of that spread.
 
-`flux_err` is relative error on wall flux — the quantity the boundary term directly penalizes, and the closest available proxy for corrosion current density. `op_corr` is the correlation of mean wall concentration across environments, i.e. whether the operator ranks environments in the correct order.
+`flux_err` is relative error on wall flux — the quantity the boundary term directly penalizes, and the closest available proxy for corrosion current density. `op_corr` is the correlation of mean wall concentration across environments, i.e. whether the operator ranks environments in the correct order. `x_corr` is the correlation of the along-pipe wall profile within an environment, and `x_var_ratio` is that profile's amplitude relative to truth; the two are reported together because correlation alone is scale-free.
 
-| Arm | n | C rel. $L_2$ | flux_err | op_corr |
+| Arm | n | C rel. $L_2$ | flux_err | x_corr |
 | :--- | :---: | :---: | :---: | :---: |
-| Strong form, `W_BC=1` | 2 | 0.127 | 0.069 | +0.897 |
-| Strong form, anchor removed | 2 | 0.109 | 0.065 | — |
-| Weak form, bs=64 matched | 5 | 0.174 | 0.359–0.834 | +0.958 |
-| Weak form, anchor removed | 2 | 0.99 | 2.23 | — |
+| Strong form, anchor removed | 5 | 0.108 [0.103–0.109] | 0.062 [0.061–0.067] | +0.491 [0.470–0.511] |
+| Strong form, `W_BC=1` | 5 | 0.125 [0.114–0.141] | 0.068 [0.063–0.074] | +0.604 [0.552–0.723] |
+| Weak form, anchored, plain | 5 | 0.174 [0.14–0.20] | 0.541 [0.36–0.83] | +0.298 [0.28–0.31] |
+| Weak form, anchored, dual norm | 5 | 0.247 [0.22–0.26] | 1.221 [0.76–1.42] | +0.285 [0.26–0.37] |
+| Weak form, anchor removed, dual norm | 5 | 0.704 [0.57–0.83] | 2.754 [1.85–3.13] | +0.083 [−0.06–0.10] |
+| Weak form, anchor removed, plain | 5 | 1.027 [0.80–1.18] | 2.546 [2.20–2.57] | −0.055 [−0.17–−0.01] |
 
 ### Ablation Findings
 
-Three results, all multi-seed:
+**Objective–accuracy misalignment.** Training the weak form for longer lowers the weak-form objective while raising the error. From 7,205 to 13,200 gradient steps at bs=64, `weak_total` fell 2.08e-2 → 1.16e-2 while flux error rose 0.54 → 1.36 and C rel. $L_2$ rose 0.174 → 0.286. All five seeds, monotone.
 
-**Objective–accuracy misalignment.** Training the weak form for longer lowers the weak-form objective while raising the error. From 7,205 to 13,200 gradient steps at bs=64, `weak_total` fell 2.08e-2 → 1.16e-2 while flux error rose 0.54 → 1.36 and C rel. $L_2$ rose 0.174 → 0.286. All five seeds, monotone, and it survives the L-BFGS refinement phase.
+**The weak form does not identify the solution without supervision.** With the semi-supervised FDM anchor removed, the weak form reaches C rel. $L_2 = 1.027$ with *negative* along-pipe correlation — a non-solution rather than a degraded solution. The strong form under the identical ablation reaches 0.108 with $x_{\text{corr}} = +0.491$.
 
-**The weak form does not identify the solution without supervision.** With the semi-supervised FDM anchor removed, the weak form reaches C rel. $L_2 \approx 0.99$ with negative lateral correlation — a non-solution rather than a degraded solution. The strong form under the identical ablation reaches 0.109.
+**The FDM reference does satisfy the weak objective.** Substituting the finite-difference field into the weak residual gives `res_C` = 3.66e-7, roughly four thousand times below what trained networks reach (~6e-4 to 3e-3). The loss and the reference encode the same problem, so the failure above is attributable to identifiability and not to a formulation mismatch.
 
-**The strong-form control outperforms the weak form** on every metric except `op_corr`, where the weak form leads (+0.958 vs +0.897).
+**The supervised anchor dominates the gradient.** At `W_ANCHOR=1` the anchor contributes a median 56% of total gradient norm (range 47–73%, $n = 5$, 50 draws) against 14% (7–16%) for both weak residual terms combined. The ratio exceeds 3× in every seed.
 
-L-BFGS refinement degraded results in every instance tested and was dropped from the final configuration.
+**The anchor degrades pointwise accuracy while improving rank correlation.** Removing it improves the strong form on C rel. $L_2$, $\phi$ rel. $L_2$ and `x_var_ratio` — 5/5 seeds, non-overlapping ranges on all three — and on flux in 4/5 seeds with overlapping ranges. The anchored arm wins `op_corr` and `x_corr` in 5/5 seeds, but at an `x_var_ratio` of 1.75 [1.43–2.09] against 1.23 [1.14–1.26]: it tracks the shape of the along-pipe profile more closely while overshooting its amplitude by roughly 75%.
+
+**Dual-norm reweighting does not restore identifiability.** Replacing the flat mean-of-squares over test functions with the discrete dual norm $R^\top G^{-1} R$ (Rojas et al., RVPINNs) was pre-registered with a success criterion fixed before results existed: the unanchored arm escapes the non-solution basin, i.e. C rel. $L_2$ well below the plain baseline with positive `x_corr`. It does not. C rel. $L_2$ improves 1.027 → 0.704 with non-overlapping ranges, but flux error *worsens* (2.55 → 2.75) and `x_corr` reaches only +0.083. With supervision present the dual norm is actively harmful (C rel. $L_2$ 0.174 → 0.247, flux 0.541 → 1.221, non-overlapping on both). The potential field is where it works — $\phi$ rel. $L_2$ improves roughly 4–5× unanchored — but the gain does not propagate to concentration.
+
+The Gram matrix for this test space has condition number 3.65e4 with eigenvalues spanning 0.103–3770 and no negative eigenvalues; that 36,000× span is itself the measure of how unevenly the plain loss weights residual directions.
+
+**Seed stability.** Unanchored strong-form C rel. $L_2$ spans 0.0063 across five seeds against 0.114 for the weak form — roughly 18× tighter.
+
+L-BFGS refinement degraded C rel. $L_2$ in 10/10 arms tested and flux in 8/10, and was the only stage to exhaust GPU memory. It was dropped from the final configuration; strong-versus-weak is an Adam-versus-Adam comparison. On a paired comparison from identical starting weights, 100 steps beat 250 on 15/15 comparisons across five arms.
 
 ---
 
@@ -226,6 +236,8 @@ These shares reflect how much each input **varies across this dataset**, not a u
 
 **Per-section attribution was tested and does not hold.** Correlation between attribution centroid and queried section appeared strong (+0.97 strong form, +0.55 weak), but correlation is scale-free. The regression slope is ≈0.2 for every model across both loss forms — a section's attribution centroid moves a fifth as far as the section does — and attribution spread (0.306–0.323) exceeds a uniform distribution over the domain (0.289). The operator learned a global response to the $C_{\text{bulk}}$ profile rather than a spatially resolved one. Retained in `diagnostics/` as a negative result; no per-section attribution view should be built on it.
 
+This is the third instance in this project of a high correlation accompanied by a wrong amplitude, alongside the anchored strong-form arm above (`x_corr` +0.70 at `x_var_ratio` 2.01) and an earlier operator revision (+0.946 correlation at 6.6% of the true across-environment spread). Every correlation reported here is therefore paired with a magnitude check.
+
 ---
 
 ## Verification & Deployment Strategy
@@ -240,10 +252,10 @@ Recommended display constraints: wall-adjacent quantities on a log axis (a linea
 
 Four constraints bound the results above and are not scheduled for resolution within this project's scope:
 
-1. **The FDM reference is not fully validated.** The potential boundary condition and reaction-rate kinetics carry unresolved assumptions, and a sign discrepancy in the `rho → C_wall` mapping is open. Predicted values should be treated as research output rather than calibrated corrosion current densities.
+1. **The FDM reference is not fully validated as physics.** The potential boundary condition and reaction-rate kinetics carry unresolved assumptions. The solver is verified as a numerical method (3.9e-8 relative $L_2$ against the analytic slab solution, mesh- and timestep-converged to 1e-11) and its field satisfies the weak objective to 3.66e-7, but neither check validates the kinetic constants. Predicted values should be treated as research output rather than calibrated corrosion current densities.
 2. **The soil input has no validated mapping to field measurements.** It is currently a synthetic Gaussian random field; connecting it to real resistivity survey data is outstanding work.
-3. **Sample sizes are uneven.** Strong-form arms are $n = 2$; weak-form arms are $n = 5$. Batch size is unmatched between them (32 vs 64) even though gradient steps are matched.
-4. **A known weak-form remedy was not applied.** Dual-norm reweighting for test-space null spaces (Rojas et al.) addresses a pathology present in this construction and was not tested. The identifiability result therefore scopes to the weak form *as standardly constructed*, not to weak formulations in general.
+3. **Batch size is unmatched between loss forms.** Strong-form arms run at bs=32 because bs≥64 exhausts the 20 GB MIG slice on second-derivative graphs. Gradient steps are matched (7,216 vs 7,205); batch size is not. This is a hardware ceiling rather than a design choice, and it is a confound that a larger device would remove.
+4. **The dual-norm result scopes to this problem class.** The RVPINN guarantee is that the dual-norm loss estimates the true error in the energy norm, conditional on a local Fortin operator, and it was demonstrated on linear advection–diffusion. Nonlinear Butler–Volmer wall kinetics coupled across two fields is outside that setting, so the negative result here delimits where the remedy applies rather than contradicting it. The effectivity index has not been measured on this problem, which is the direct test.
 
 ---
 

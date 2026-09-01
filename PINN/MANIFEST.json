@@ -1,5 +1,22 @@
 {
-  "saved": "2026-08-21T18:51:13.663125",
+  "saved": "2026-09-01",
+  "supersedes": "2026-08-21T18:51:13.663125",
+
+  "layout": {
+    "results/json_files/weak_form": "per-arm records, weak form",
+    "results/json_files/strong_form": "per-arm records, strong form (both anchored and unanchored)",
+    "results/json_files/compiled_results": "aggregations across arms",
+    "results/model_files/{weak,strong}_form": "Adam and L-BFGS checkpoints",
+    "diagnostics": "XAI attribution outputs",
+    "data": "dataset cache and FDM ground truth"
+  },
+
+  "naming": {
+    "convention": "<arm>_s<seed>.json with a matching <arm>_s<seed>_adam.pt",
+    "exception": "The modes-5 base arms are s42a..s46a.json, but their checkpoints carry an m5_ prefix (m5_s42a_adam.pt). The multi-seed cell writes JSON as {tag}.json and checkpoints as m5_{tag}_adam.pt. Do NOT rename: the cell's resume check is os.path.exists({tag}.json), so renaming triggers a full retrain of all five arms.",
+    "stem_pairing_warning": "Any script pairing JSON to checkpoint by filename stem will silently drop the five m5 base arms."
+  },
+
   "weights": {
     "W_RES_C": 10.0,
     "W_RES_PHI": 1.0,
@@ -10,6 +27,7 @@
     "W_ENDS_C": 1.0,
     "W_ENDS_PHI": 1.0
   },
+
   "physics": {
     "D_global": 1e-09,
     "k_rate": 2.07e-07,
@@ -24,14 +42,114 @@
     "C_bulk": 1.0,
     "L_x": 10.0
   },
+
   "arms": {
-    "weak_bs128": "modes=2, bs=128, 300+900, 7200 steps, seeds 42-46",
-    "weak_bs64_matched": "modes=2, bs=64, 164+491, 7205 steps, seeds 42-46",
-    "weak_bs64_full": "modes=2, bs=64, 300+900, 13200 steps, seeds 42-46",
-    "m5": "modes=5, bs=64, 200+600, seeds 42-46 (+42 replicate)",
-    "strong": "strong form, bs=32, 82+246, 7216 steps, W_BC 1/10/100, seeds 42-43",
-    "anchor_ablation": "weak, W_ANCHOR=0, bs=64, matched+full, seeds 42-43",
-    "strong_anchor": "strong, W_ANCHOR=0, W_BC=1, bs=32, seeds 42-43"
+    "m2_bs128": {
+      "config": "weak, modes=2, bs=128, 300+900, 7,200 steps",
+      "seeds": [42, 43, 44, 45, 46],
+      "dir": "weak_form",
+      "supports": "batch-size axis; paired against m2_bs64_matched at equal steps"
+    },
+    "m2_bs64_matched": {
+      "config": "weak, modes=2, bs=64, 164+491, 7,205 steps",
+      "seeds": [42, 43, 44, 45, 46],
+      "dir": "weak_form",
+      "supports": "primary weak-form reference arm; also the anchor-share measurement and the weak side of the XAI comparison"
+    },
+    "m2_bs64_full": {
+      "config": "weak, modes=2, bs=64, 300+900, 13,200 steps",
+      "seeds": [42, 43, 44, 45, 46],
+      "dir": "weak_form",
+      "supports": "objective-accuracy misalignment: weak_total falls while flux and C_l2 worsen, 5/5 seeds, monotone"
+    },
+    "m5": {
+      "config": "weak, modes=5, bs=64, 200+600",
+      "seeds": [42, 43, 44, 45, 46],
+      "files": "s42a.json .. s46a.json",
+      "dir": "weak_form",
+      "supports": "mode-count comparison against modes=2",
+      "note": "n=5. s42b is NOT an independent sample and is excluded from every median."
+    },
+    "m5_lbfgs100": {
+      "config": "L-BFGS re-polish at 100 steps from each saved m5 Adam checkpoint",
+      "seeds": [42, 43, 44, 45, 46],
+      "dir": "weak_form",
+      "supports": "paired 100-vs-250 step comparison, 15/15 across 5 arms x 3 metrics"
+    },
+    "ab_matched / ab_full": {
+      "config": "weak, W_ANCHOR=0, bs=64, 7,205 and 13,200 steps",
+      "seeds": [42, 43],
+      "dir": "weak_form",
+      "supports": "first pass at the unsupervised weak form; superseded at n=5 by dn_plain_noanchor",
+      "note": "n=2. Retained for provenance, not cited as a headline number."
+    },
+    "dn_plain_noanchor": {
+      "config": "weak, plain reduction, W_ANCHOR=0, modes=2, bs=64, 7,205 steps",
+      "seeds": [42, 43, 44, 45, 46],
+      "dir": "weak_form",
+      "supports": "WEAK-FORM IDENTIFIABILITY FAILURE. C_l2 ~1.03 with negative x_corr: a non-solution, not a degraded one."
+    },
+    "dn_dual_noanchor": {
+      "config": "weak, discrete dual norm R^T G^-1 R, W_ANCHOR=0",
+      "seeds": [42, 43, 44, 45, 46],
+      "dir": "weak_form",
+      "supports": "PRE-REGISTERED NEGATIVE RESULT. The dual norm does not restore identifiability; phi improves 4-5x, C does not follow."
+    },
+    "dn_plain_anchored": {
+      "config": "weak, plain reduction, W_ANCHOR=1",
+      "seeds": [42, 43, 44, 45, 46],
+      "dir": "weak_form",
+      "supports": "anchored weak control at n=5"
+    },
+    "dn_dual_anchored": {
+      "config": "weak, dual norm, W_ANCHOR=1",
+      "seeds": [42, 43, 44, 45, 46],
+      "dir": "weak_form",
+      "supports": "dual norm is actively harmful when supervision is present"
+    },
+    "sf_wbc1": {
+      "config": "strong form, W_BC=1, W_ANCHOR=1, bs=32, 82+246, 7,216 steps",
+      "seeds": [42, 43, 44, 45, 46],
+      "dir": "strong_form",
+      "supports": "anchored strong control; sf_wbc1_s42 is the checkpoint used for all XAI and payload export"
+    },
+    "sf_wbc10 / sf_wbc100": {
+      "config": "strong form, W_BC=10 and 100",
+      "seeds": [42, 43],
+      "dir": "strong_form",
+      "supports": "W_BC sweep. n=2 -- selects W_BC=1, not cited as a standalone result."
+    },
+    "sa_wbc1_noanchor": {
+      "config": "strong form, W_BC=1, W_ANCHOR=0, bs=32, 7,216 steps",
+      "seeds": [42, 43, 44, 45, 46],
+      "dir": "strong_form",
+      "supports": "STRONG-FORM CONTROL. Identifies the solution without supervision where the weak form does not."
+    }
   },
-  "hardware": "NVIDIA A100 MIG slice, 20,096 MiB (GI 2, CI 0), driver 470.199.02"
+
+  "compiled": {
+    "strong_form_n5.json": "strong anchored vs unanchored at n=5, with per-seed pairing and range overlap. Supersedes any earlier strong-form range.",
+    "m5_n5.json": "m5 arm statistics with s42b excluded",
+    "replicate_s42.json": "single-seed determinism record, in weak_form/ (not an aggregation)",
+    "anchor_share_m2.json": "gradient share of the supervised anchor, 50 draws, n=5",
+    "fdm_weak_residual.json": "weak-form residual of the FDM reference",
+    "all_dualnorm.json": "all 20 dual-norm runs",
+    "all_strong_extended.json": "strong arms grouped anchored/noanchor"
+  },
+
+  "known_issues": [
+    "sa_wbc1_noanchor s42/s43 store metrics at top level as 'hold'/'obj'; s44-s46 nest them under 'adam'. Read with: r['adam']['hold'] if 'adam' in r else r['hold'].",
+    "s42b.json, m5_s42b_lbfgs100.json and the three m5_s42b_*.pt files are not an independent sample. Rerunning seed 42 reproduces s42a bit-for-bit (max|dw| = 0), so s42b carries no information beyond s42a. Excluded from all medians; n=5, not 6.",
+    "m2_s42a.* is orphaned -- the single-seed baseline cell that produced it is no longer in main.ipynb. Superseded by m2_bs64_full_s42 at the same config."
+  ],
+
+  "constraints": {
+    "batch_size_strong": "bs=32 is a hardware ceiling, not a design choice. bs>=64 OOMs on the 20 GB MIG slice because the strong form builds second-derivative graphs. Strong and weak arms are matched on gradient steps (7,216 vs 7,205), not on batch size.",
+    "lbfgs_strong": "L-BFGS was run and dropped for the strong form: worse on C_l2 in 10/10 weak arms and the only stage that OOMed. Strong-vs-weak is an Adam-vs-Adam comparison.",
+    "determinism": "Training is bit-reproducible at fixed seed, verified by retraining seed 42 in a fresh process (max|dw| = 0, and held-out metrics identical to machine precision). All spread across seeds 42-46 is seed sensitivity, not run noise."
+  },
+
+  "hardware": "NVIDIA A100 MIG slice, 20,096 MiB (GI 2, CI 0), driver 470.199.02",
+
+  "caveat": "Research output. The finite-difference reference carries unresolved potential-boundary and reaction-kinetics assumptions, so values are not calibrated corrosion current densities."
 }

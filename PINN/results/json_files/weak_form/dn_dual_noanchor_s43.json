@@ -1,0 +1,38 @@
+{
+  "tag": "dn_dual_noanchor_s43",
+  "arm": "dual_noanchor",
+  "seed": 43,
+  "dual_norm": true,
+  "w_anchor": 0.0,
+  "cfg": {
+    "form": "weak",
+    "dual_norm": true,
+    "w_anchor": 0.0,
+    "n_modes": 2,
+    "epochs_a": 164,
+    "epochs_c": 491,
+    "lr": 0.0001,
+    "batch_size": 64,
+    "split": "late",
+    "lbfgs": false,
+    "grad_steps": 7205,
+    "w_res_C": 10.0,
+    "w_res_phi": 1.0,
+    "n_test_functions": 36,
+    "gram": "H1 seminorm, K-renormalized"
+  },
+  "hold": {
+    "C_l2": 0.5689527988433838,
+    "flux_err": 2.28293776512146,
+    "x_corr": -0.060811743012651666
+  },
+  "obj": {
+    "res_C_dual": 0.0012912455713376403,
+    "res_phi_dual": 0.0006204011733643711,
+    "res_C_plain": 0.0064698378555476665,
+    "res_phi_plain": 0.0011030519963242114,
+    "weak_total_dual": 0.013532856886740774,
+    "weak_total_plain": 0.06580143055180088
+  },
+  "minutes": 6.9
+}
