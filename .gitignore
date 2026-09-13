@@ -9,3 +9,10 @@ YOLO_Pipeline/weights/
 YOLO_Pipeline/test_video.mp4
 /Paper
 /venv
+__pycache__/
+*.pt
+!yolov8n-seg.pt
+*.npy
+*.npz
+.ipynb_checkpoints/
+

@@ -131,3 +131,10 @@ distribution. Real medians ~85% and ~67%, ranges 40-86% and 49-75%.
 - Target: TMLR. Retitled around identifiability rather than misalignment — "only one
 form identifies the solution" is a stronger claim than "both misbehave."
 - Writing order: results first (4->5->6), intro last.
+
+## Progress updates: [Phase 8 - 13/09/2026]
+> Task: Single-source-of-truth range standardization, dual tensor labeling, and branch schema resolutions.
+- **Issue 1 (API 5L Verification)**: Verified API Spec 5L (46th Ed) and PHMSA HL Part H bin standards. Widened WT range to `[0.188, 1.500]` in and OD range to `[4.0, 56.0]` in (covering X42–X80 transmission grades and PHMSA reportable bins up to 56"). Created single-source registry `api5l_ranges.py` and updated `main.ipynb`.
+- **Issue 2 (Dual Tensor Schema)**: Standardized column schema `META_COL_WT = 0`, `META_COL_OD = 1`, `META_COL_YOLO = 2` across `meta_tensor` (normalized [0,1]) and `raw_tensor` (physical units in inches). Renamed internal variables to `wt_norm`, `od_norm`, `wt_raw`, `od_raw`. Updated `DATA_FINGERPRINT` to `v2` to force clean cache invalidation.
+- **Issue 3 (Soil Branch Shape Resolution)**: Formally documented the 4-column real-world soil schema `[lat, lon, soil_moisture, temperature]` with normalization bounds in `generate_tensor.py` and `api5l_ranges.py`. Confirmed `FactoredMIONet` uses `soil_dim=4` for real data, while retaining 8-point GRF profiles for synthetic PINN pre-training.
+- **Issue 4 (Fluid Branch Assessment)**: Completed audit of PHMSA HL Annual Report (Parts A–J) and RRC GIS datasets. Confirmed per-segment operating pressure and fluid flow rates are absent from historical public data. Explicitly declared Branch 2 (Fluid) as synthetic (`FLUID_BRANCH_IS_SYNTHETIC = True`) with 50-node GRF profiles mapped to `c_bulk(x)` in `[0.3, 1.0]`. Noted Part J %SMYS aggregate bands as a potential constraint for future phases.
