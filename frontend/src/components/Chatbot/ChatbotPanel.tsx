@@ -16,7 +16,6 @@ interface Message {
  */
 export default function ChatbotPanel() {
     const segments = usePipelineStore((state) => state.segments);
-    const selectedSegmentId = usePipelineStore((state) => state.selectedSegmentId);
     const selectSegment = usePipelineStore((state) => state.selectSegment);
 
     const [inputQuery, setInputQuery] = useState('');

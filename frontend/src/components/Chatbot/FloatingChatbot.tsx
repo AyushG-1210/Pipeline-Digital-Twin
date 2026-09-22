@@ -20,7 +20,6 @@ export default function FloatingChatbot() {
     const messagesEndRef = useRef<HTMLDivElement>(null);
 
     const segments = usePipelineStore((state) => state.segments);
-    const selectedSegmentId = usePipelineStore((state) => state.selectedSegmentId);
     const selectSegment = usePipelineStore((state) => state.selectSegment);
 
     const segmentArray = Array.from(segments.values());

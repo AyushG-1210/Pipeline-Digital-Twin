@@ -1,6 +1,5 @@
 import { useEffect, useRef } from 'react';
 import { usePipelineStore } from '../../store/usePipelineStore';
-import DetectionOverlay from './DetectionOverlay';
 
 // YOLO frame size for coordinate normalization
 const YOLO_FRAME = 640;

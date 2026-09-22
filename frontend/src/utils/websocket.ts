@@ -2,7 +2,7 @@ import { usePipelineStore } from '../store/usePipelineStore';
 import type { WSMessage } from '../types';
 
 let ws: WebSocket | null = null;
-let reconnectTimeout: NodeJS.Timeout | null = null;
+let reconnectTimeout: ReturnType<typeof setTimeout> | null = null;
 const RECONNECT_DELAY = 3000;
 
 /**
