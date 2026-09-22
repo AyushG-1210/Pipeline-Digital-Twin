@@ -1,0 +1,36 @@
+V_SPACE: torch.Size([36, 288])
+V_WALL_X: torch.Size([36, 8])
+NUM_HATS: 12
+static weights (cell 17): {'W_RES_C': 10.0, 'W_RES_PHI': 1.0, 'W_ANCHOR': 1.0, 'W_BOUNDS': 100.0, 'W_SMOOTH': 2.0, 'W_IC_C': 1.0, 'W_ENDS_C': 1.0, 'W_ENDS_PHI': 1.0}
+b_eval=64  batch = training rows 0..63, idx=arange  test space K=36 (modes=2)
+share_k = ||grad L_k|| / sum over 8 terms of ||grad L_j||   (cell 23 anchor_share)
+
+====================================================================================================
+ draws = 5
+====================================================================================================
+  s42: ANCHOR  70.3%  weak   6.5%   (29s)
+        median ||grad|| per term: res_C=4.322e-01  res_phi=1.017e-01  bounds=3.646e-01  smooth=2.669e-01  ic_C=7.363e-01  ends_C=3.275e-01  ends_phi=4.879e-04  ANCHOR=5.249e+00
+        median share per term (%): res_C=5.1  res_phi=1.5  bounds=4.7  smooth=2.9  ic_C=9.1  ends_C=3.9  ends_phi=0.0  ANCHOR=70.3
+  s43: ANCHOR  45.5%  weak  19.7%   (26s)
+        median ||grad|| per term: res_C=1.320e+00  res_phi=1.475e-01  bounds=8.441e-01  smooth=2.345e-01  ic_C=1.622e+00  ends_C=3.093e-01  ends_phi=4.959e-04  ANCHOR=4.314e+00
+        median share per term (%): res_C=18.8  res_phi=2.0  bounds=11.2  smooth=3.2  ic_C=15.3  ends_C=3.1  ends_phi=0.0  ANCHOR=45.5
+  s44: ANCHOR  53.9%  weak  15.7%   (27s)
+        median ||grad|| per term: res_C=1.204e+00  res_phi=1.259e-01  bounds=8.087e-01  smooth=2.516e-01  ic_C=1.377e+00  ends_C=3.330e-01  ends_phi=5.611e-04  ANCHOR=5.464e+00
+        median share per term (%): res_C=13.1  res_phi=1.4  bounds=8.6  smooth=3.1  ic_C=13.6  ends_C=3.3  ends_phi=0.0  ANCHOR=53.9
+  s45: ANCHOR  54.5%  weak  13.8%   (27s)
+        median ||grad|| per term: res_C=8.259e-01  res_phi=2.371e-01  bounds=7.323e-01  smooth=2.394e-01  ic_C=1.225e+00  ends_C=3.134e-01  ends_phi=5.564e-04  ANCHOR=5.382e+00
+        median share per term (%): res_C=11.8  res_phi=2.0  bounds=9.9  smooth=3.0  ic_C=12.4  ends_C=3.0  ends_phi=0.0  ANCHOR=54.5
+  s46: ANCHOR  55.5%  weak  15.0%   (28s)
+        median ||grad|| per term: res_C=9.001e-01  res_phi=1.368e-01  bounds=8.743e-01  smooth=2.342e-01  ic_C=1.235e+00  ends_C=3.037e-01  ends_phi=5.197e-04  ANCHOR=4.985e+00
+        median share per term (%): res_C=14.3  res_phi=1.4  bounds=11.2  smooth=2.8  ic_C=12.8  ends_C=2.9  ends_phi=0.0  ANCHOR=55.5
+
+  n=5, draws=5:  ANCHOR median 54.5% [45.5-70.3]   weak (res_C+res_phi) median 15.0% [6.5-19.7]
+
+====================================================================================================
+ STORED VALUES FOR THE SAME ARM
+====================================================================================================
+  compiled/anchor_share_m2.json  (file says draws=5, W_ANCHOR=1.0):  ANCHOR 50.9 [44.5-62.6]   weak 16.2 [10.4-19.9]
+  m2_bs64_matched_s4X.json['adam']['share']  (evaluate(), draws=5):        ANCHOR 57.7 [50.3-76.2]   weak 10.6 [6.1-13.5]
+  paper text:                                                              ANCHOR 56 [47-73]   weak 14 [7-16]
+
+saved results/figures/anchor_share_recompute.json

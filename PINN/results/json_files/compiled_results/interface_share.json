@@ -1,0 +1,19 @@
+{
+  "draws": 50,
+  "source": "transcribed from results_log_2026-09-20_21.md section 4 (two decimal places, not independently measured from a per-draw file); regenerate with wall_share/strong_bc_share when that script is run",
+  "note": "weak_flux_path = weak flux path only (transient/stiffness detached); strong_bc_C = strong bc_C penalty (sa_wbc1_noanchor). Seeds 42-43 in strong_bc_C come from the same sa_wbc1_noanchor checkpoints used elsewhere; see figure_5.py comment on the schema drift between seeds 42-43 and 44-46 in that arm.",
+  "weak_flux_path": {
+    "42": 28.59,
+    "43": 30.08,
+    "44": 24.43,
+    "45": 33.59,
+    "46": 30.45
+  },
+  "strong_bc_C": {
+    "42": 28.06,
+    "43": 26.35,
+    "44": 26.43,
+    "45": 28.43,
+    "46": 27.25
+  }
+}

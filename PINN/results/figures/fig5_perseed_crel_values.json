@@ -1,0 +1,170 @@
+{
+  "Strong unanchored": {
+    "n": 5,
+    "median": 0.10759147256612778,
+    "min": 0.10266002267599106,
+    "max": 0.1089300587773323,
+    "per_seed": {
+      "42": {
+        "C_l2": 0.10833564400672913,
+        "file": "results/json_files/strong_form/sa_wbc1_noanchor_s42.json"
+      },
+      "43": {
+        "C_l2": 0.1089300587773323,
+        "file": "results/json_files/strong_form/sa_wbc1_noanchor_s43.json"
+      },
+      "44": {
+        "C_l2": 0.10759147256612778,
+        "file": "results/json_files/strong_form/sa_wbc1_noanchor_s44.json"
+      },
+      "45": {
+        "C_l2": 0.10322919487953186,
+        "file": "results/json_files/strong_form/sa_wbc1_noanchor_s45.json"
+      },
+      "46": {
+        "C_l2": 0.10266002267599106,
+        "file": "results/json_files/strong_form/sa_wbc1_noanchor_s46.json"
+      }
+    }
+  },
+  "Strong anchored": {
+    "n": 5,
+    "median": 0.12510864436626434,
+    "min": 0.11357562988996506,
+    "max": 0.14065399765968323,
+    "per_seed": {
+      "42": {
+        "C_l2": 0.11357562988996506,
+        "file": "results/json_files/strong_form/sf_wbc1_s42.json"
+      },
+      "43": {
+        "C_l2": 0.14065399765968323,
+        "file": "results/json_files/strong_form/sf_wbc1_s43.json"
+      },
+      "44": {
+        "C_l2": 0.13518212735652924,
+        "file": "results/json_files/strong_form/sf_wbc1_s44.json"
+      },
+      "45": {
+        "C_l2": 0.12510864436626434,
+        "file": "results/json_files/strong_form/sf_wbc1_s45.json"
+      },
+      "46": {
+        "C_l2": 0.12242431193590164,
+        "file": "results/json_files/strong_form/sf_wbc1_s46.json"
+      }
+    }
+  },
+  "Weak anchored": {
+    "n": 5,
+    "median": 0.17426204681396484,
+    "min": 0.14195668697357178,
+    "max": 0.20298068225383759,
+    "per_seed": {
+      "42": {
+        "C_l2": 0.14195668697357178,
+        "file": "results/json_files/weak_form/dn_plain_anchored_s42.json"
+      },
+      "43": {
+        "C_l2": 0.20298068225383759,
+        "file": "results/json_files/weak_form/dn_plain_anchored_s43.json"
+      },
+      "44": {
+        "C_l2": 0.17426204681396484,
+        "file": "results/json_files/weak_form/dn_plain_anchored_s44.json"
+      },
+      "45": {
+        "C_l2": 0.17244952917099,
+        "file": "results/json_files/weak_form/dn_plain_anchored_s45.json"
+      },
+      "46": {
+        "C_l2": 0.1758950799703598,
+        "file": "results/json_files/weak_form/dn_plain_anchored_s46.json"
+      }
+    }
+  },
+  "Weak unanchored": {
+    "n": 5,
+    "median": 1.026485800743103,
+    "min": 0.7988969087600708,
+    "max": 1.1847527027130127,
+    "per_seed": {
+      "42": {
+        "C_l2": 1.1847527027130127,
+        "file": "results/json_files/weak_form/dn_plain_noanchor_s42.json"
+      },
+      "43": {
+        "C_l2": 0.7988969087600708,
+        "file": "results/json_files/weak_form/dn_plain_noanchor_s43.json"
+      },
+      "44": {
+        "C_l2": 1.026485800743103,
+        "file": "results/json_files/weak_form/dn_plain_noanchor_s44.json"
+      },
+      "45": {
+        "C_l2": 1.076749563217163,
+        "file": "results/json_files/weak_form/dn_plain_noanchor_s45.json"
+      },
+      "46": {
+        "C_l2": 0.9058936834335327,
+        "file": "results/json_files/weak_form/dn_plain_noanchor_s46.json"
+      }
+    }
+  },
+  "Dual-norm anchored": {
+    "n": 5,
+    "median": 0.2466977834701538,
+    "min": 0.21837645769119263,
+    "max": 0.2615423798561096,
+    "per_seed": {
+      "42": {
+        "C_l2": 0.22585196793079376,
+        "file": "results/json_files/weak_form/dn_dual_anchored_s42.json"
+      },
+      "43": {
+        "C_l2": 0.25770798325538635,
+        "file": "results/json_files/weak_form/dn_dual_anchored_s43.json"
+      },
+      "44": {
+        "C_l2": 0.2466977834701538,
+        "file": "results/json_files/weak_form/dn_dual_anchored_s44.json"
+      },
+      "45": {
+        "C_l2": 0.2615423798561096,
+        "file": "results/json_files/weak_form/dn_dual_anchored_s45.json"
+      },
+      "46": {
+        "C_l2": 0.21837645769119263,
+        "file": "results/json_files/weak_form/dn_dual_anchored_s46.json"
+      }
+    }
+  },
+  "Dual-norm unanchored": {
+    "n": 5,
+    "median": 0.7035786509513855,
+    "min": 0.5689527988433838,
+    "max": 0.8274713754653931,
+    "per_seed": {
+      "42": {
+        "C_l2": 0.8274713754653931,
+        "file": "results/json_files/weak_form/dn_dual_noanchor_s42.json"
+      },
+      "43": {
+        "C_l2": 0.5689527988433838,
+        "file": "results/json_files/weak_form/dn_dual_noanchor_s43.json"
+      },
+      "44": {
+        "C_l2": 0.7035786509513855,
+        "file": "results/json_files/weak_form/dn_dual_noanchor_s44.json"
+      },
+      "45": {
+        "C_l2": 0.6772663593292236,
+        "file": "results/json_files/weak_form/dn_dual_noanchor_s45.json"
+      },
+      "46": {
+        "C_l2": 0.7131484746932983,
+        "file": "results/json_files/weak_form/dn_dual_noanchor_s46.json"
+      }
+    }
+  }
+}
