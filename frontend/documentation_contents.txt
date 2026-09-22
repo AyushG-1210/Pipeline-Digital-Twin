@@ -1,0 +1,2486 @@
+﻿
+===== C:\Users\adipr\Documents\Pipeline\server\index.js =====
+import express from 'express';
+import { WebSocketServer } from 'ws';
+import cors from 'cors';
+import { generateSegments, updateRandomSegment } from './mockData.js';
+
+const app = express();
+const PORT = 3001;
+
+// Middleware
+app.use(cors());
+app.use(express.json());
+
+// Initialize segment data
+let segments = generateSegments();
+
+/**
+ * REST API Endpoints
+ */
+
+// Get all segments
+app.get('/api/segments', (req, res) => {
+    res.json(segments);
+});
+
+// Get specific segment
+app.get('/api/segments/:id', (req, res) => {
+    const segment = segments.find(s => s.segment_id === req.params.id);
+    if (segment) {
+        res.json(segment);
+    } else {
+        res.status(404).json({ error: 'Segment not found' });
+    }
+});
+
+// Start HTTP server
+const server = app.listen(PORT, () => {
+    console.log(`\nðŸš€ Pipeline Digital Twin Backend`);
+    console.log(`   HTTP Server: http://localhost:${PORT}`);
+    console.log(`   WebSocket: ws://localhost:${PORT}`);
+    console.log(`\nðŸ“Š Mock Data Initialized:`);
+    console.log(`   - ${segments.length} pipeline segments`);
+    console.log(`   - CV, PINN, and XAI data generated`);
+    console.log(`\nðŸ”„ Real-time updates every 3 seconds\n`);
+});
+
+/**
+ * WebSocket Server
+ */
+const wss = new WebSocketServer({ server });
+
+wss.on('connection', (ws) => {
+    console.log('âœ… WebSocket client connected');
+
+    // Send initial data
+    ws.send(JSON.stringify({
+        type: 'initial_data',
+        data: segments,
+        timestamp: new Date().toISOString()
+    }));
+
+    ws.on('close', () => {
+        console.log('âŒ WebSocket client disconnected');
+    });
+
+    ws.on('error', (error) => {
+        console.error('WebSocket error:', error);
+    });
+});
+
+/**
+ * Simulate real-time updates
+ * Every 3 seconds, update a random segment and broadcast to all clients
+ */
+setInterval(() => {
+    const updatedSegment = updateRandomSegment(segments);
+
+    const message = {
+        type: 'segment_update',
+        data: updatedSegment,
+        timestamp: new Date().toISOString()
+    };
+
+    // Broadcast to all connected clients
+    wss.clients.forEach((client) => {
+        if (client.readyState === 1) { // WebSocket.OPEN
+            client.send(JSON.stringify(message));
+        }
+    });
+
+    console.log(`ðŸ“¡ Updated ${updatedSegment.segment_id} - Integrity: ${(updatedSegment.integrity * 100).toFixed(1)}%`);
+}, 3000);
+
+/**
+ * Graceful shutdown
+ */
+process.on('SIGINT', () => {
+    console.log('\n\nðŸ›‘ Shutting down server...');
+    wss.clients.forEach((client) => client.close());
+    server.close(() => {
+        console.log('âœ… Server closed');
+        process.exit(0);
+    });
+});
+
+
+===== C:\Users\adipr\Documents\Pipeline\server\mockData.js =====
+/**
+ * Mock data generators for CV, PINN, and XAI outputs
+ * Simulates realistic ML model outputs for 10 pipeline segments
+ */
+
+const SEGMENT_COUNT = 10;
+const SEGMENT_LENGTH = 2; // meters
+
+/**
+ * Generate initial segment data
+ */
+function generateSegments() {
+    const segments = [];
+
+    for (let i = 0; i < SEGMENT_COUNT; i++) {
+        const segmentId = `SEG-${String(i + 1).padStart(3, '0')}`;
+        const integrity = 0.4 + Math.random() * 0.5; // 0.4 to 0.9
+
+        segments.push({
+            segment_id: segmentId,
+            position: [i * SEGMENT_LENGTH - (SEGMENT_COUNT * SEGMENT_LENGTH) / 2, 0, 0],
+            integrity: integrity,
+            cv: generateCVOutput(segmentId, integrity),
+            pinn: generatePINNOutput(segmentId, integrity),
+            xai: generateXAIOutput(segmentId, integrity),
+            lastUpdated: new Date().toISOString()
+        });
+    }
+
+    return segments;
+}
+
+/**
+ * Generate CV (Computer Vision) output
+ */
+function generateCVOutput(segmentId, integrity) {
+    const corrosionPct = (1 - integrity) * 100 * (0.8 + Math.random() * 0.4);
+    const confidence = 0.7 + Math.random() * 0.25;
+
+    // Generate polygon mask (normalized coordinates)
+    const polygonMask = [
+        [0.4 + Math.random() * 0.1, 0.3 + Math.random() * 0.1],
+        [0.5 + Math.random() * 0.1, 0.3 + Math.random() * 0.1],
+        [0.55 + Math.random() * 0.1, 0.4 + Math.random() * 0.1],
+        [0.5 + Math.random() * 0.1, 0.45 + Math.random() * 0.1],
+        [0.4 + Math.random() * 0.1, 0.4 + Math.random() * 0.1]
+    ];
+
+    return {
+        segment_id: segmentId,
+        corrosion_surface_pct: Math.max(0, Math.min(100, corrosionPct)),
+        confidence: confidence,
+        polygon_mask: polygonMask,
+        frame_timestamp: new Date().toISOString()
+    };
+}
+
+/**
+ * Generate PINN (Physics-Informed Neural Network) output
+ */
+function generatePINNOutput(segmentId, integrity) {
+    const now = new Date();
+    const historical = [];
+    const predicted = [];
+
+    // Generate 6 months of historical data
+    for (let i = 180; i >= 0; i -= 15) {
+        const date = new Date(now);
+        date.setDate(date.getDate() - i);
+
+        // Simulate gradual degradation
+        const historicalIntegrity = Math.min(100, integrity * 100 + (180 - i) * 0.1 + Math.random() * 5);
+
+        historical.push({
+            time: date.toISOString(),
+            value: historicalIntegrity
+        });
+    }
+
+    // Generate 6 months of predicted data (physics-based decay)
+    const currentIntegrity = integrity * 100;
+    const decayRate = (1 - integrity) * 0.15; // Faster decay for lower integrity
+
+    for (let i = 1; i <= 180; i += 15) {
+        const date = new Date(now);
+        date.setDate(date.getDate() + i);
+
+        // Exponential-like decay based on Fick's 2nd Law simulation
+        const predictedIntegrity = Math.max(0, currentIntegrity - (decayRate * i) - Math.random() * 2);
+
+        predicted.push({
+            time: date.toISOString(),
+            value: predictedIntegrity
+        });
+    }
+
+    // Calculate RUL (days until integrity drops below 20%)
+    const criticalThreshold = 20;
+    const daysToFailure = Math.max(30, (currentIntegrity - criticalThreshold) / decayRate);
+
+    return {
+        segment_id: segmentId,
+        historical_integrity: historical,
+        predicted_integrity: predicted,
+        remaining_useful_life_days: Math.round(daysToFailure),
+        governing_equation: 'Fick_2nd_Law'
+    };
+}
+
+/**
+ * Generate XAI (Explainable AI) output
+ */
+function generateXAIOutput(segmentId, integrity) {
+    const features = [
+        'Surface Corrosion (CV)',
+        'Humidity Exposure',
+        'Material Age',
+        'Temperature Cycles',
+        'Pressure Fluctuations',
+        'Chemical Exposure'
+    ];
+
+    // Generate random contributions that sum to 100%
+    const rawContributions = features.map(() => Math.random());
+    const sum = rawContributions.reduce((a, b) => a + b, 0);
+    const normalizedContributions = rawContributions.map(c => (c / sum) * 100);
+
+    const contributors = features.map((feature, index) => ({
+        feature: feature,
+        contribution_pct: normalizedContributions[index]
+    }));
+
+    // Sort by contribution and take top 5
+    contributors.sort((a, b) => b.contribution_pct - a.contribution_pct);
+    const topContributors = contributors.slice(0, 5);
+
+    // Renormalize to 100%
+    const topSum = topContributors.reduce((a, b) => a + b.contribution_pct, 0);
+    topContributors.forEach(c => c.contribution_pct = (c.contribution_pct / topSum) * 100);
+
+    return {
+        segment_id: segmentId,
+        contributors: topContributors,
+        model_confidence: 0.65 + Math.random() * 0.3
+    };
+}
+
+/**
+ * Update a random segment with new data
+ */
+function updateRandomSegment(segments) {
+    const index = Math.floor(Math.random() * segments.length);
+    const segment = segments[index];
+
+    // Slight integrity degradation
+    segment.integrity = Math.max(0.1, segment.integrity - Math.random() * 0.02);
+
+    // Update CV, PINN, XAI data
+    segment.cv = generateCVOutput(segment.segment_id, segment.integrity);
+    segment.pinn = generatePINNOutput(segment.segment_id, segment.integrity);
+    segment.xai = generateXAIOutput(segment.segment_id, segment.integrity);
+    segment.lastUpdated = new Date().toISOString();
+
+    return segment;
+}
+
+export {
+    generateSegments,
+    updateRandomSegment
+};
+
+
+===== C:\Users\adipr\Documents\Pipeline\src\components\Analytics\AnalyticsPanel.tsx =====
+import { usePipelineStore } from '../../store/usePipelineStore';
+import IntegrityChart from './IntegrityChart';
+import RULWidget from './RULWidget';
+
+/**
+ * Analytics Panel - Displays PINN forecasts and integrity trends
+ */
+export default function AnalyticsPanel() {
+    const selectedSegmentId = usePipelineStore(state => state.selectedSegmentId);
+    const segments = usePipelineStore(state => state.segments);
+
+    const selectedSegment = selectedSegmentId ? segments.get(selectedSegmentId) : null;
+    const pinnData = selectedSegment?.pinn;
+
+    return (
+        <div className="panel h-full flex flex-col">
+            <div className="panel-header">
+                <div className="flex items-center justify-between">
+                    <span>Physics-Informed Analytics</span>
+                    {pinnData && (
+                        <span className="text-xs text-slate-400 font-mono">
+                            {pinnData.governing_equation}
+                        </span>
+                    )}
+                </div>
+            </div>
+
+            <div className="flex-1 p-4 overflow-auto">
+                {!selectedSegmentId || !pinnData ? (
+                    <div className="h-full flex items-center justify-center text-slate-400">
+                        <div className="text-center">
+                            <svg className="w-16 h-16 mx-auto mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                            </svg>
+                            <p>Select a segment with PINN data to view analytics</p>
+                        </div>
+                    </div>
+                ) : (
+                    <div className="space-y-6">
+                        {/* RUL Widget */}
+                        <RULWidget rul={pinnData.remaining_useful_life_days} />
+
+                        {/* Integrity Time Series Chart */}
+                        <div className="bg-industrial-900 rounded-lg p-4">
+                            <h3 className="text-sm font-semibold text-slate-200 mb-4">
+                                Integrity Forecast
+                            </h3>
+                            <IntegrityChart pinnData={pinnData} />
+
+                            <div className="mt-4 flex items-start gap-4 text-xs">
+                                <div className="flex items-center gap-2">
+                                    <div className="w-8 h-0.5 bg-blue-500"></div>
+                                    <span className="text-slate-400">Historical Sensor Integrity</span>
+                                </div>
+                                <div className="flex items-center gap-2">
+                                    <div className="w-8 h-0.5 bg-orange-500 border-t-2 border-dashed border-orange-500"></div>
+                                    <span className="text-slate-400">Physics-Constrained Prediction</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Physics Model Info */}
+                        <div className="bg-industrial-900 rounded-lg p-4">
+                            <h3 className="text-sm font-semibold text-slate-200 mb-2">
+                                Governing Physics
+                            </h3>
+                            <div className="text-sm text-slate-300 space-y-2">
+                                <p>
+                                    <span className="font-mono text-healthy">{pinnData.governing_equation}</span>
+                                    {' '}- Diffusion-based corrosion propagation model
+                                </p>
+                                <p className="text-xs text-slate-400 italic">
+                                    This forecast is constrained by fundamental physics laws, not purely data-driven.
+                                    The model accounts for material properties, environmental conditions, and observed degradation rates.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+}
+
+
+===== C:\Users\adipr\Documents\Pipeline\src\components\Analytics\IntegrityChart.tsx =====
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, ReferenceLine } from 'recharts';
+import type { PINNOutput } from '../../types';
+
+interface IntegrityChartProps {
+    pinnData: PINNOutput;
+}
+
+/**
+ * Dual-line time series chart showing historical and predicted integrity
+ */
+export default function IntegrityChart({ pinnData }: IntegrityChartProps) {
+    // Combine historical and predicted data
+    const chartData = [
+        ...pinnData.historical_integrity.map(point => ({
+            time: new Date(point.time).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+            historical: point.value,
+            predicted: null,
+            fullDate: point.time
+        })),
+        ...pinnData.predicted_integrity.map(point => ({
+            time: new Date(point.time).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }),
+            historical: null,
+            predicted: point.value,
+            fullDate: point.time
+        }))
+    ];
+
+    // Find the transition point (today)
+    const todayIndex = pinnData.historical_integrity.length - 1;
+    const todayDate = chartData[todayIndex]?.time || '';
+
+    return (
+        <ResponsiveContainer width="100%" height={300}>
+            <LineChart data={chartData} margin={{ top: 5, right: 20, left: 0, bottom: 5 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#334155" />
+                <XAxis
+                    dataKey="time"
+                    stroke="#94a3b8"
+                    style={{ fontSize: '12px' }}
+                />
+                <YAxis
+                    stroke="#94a3b8"
+                    domain={[0, 100]}
+                    label={{ value: 'Integrity (%)', angle: -90, position: 'insideLeft', style: { fill: '#94a3b8' } }}
+                    style={{ fontSize: '12px' }}
+                />
+                <Tooltip
+                    contentStyle={{
+                        backgroundColor: '#1e293b',
+                        border: '1px solid #334155',
+                        borderRadius: '8px',
+                        color: '#f1f5f9'
+                    }}
+                    formatter={(value: any) => [`${value?.toFixed(1)}%`, '']}
+                />
+                <Legend
+                    wrapperStyle={{ paddingTop: '20px' }}
+                    iconType="line"
+                />
+
+                {/* Today marker */}
+                <ReferenceLine
+                    x={todayDate}
+                    stroke="#22d3ee"
+                    strokeDasharray="3 3"
+                    label={{ value: 'Today', position: 'top', fill: '#22d3ee', fontSize: 12 }}
+                />
+
+                {/* Historical data line */}
+                <Line
+                    type="monotone"
+                    dataKey="historical"
+                    stroke="#3b82f6"
+                    strokeWidth={2}
+                    dot={{ fill: '#3b82f6', r: 3 }}
+                    name="Historical Sensor Integrity"
+                    connectNulls={false}
+                />
+
+                {/* Predicted data line (dashed) */}
+                <Line
+                    type="monotone"
+                    dataKey="predicted"
+                    stroke="#f97316"
+                    strokeWidth={2}
+                    strokeDasharray="5 5"
+                    dot={{ fill: '#f97316', r: 3 }}
+                    name="Physics-Constrained Prediction"
+                    connectNulls={false}
+                />
+            </LineChart>
+        </ResponsiveContainer>
+    );
+}
+
+
+===== C:\Users\adipr\Documents\Pipeline\src\components\Analytics\RULWidget.tsx =====
+import { getUrgencyLevel, getUrgencyColor } from '../../utils/colors';
+
+interface RULWidgetProps {
+    rul: number; // Remaining Useful Life in days
+}
+
+/**
+ * Remaining Useful Life widget with color-coded urgency
+ */
+export default function RULWidget({ rul }: RULWidgetProps) {
+    const urgency = getUrgencyLevel(rul);
+    const color = getUrgencyColor(urgency);
+
+    const urgencyLabels = {
+        low: 'Normal',
+        medium: 'Monitor',
+        high: 'Attention Required',
+        critical: 'CRITICAL'
+    };
+
+    return (
+        <div
+            className="rounded-lg p-6 relative overflow-hidden"
+            style={{
+                backgroundColor: `${color}15`,
+                borderLeft: `4px solid ${color}`
+            }}
+        >
+            <div className="relative z-10">
+                <div className="text-sm text-slate-400 mb-2">Remaining Useful Life</div>
+
+                <div className="flex items-baseline gap-3 mb-3">
+                    <div
+                        className="text-5xl font-bold"
+                        style={{ color }}
+                    >
+                        {rul}
+                    </div>
+                    <div className="text-2xl text-slate-400">days</div>
+                </div>
+
+                <div className="flex items-center gap-2 mb-4">
+                    <span
+                        className="status-badge text-xs"
+                        style={{
+                            backgroundColor: `${color}30`,
+                            color: color
+                        }}
+                    >
+                        {urgencyLabels[urgency]}
+                    </span>
+                </div>
+
+                <div className="text-xs text-slate-400 italic">
+                    <svg className="w-4 h-4 inline mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    Calculated using Fick's 2nd Law diffusion model with observed corrosion rates
+                </div>
+            </div>
+
+            {/* Background decoration */}
+            <div
+                className="absolute right-0 top-0 w-32 h-32 opacity-5"
+                style={{ color }}
+            >
+                <svg viewBox="0 0 100 100" fill="currentColor">
+                    <path d="M50 10 L90 90 L10 90 Z" />
+                </svg>
+            </div>
+        </div>
+    );
+}
+
+
+===== C:\Users\adipr\Documents\Pipeline\src\components\CVPanel\CVInspectionPanel.tsx =====
+import { usePipelineStore } from '../../store/usePipelineStore';
+import VideoFeed from './VideoFeed';
+import DetectionOverlay from './DetectionOverlay';
+import FeedbackControls from './FeedbackControls';
+
+/**
+ * CV Inspection Panel - Shows video feed with corrosion detection overlays
+ * Includes human-in-the-loop feedback controls
+ */
+export default function CVInspectionPanel() {
+    const selectedSegmentId = usePipelineStore(state => state.selectedSegmentId);
+    const segments = usePipelineStore(state => state.segments);
+
+    const selectedSegment = selectedSegmentId ? segments.get(selectedSegmentId) : null;
+    const cvData = selectedSegment?.cv;
+
+    return (
+        <div className="panel h-full flex flex-col">
+            <div className="panel-header">
+                <div className="flex items-center justify-between">
+                    <span>Computer Vision Inspection</span>
+                    {selectedSegmentId && (
+                        <span className="text-sm text-healthy font-mono">{selectedSegmentId}</span>
+                    )}
+                </div>
+            </div>
+
+            <div className="flex-1 p-4 overflow-auto">
+                {!selectedSegmentId ? (
+                    <div className="h-full flex items-center justify-center text-slate-400">
+                        <div className="text-center">
+                            <svg className="w-16 h-16 mx-auto mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                            </svg>
+                            <p>Select a pipeline segment to view inspection data</p>
+                        </div>
+                    </div>
+                ) : (
+                    <div className="space-y-4">
+                        {/* Video feed with detection overlay */}
+                        <div className="relative aspect-video bg-black rounded-lg overflow-hidden">
+                            <VideoFeed segmentId={selectedSegmentId} />
+                            {cvData && <DetectionOverlay cvData={cvData} />}
+                        </div>
+
+                        {/* Detection metadata */}
+                        {cvData && (
+                            <div className="grid grid-cols-2 gap-4">
+                                <div className="bg-industrial-900 rounded-lg p-3">
+                                    <div className="text-xs text-slate-400 mb-1">Corrosion Surface</div>
+                                    <div className="text-2xl font-bold text-critical">
+                                        {cvData.corrosion_surface_pct.toFixed(1)}%
+                                    </div>
+                                </div>
+
+                                <div className="bg-industrial-900 rounded-lg p-3">
+                                    <div className="text-xs text-slate-400 mb-1">Confidence</div>
+                                    <div className="text-2xl font-bold text-healthy">
+                                        {(cvData.confidence * 100).toFixed(0)}%
+                                    </div>
+                                </div>
+
+                                <div className="col-span-2 bg-industrial-900 rounded-lg p-3">
+                                    <div className="text-xs text-slate-400 mb-1">Detection Time</div>
+                                    <div className="text-sm font-mono text-slate-300">
+                                        {new Date(cvData.frame_timestamp).toLocaleString()}
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
+                        {/* Human-in-the-loop feedback */}
+                        {cvData && <FeedbackControls segmentId={selectedSegmentId} cvData={cvData} />}
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+}
+
+
+===== C:\Users\adipr\Documents\Pipeline\src\components\CVPanel\DetectionOverlay.tsx =====
+import type { CVOutput } from '../../types';
+
+interface DetectionOverlayProps {
+    cvData: CVOutput;
+}
+
+/**
+ * SVG overlay showing detected corrosion regions as polygon masks
+ */
+export default function DetectionOverlay({ cvData }: DetectionOverlayProps) {
+    // Convert normalized coordinates to SVG viewBox coordinates
+    const polygonPoints = cvData.polygon_mask
+        .map(([x, y]) => `${x * 200},${y * 200}`)
+        .join(' ');
+
+    return (
+        <svg
+            className="absolute inset-0 w-full h-full pointer-events-none"
+            viewBox="0 0 200 200"
+            preserveAspectRatio="xMidYMid slice"
+        >
+            {/* Detected corrosion region */}
+            <polygon
+                points={polygonPoints}
+                fill="rgba(239, 68, 68, 0.3)"
+                stroke="#ef4444"
+                strokeWidth="2"
+                className="animate-pulse-slow"
+            />
+
+            {/* Confidence indicator */}
+            <text
+                x="10"
+                y="30"
+                fill="#22d3ee"
+                fontSize="8"
+                fontFamily="monospace"
+                fontWeight="bold"
+            >
+                CONF: {(cvData.confidence * 100).toFixed(0)}%
+            </text>
+
+            {/* Corrosion percentage */}
+            <text
+                x="10"
+                y="42"
+                fill="#ef4444"
+                fontSize="8"
+                fontFamily="monospace"
+                fontWeight="bold"
+            >
+                CORR: {cvData.corrosion_surface_pct.toFixed(1)}%
+            </text>
+        </svg>
+    );
+}
+
+
+===== C:\Users\adipr\Documents\Pipeline\src\components\CVPanel\FeedbackControls.tsx =====
+import { useState } from 'react';
+import { usePipelineStore } from '../../store/usePipelineStore';
+import type { CVOutput, FeedbackEntry } from '../../types';
+
+interface FeedbackControlsProps {
+    segmentId: string;
+    cvData: CVOutput;
+}
+
+/**
+ * Human-in-the-loop feedback controls for CV detections
+ * Allows operators to confirm or reject detections
+ */
+export default function FeedbackControls({ segmentId, cvData }: FeedbackControlsProps) {
+    const [feedbackGiven, setFeedbackGiven] = useState(false);
+    const addFeedback = usePipelineStore(state => state.addFeedback);
+    const feedbackQueue = usePipelineStore(state => state.feedbackQueue);
+
+    const handleFeedback = (type: 'confirm' | 'false_positive') => {
+        const feedback: FeedbackEntry = {
+            segment_id: segmentId,
+            detection_timestamp: cvData.frame_timestamp,
+            feedback_type: type,
+            timestamp: new Date().toISOString()
+        };
+
+        addFeedback(feedback);
+        setFeedbackGiven(true);
+
+        // Reset after 2 seconds
+        setTimeout(() => setFeedbackGiven(false), 2000);
+    };
+
+    return (
+        <div className="bg-industrial-900 rounded-lg p-4">
+            <div className="flex items-center justify-between mb-3">
+                <h3 className="text-sm font-semibold text-slate-200">Human Verification</h3>
+                {feedbackQueue.length > 0 && (
+                    <span className="status-badge bg-healthy/20 text-healthy">
+                        {feedbackQueue.length} in queue
+                    </span>
+                )}
+            </div>
+
+            <div className="flex gap-3">
+                <button
+                    onClick={() => handleFeedback('confirm')}
+                    disabled={feedbackGiven}
+                    className="flex-1 btn-primary disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    Confirm Detection
+                </button>
+
+                <button
+                    onClick={() => handleFeedback('false_positive')}
+                    disabled={feedbackGiven}
+                    className="flex-1 btn-danger disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                    False Positive
+                </button>
+            </div>
+
+            {feedbackGiven && (
+                <div className="mt-3 text-center text-sm text-healthy animate-pulse">
+                    âœ“ Feedback recorded
+                </div>
+            )}
+
+            <div className="mt-4 text-xs text-slate-400 italic">
+                Your feedback helps improve the YOLOv8-Seg model accuracy
+            </div>
+        </div>
+    );
+}
+
+
+===== C:\Users\adipr\Documents\Pipeline\src\components\CVPanel\VideoFeed.tsx =====
+/**
+ * Mock video feed component
+ * In production, this would stream from actual inspection cameras
+ */
+export default function VideoFeed({ segmentId }: { segmentId: string }) {
+    // Mock: Display a static frame representing pipeline inspection
+    // In production, this would be a live video stream or recorded footage
+
+    return (
+        <div className="w-full h-full bg-gradient-to-br from-slate-800 to-slate-900 flex items-center justify-center relative">
+            {/* Mock pipeline cross-section visualization */}
+            <svg className="w-3/4 h-3/4" viewBox="0 0 200 200">
+                {/* Outer pipe wall */}
+                <circle cx="100" cy="100" r="80" fill="#475569" stroke="#64748b" strokeWidth="2" />
+
+                {/* Inner pipe wall */}
+                <circle cx="100" cy="100" r="65" fill="#1e293b" stroke="#334155" strokeWidth="2" />
+
+                {/* Mock corrosion regions (varies by segment) */}
+                {segmentId.includes('3') || segmentId.includes('7') ? (
+                    <>
+                        <path d="M 100 20 Q 120 25 130 40" fill="none" stroke="#ef4444" strokeWidth="4" opacity="0.8" />
+                        <path d="M 140 60 Q 145 70 145 85" fill="none" stroke="#f59e0b" strokeWidth="3" opacity="0.7" />
+                    </>
+                ) : null}
+
+                {/* Scan line animation */}
+                <line x1="100" y1="0" x2="100" y2="200" stroke="#22d3ee" strokeWidth="1" opacity="0.3">
+                    <animateTransform
+                        attributeName="transform"
+                        type="rotate"
+                        from="0 100 100"
+                        to="360 100 100"
+                        dur="4s"
+                        repeatCount="indefinite"
+                    />
+                </line>
+            </svg>
+
+            {/* Live indicator */}
+            <div className="absolute top-3 left-3 flex items-center gap-2 bg-black/50 px-2 py-1 rounded">
+                <div className="w-2 h-2 bg-red-500 rounded-full animate-pulse" />
+                <span className="text-xs text-white font-medium">LIVE</span>
+            </div>
+
+            {/* Segment ID overlay */}
+            <div className="absolute bottom-3 left-3 bg-black/50 px-2 py-1 rounded">
+                <span className="text-xs text-white font-mono">{segmentId}</span>
+            </div>
+        </div>
+    );
+}
+
+
+===== C:\Users\adipr\Documents\Pipeline\src\components\DigitalTwin\Pipeline.tsx =====
+import { usePipelineStore } from '../../store/usePipelineStore';
+import PipelineSegment from './PipelineSegment';
+
+/**
+ * Main pipeline 3D object composed of multiple segments
+ * Each segment is positioned end-to-end along the X-axis
+ */
+export default function Pipeline() {
+    const segments = usePipelineStore(state => state.segments);
+
+    // Convert Map to array for rendering
+    const segmentArray = Array.from(segments.values());
+
+    return (
+        <group>
+            {segmentArray.map((segment) => (
+                <PipelineSegment
+                    key={segment.segment_id}
+                    segmentId={segment.segment_id}
+                    position={segment.position}
+                    integrity={segment.integrity}
+                />
+            ))}
+        </group>
+    );
+}
+
+
+===== C:\Users\adipr\Documents\Pipeline\src\components\DigitalTwin\PipelineScene.tsx =====
+import { Canvas } from '@react-three/fiber';
+import { OrbitControls, PerspectiveCamera, Grid } from '@react-three/drei';
+import Pipeline from './Pipeline';
+
+/**
+ * Main 3D scene containing the pipeline digital twin
+ * Features orbital camera controls and industrial grid background
+ */
+export default function PipelineScene() {
+    return (
+        <div className="w-full h-full bg-industrial-900">
+            <Canvas>
+                {/* Camera setup */}
+                <PerspectiveCamera makeDefault position={[15, 8, 15]} fov={50} />
+
+                {/* Orbital controls with damping for smooth movement */}
+                <OrbitControls
+                    enableDamping
+                    dampingFactor={0.05}
+                    minDistance={5}
+                    maxDistance={50}
+                    maxPolarAngle={Math.PI / 2}
+                />
+
+                {/* Lighting */}
+                <ambientLight intensity={0.4} />
+                <directionalLight position={[10, 10, 5]} intensity={0.8} castShadow />
+                <directionalLight position={[-10, 5, -5]} intensity={0.3} />
+
+                {/* Grid floor for spatial reference */}
+                <Grid
+                    args={[50, 50]}
+                    position={[0, -2, 0]}
+                    cellColor="#334155"
+                    sectionColor="#475569"
+                    fadeDistance={30}
+                    fadeStrength={1}
+                />
+
+                {/* Pipeline */}
+                <Pipeline />
+
+                {/* Fog for depth perception */}
+                <fog attach="fog" args={['#0f172a', 20, 50]} />
+            </Canvas>
+        </div>
+    );
+}
+
+
+===== C:\Users\adipr\Documents\Pipeline\src\components\DigitalTwin\PipelineSegment.tsx =====
+import { useRef, useState } from 'react';
+import { useFrame } from '@react-three/fiber';
+import { Mesh, ShaderMaterial } from 'three';
+import { usePipelineStore } from '../../store/usePipelineStore';
+import { vertexShader, fragmentShader } from '../../shaders/integrityShader';
+
+interface PipelineSegmentProps {
+    segmentId: string;
+    position: [number, number, number];
+    integrity: number;
+}
+
+/**
+ * Individual pipeline segment with custom integrity shader
+ * Handles click selection and hover effects
+ */
+export default function PipelineSegment({ segmentId, position, integrity }: PipelineSegmentProps) {
+    const meshRef = useRef<Mesh>(null);
+    const materialRef = useRef<ShaderMaterial>(null);
+    const [hovered, setHovered] = useState(false);
+
+    const selectedSegmentId = usePipelineStore(state => state.selectedSegmentId);
+    const selectSegment = usePipelineStore(state => state.selectSegment);
+
+    const isSelected = selectedSegmentId === segmentId;
+
+    // Update shader uniforms every frame
+    useFrame((state) => {
+        if (materialRef.current) {
+            materialRef.current.uniforms.uTime.value = state.clock.elapsedTime;
+            materialRef.current.uniforms.uIntegrity.value = integrity;
+            materialRef.current.uniforms.uSelected.value = isSelected;
+        }
+    });
+
+    // Handle segment click
+    const handleClick = (e: any) => {
+        e.stopPropagation();
+        selectSegment(segmentId);
+    };
+
+    return (
+        <mesh
+            ref={meshRef}
+            position={position}
+            rotation={[0, 0, Math.PI / 2]} // Rotate to align along X-axis
+            onClick={handleClick}
+            onPointerOver={(e) => {
+                e.stopPropagation();
+                setHovered(true);
+                document.body.style.cursor = 'pointer';
+            }}
+            onPointerOut={() => {
+                setHovered(false);
+                document.body.style.cursor = 'default';
+            }}
+        >
+            {/* Cylinder geometry: 2m long, 0.5m radius */}
+            <cylinderGeometry args={[0.5, 0.5, 2, 32]} />
+
+            {/* Custom shader material */}
+            <shaderMaterial
+                ref={materialRef}
+                vertexShader={vertexShader}
+                fragmentShader={fragmentShader}
+                uniforms={{
+                    uIntegrity: { value: integrity },
+                    uTime: { value: 0 },
+                    uSelected: { value: isSelected }
+                }}
+            />
+
+            {/* Hover outline effect */}
+            {hovered && (
+                <mesh scale={1.05}>
+                    <cylinderGeometry args={[0.5, 0.5, 2, 32]} />
+                    <meshBasicMaterial color="#ffffff" transparent opacity={0.1} />
+                </mesh>
+            )}
+        </mesh>
+    );
+}
+
+
+===== C:\Users\adipr\Documents\Pipeline\src\components\DigitalTwin\SegmentTooltip.tsx =====
+import { Html } from '@react-three/drei';
+import { usePipelineStore } from '../../store/usePipelineStore';
+import { formatPercentage } from '../../utils/colors';
+
+/**
+ * Tooltip that appears when hovering over pipeline segments
+ * Shows segment ID, integrity percentage, and RUL
+ * Currently disabled - will be implemented with proper hover state management
+ */
+export default function SegmentTooltip() {
+    const segments = usePipelineStore(state => state.segments);
+
+    // Tooltip functionality is currently disabled
+    // In production, this would show on hover with proper event handling
+    const hoveredSegment: string | null = null;
+
+    if (!hoveredSegment) return null;
+
+    const segment = segments.get(hoveredSegment);
+    if (!segment) return null;
+
+    return (
+        <Html position={segment.position}>
+            <div className="bg-industrial-800 border border-industrial-700 rounded-lg px-3 py-2 shadow-xl pointer-events-none">
+                <div className="text-xs font-semibold text-healthy mb-1">{segment.segment_id}</div>
+                <div className="text-xs text-slate-300">
+                    Integrity: {formatPercentage(segment.integrity)}
+                </div>
+                {segment.pinn && (
+                    <div className="text-xs text-slate-300">
+                        RUL: {segment.pinn.remaining_useful_life_days} days
+                    </div>
+                )}
+            </div>
+        </Html>
+    );
+}
+
+
+===== C:\Users\adipr\Documents\Pipeline\src\components\Layout\DashboardLayout.tsx =====
+import { useState } from 'react';
+import Header from './Header';
+import Sidebar from './Sidebar';
+import PipelineScene from '../DigitalTwin/PipelineScene';
+import CVInspectionPanel from '../CVPanel/CVInspectionPanel';
+import AnalyticsPanel from '../Analytics/AnalyticsPanel';
+import XAIPanel from '../XAI/XAIPanel';
+
+/**
+ * Main dashboard layout with grid-based responsive design
+ */
+export default function DashboardLayout() {
+    const [activeTab, setActiveTab] = useState<'analytics' | 'xai'>('analytics');
+
+    return (
+        <div className="h-screen flex flex-col bg-industrial-900">
+            <Header />
+
+            <div className="flex-1 flex overflow-hidden">
+                <Sidebar />
+
+                <div className="flex-1 grid grid-cols-1 lg:grid-cols-5 grid-rows-2 gap-4 p-4 overflow-hidden">
+                    {/* 3D Digital Twin - Left side, full height */}
+                    <div className="lg:col-span-3 row-span-2 rounded-lg overflow-hidden shadow-2xl border border-industrial-700">
+                        <PipelineScene />
+                    </div>
+
+                    {/* CV Inspection Panel - Top right */}
+                    <div className="lg:col-span-2 row-span-1 overflow-hidden">
+                        <CVInspectionPanel />
+                    </div>
+
+                    {/* Analytics/XAI Panel - Bottom right with tabs */}
+                    <div className="lg:col-span-2 row-span-1 overflow-hidden flex flex-col">
+                        {/* Tab selector */}
+                        <div className="flex gap-2 mb-2">
+                            <button
+                                onClick={() => setActiveTab('analytics')}
+                                className={`flex-1 px-4 py-2 rounded-lg font-medium transition-colors ${activeTab === 'analytics'
+                                        ? 'bg-industrial-800 text-healthy border border-industrial-700'
+                                        : 'bg-industrial-800/50 text-slate-400 hover:text-slate-300'
+                                    }`}
+                            >
+                                Analytics
+                            </button>
+                            <button
+                                onClick={() => setActiveTab('xai')}
+                                className={`flex-1 px-4 py-2 rounded-lg font-medium transition-colors ${activeTab === 'xai'
+                                        ? 'bg-industrial-800 text-healthy border border-industrial-700'
+                                        : 'bg-industrial-800/50 text-slate-400 hover:text-slate-300'
+                                    }`}
+                            >
+                                XAI Diagnostics
+                            </button>
+                        </div>
+
+                        {/* Tab content */}
+                        <div className="flex-1 overflow-hidden">
+                            {activeTab === 'analytics' ? <AnalyticsPanel /> : <XAIPanel />}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+
+===== C:\Users\adipr\Documents\Pipeline\src\components\Layout\Header.tsx =====
+import { usePipelineStore } from '../../store/usePipelineStore';
+import { formatTime } from '../../utils/colors';
+
+/**
+ * Application header with title and system status
+ */
+export default function Header() {
+    const wsConnected = usePipelineStore(state => state.wsConnected);
+    const lastUpdate = usePipelineStore(state => state.lastUpdate);
+    const segments = usePipelineStore(state => state.segments);
+
+    return (
+        <header className="bg-industrial-800 border-b border-industrial-700 px-6 py-4">
+            <div className="flex items-center justify-between">
+                <div>
+                    <h1 className="text-2xl font-bold text-slate-100">
+                        Pipeline Integrity Digital Twin
+                    </h1>
+                    <p className="text-sm text-slate-400 mt-1">
+                        AI-Driven Infrastructure Monitoring System
+                    </p>
+                </div>
+
+                <div className="flex items-center gap-6">
+                    {/* Segment count */}
+                    <div className="text-right">
+                        <div className="text-xs text-slate-400">Active Segments</div>
+                        <div className="text-lg font-semibold text-healthy">
+                            {segments.size}
+                        </div>
+                    </div>
+
+                    {/* WebSocket status */}
+                    <div className="flex items-center gap-2">
+                        <div
+                            className={`w-2 h-2 rounded-full ${wsConnected ? 'bg-healthy animate-pulse' : 'bg-critical'
+                                }`}
+                        />
+                        <span className="text-sm text-slate-300">
+                            {wsConnected ? 'Connected' : 'Disconnected'}
+                        </span>
+                    </div>
+
+                    {/* Last update */}
+                    {lastUpdate && (
+                        <div className="text-right">
+                            <div className="text-xs text-slate-400">Last Update</div>
+                            <div className="text-sm font-mono text-slate-300">
+                                {formatTime(lastUpdate)}
+                            </div>
+                        </div>
+                    )}
+                </div>
+            </div>
+        </header>
+    );
+}
+
+
+===== C:\Users\adipr\Documents\Pipeline\src\components\Layout\Sidebar.tsx =====
+import { useState } from 'react';
+import { usePipelineStore } from '../../store/usePipelineStore';
+
+/**
+ * Collapsible sidebar with telemetry information
+ */
+export default function Sidebar() {
+    const [collapsed, setCollapsed] = useState(false);
+    const wsConnected = usePipelineStore(state => state.wsConnected);
+    const feedbackQueue = usePipelineStore(state => state.feedbackQueue);
+    const segments = usePipelineStore(state => state.segments);
+
+    // Calculate statistics
+    const segmentArray = Array.from(segments.values());
+    const criticalCount = segmentArray.filter(s => s.integrity < 0.3).length;
+    const warningCount = segmentArray.filter(s => s.integrity >= 0.3 && s.integrity < 0.6).length;
+
+    if (collapsed) {
+        return (
+            <div className="bg-industrial-800 border-r border-industrial-700 p-2 flex flex-col items-center">
+                <button
+                    onClick={() => setCollapsed(false)}
+                    className="p-2 hover:bg-industrial-700 rounded transition-colors"
+                    title="Expand sidebar"
+                >
+                    <svg className="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+                    </svg>
+                </button>
+            </div>
+        );
+    }
+
+    return (
+        <div className="bg-industrial-800 border-r border-industrial-700 w-64 flex flex-col">
+            <div className="p-4 border-b border-industrial-700 flex items-center justify-between">
+                <h2 className="text-sm font-semibold text-slate-200">Telemetry</h2>
+                <button
+                    onClick={() => setCollapsed(true)}
+                    className="p-1 hover:bg-industrial-700 rounded transition-colors"
+                    title="Collapse sidebar"
+                >
+                    <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 19l-7-7 7-7m8 14l-7-7 7-7" />
+                    </svg>
+                </button>
+            </div>
+
+            <div className="flex-1 p-4 space-y-4 overflow-auto">
+                {/* Connection Status */}
+                <div>
+                    <div className="text-xs text-slate-400 mb-2">Connection</div>
+                    <div className={`status-badge ${wsConnected ? 'bg-healthy/20 text-healthy' : 'bg-critical/20 text-critical'}`}>
+                        {wsConnected ? 'â— Online' : 'â—‹ Offline'}
+                    </div>
+                </div>
+
+                {/* Segment Statistics */}
+                <div>
+                    <div className="text-xs text-slate-400 mb-2">Segment Status</div>
+                    <div className="space-y-2">
+                        <div className="flex items-center justify-between text-sm">
+                            <span className="text-slate-300">Total</span>
+                            <span className="font-semibold text-slate-100">{segments.size}</span>
+                        </div>
+                        {criticalCount > 0 && (
+                            <div className="flex items-center justify-between text-sm">
+                                <span className="text-critical">Critical</span>
+                                <span className="font-semibold text-critical">{criticalCount}</span>
+                            </div>
+                        )}
+                        {warningCount > 0 && (
+                            <div className="flex items-center justify-between text-sm">
+                                <span className="text-warning">Warning</span>
+                                <span className="font-semibold text-warning">{warningCount}</span>
+                            </div>
+                        )}
+                    </div>
+                </div>
+
+                {/* Feedback Queue */}
+                <div>
+                    <div className="text-xs text-slate-400 mb-2">Feedback Queue</div>
+                    <div className="text-2xl font-bold text-healthy">
+                        {feedbackQueue.length}
+                    </div>
+                    <div className="text-xs text-slate-400 mt-1">
+                        Pending retraining
+                    </div>
+                </div>
+
+                {/* System Info */}
+                <div className="pt-4 border-t border-industrial-700">
+                    <div className="text-xs text-slate-400 space-y-1">
+                        <div>YOLOv8-Seg: Active</div>
+                        <div>PINN Engine: Running</div>
+                        <div>XAI Module: Enabled</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+
+===== C:\Users\adipr\Documents\Pipeline\src\components\XAI\ConfidenceMeter.tsx =====
+interface ConfidenceMeterProps {
+    confidence: number; // 0-1
+}
+
+/**
+ * Circular confidence meter with color gradient
+ */
+export default function ConfidenceMeter({ confidence }: ConfidenceMeterProps) {
+    const percentage = confidence * 100;
+    const circumference = 2 * Math.PI * 45; // radius = 45
+    const offset = circumference - (percentage / 100) * circumference;
+
+    // Color based on confidence
+    const getColor = () => {
+        if (confidence >= 0.8) return '#22d3ee'; // cyan (high)
+        if (confidence >= 0.6) return '#f59e0b'; // amber (medium)
+        return '#ef4444'; // red (low)
+    };
+
+    const color = getColor();
+
+    return (
+        <div className="relative w-24 h-24">
+            <svg className="w-full h-full transform -rotate-90">
+                {/* Background circle */}
+                <circle
+                    cx="48"
+                    cy="48"
+                    r="45"
+                    stroke="#334155"
+                    strokeWidth="8"
+                    fill="none"
+                />
+
+                {/* Progress circle */}
+                <circle
+                    cx="48"
+                    cy="48"
+                    r="45"
+                    stroke={color}
+                    strokeWidth="8"
+                    fill="none"
+                    strokeDasharray={circumference}
+                    strokeDashoffset={offset}
+                    strokeLinecap="round"
+                    className="transition-all duration-500"
+                />
+            </svg>
+
+            {/* Percentage text */}
+            <div className="absolute inset-0 flex items-center justify-center">
+                <div className="text-center">
+                    <div
+                        className="text-2xl font-bold"
+                        style={{ color }}
+                    >
+                        {percentage.toFixed(0)}
+                    </div>
+                    <div className="text-xs text-slate-400">%</div>
+                </div>
+            </div>
+        </div>
+    );
+}
+
+
+===== C:\Users\adipr\Documents\Pipeline\src\components\XAI\ContributionChart.tsx =====
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
+
+interface ContributionChartProps {
+    contributors: Array<{ feature: string; contribution_pct: number }>;
+}
+
+/**
+ * SHAP-style horizontal bar chart showing feature contributions
+ */
+export default function ContributionChart({ contributors }: ContributionChartProps) {
+    // Sort by contribution (descending) and take top 3
+    const topContributors = [...contributors]
+        .sort((a, b) => b.contribution_pct - a.contribution_pct)
+        .slice(0, 3);
+
+    // Color palette for bars
+    const colors = ['#ef4444', '#f59e0b', '#22d3ee'];
+
+    return (
+        <ResponsiveContainer width="100%" height={200}>
+            <BarChart
+                data={topContributors}
+                layout="vertical"
+                margin={{ top: 5, right: 30, left: 10, bottom: 5 }}
+            >
+                <CartesianGrid strokeDasharray="3 3" stroke="#334155" horizontal={false} />
+                <XAxis
+                    type="number"
+                    domain={[0, 100]}
+                    stroke="#94a3b8"
+                    style={{ fontSize: '12px' }}
+                    tickFormatter={(value) => `${value}%`}
+                />
+                <YAxis
+                    type="category"
+                    dataKey="feature"
+                    stroke="#94a3b8"
+                    width={150}
+                    style={{ fontSize: '12px' }}
+                />
+                <Tooltip
+                    contentStyle={{
+                        backgroundColor: '#1e293b',
+                        border: '1px solid #334155',
+                        borderRadius: '8px',
+                        color: '#f1f5f9'
+                    }}
+                    formatter={(value: any) => [`${value.toFixed(1)}%`, 'Contribution']}
+                />
+                <Bar dataKey="contribution_pct" radius={[0, 4, 4, 0]}>
+                    {topContributors.map((_, index) => (
+                        <Cell key={`cell-${index}`} fill={colors[index]} />
+                    ))}
+                </Bar>
+            </BarChart>
+        </ResponsiveContainer>
+    );
+}
+
+
+===== C:\Users\adipr\Documents\Pipeline\src\components\XAI\ExplanationText.tsx =====
+import type { XAIOutput } from '../../types';
+
+interface ExplanationTextProps {
+    xaiData: XAIOutput;
+}
+
+/**
+ * Natural language explanation generator for XAI outputs
+ */
+export default function ExplanationText({ xaiData }: ExplanationTextProps) {
+    // Sort contributors by percentage
+    const sorted = [...xaiData.contributors].sort((a, b) => b.contribution_pct - a.contribution_pct);
+
+    // Generate natural language explanation
+    const generateExplanation = () => {
+        const top = sorted[0];
+        const second = sorted[1];
+
+        let explanation = `This degradation forecast is primarily driven by `;
+
+        // Describe top contributor
+        if (top.contribution_pct > 40) {
+            explanation += `**${top.feature.toLowerCase()}** (${top.contribution_pct.toFixed(0)}% contribution)`;
+        } else {
+            explanation += `${top.feature.toLowerCase()} (${top.contribution_pct.toFixed(0)}% contribution)`;
+        }
+
+        // Add second contributor if significant
+        if (second && second.contribution_pct > 20) {
+            explanation += ` and **${second.feature.toLowerCase()}** (${second.contribution_pct.toFixed(0)}% contribution)`;
+        }
+
+        explanation += `. `;
+
+        // Add confidence statement
+        const confidencePct = (xaiData.model_confidence * 100).toFixed(0);
+        if (xaiData.model_confidence > 0.8) {
+            explanation += `The model has high confidence (${confidencePct}%) in this prediction.`;
+        } else if (xaiData.model_confidence > 0.6) {
+            explanation += `The model has moderate confidence (${confidencePct}%) in this prediction.`;
+        } else {
+            explanation += `The model has lower confidence (${confidencePct}%) in this prediction, suggesting additional monitoring may be warranted.`;
+        }
+
+        return explanation;
+    };
+
+    const explanation = generateExplanation();
+
+    // Parse markdown-style bold text
+    const renderExplanation = () => {
+        const parts = explanation.split(/(\*\*.*?\*\*)/g);
+        return parts.map((part, index) => {
+            if (part.startsWith('**') && part.endsWith('**')) {
+                return (
+                    <strong key={index} className="text-healthy font-semibold">
+                        {part.slice(2, -2)}
+                    </strong>
+                );
+            }
+            return <span key={index}>{part}</span>;
+        });
+    };
+
+    return (
+        <div className="text-sm text-slate-300 leading-relaxed">
+            {renderExplanation()}
+        </div>
+    );
+}
+
+
+===== C:\Users\adipr\Documents\Pipeline\src\components\XAI\XAIPanel.tsx =====
+import { usePipelineStore } from '../../store/usePipelineStore';
+import ContributionChart from './ContributionChart';
+import ExplanationText from './ExplanationText';
+import ConfidenceMeter from './ConfidenceMeter';
+
+/**
+ * XAI (Explainable AI) Panel - Shows feature contributions and model explanations
+ */
+export default function XAIPanel() {
+    const selectedSegmentId = usePipelineStore(state => state.selectedSegmentId);
+    const segments = usePipelineStore(state => state.segments);
+
+    const selectedSegment = selectedSegmentId ? segments.get(selectedSegmentId) : null;
+    const xaiData = selectedSegment?.xai;
+
+    return (
+        <div className="panel h-full flex flex-col">
+            <div className="panel-header">
+                <span>Explainable AI Diagnostics</span>
+            </div>
+
+            <div className="flex-1 p-4 overflow-auto">
+                {!selectedSegmentId || !xaiData ? (
+                    <div className="h-full flex items-center justify-center text-slate-400">
+                        <div className="text-center">
+                            <svg className="w-16 h-16 mx-auto mb-4 opacity-50" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                            </svg>
+                            <p>Select a segment with XAI data to view explanations</p>
+                        </div>
+                    </div>
+                ) : (
+                    <div className="space-y-6">
+                        {/* Model Confidence */}
+                        <div className="flex items-center justify-between">
+                            <div className="flex-1">
+                                <h3 className="text-sm font-semibold text-slate-200 mb-2">
+                                    Model Confidence
+                                </h3>
+                                <p className="text-xs text-slate-400">
+                                    Overall prediction reliability
+                                </p>
+                            </div>
+                            <ConfidenceMeter confidence={xaiData.model_confidence} />
+                        </div>
+
+                        {/* Feature Contributions */}
+                        <div className="bg-industrial-900 rounded-lg p-4">
+                            <h3 className="text-sm font-semibold text-slate-200 mb-4">
+                                Top Contributing Factors
+                            </h3>
+                            <ContributionChart contributors={xaiData.contributors} />
+
+                            <div className="mt-4 text-xs text-slate-400 italic">
+                                SHAP-style feature importance analysis. Values represent percentage contribution to the degradation forecast.
+                            </div>
+                        </div>
+
+                        {/* Natural Language Explanation */}
+                        <div className="bg-industrial-900 rounded-lg p-4">
+                            <h3 className="text-sm font-semibold text-slate-200 mb-3">
+                                Engineering Explanation
+                            </h3>
+                            <ExplanationText xaiData={xaiData} />
+                        </div>
+
+                        {/* Trust & Transparency Note */}
+                        <div className="bg-healthy/10 border border-healthy/30 rounded-lg p-4">
+                            <div className="flex items-start gap-3">
+                                <svg className="w-5 h-5 text-healthy flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                </svg>
+                                <div>
+                                    <div className="text-sm font-semibold text-healthy mb-1">
+                                        Explainability & Trust
+                                    </div>
+                                    <div className="text-xs text-slate-300">
+                                        This system never operates as a black box. Every prediction is backed by physics-based models
+                                        and transparent feature contributions, allowing engineers to verify and validate the AI's reasoning.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+            </div>
+        </div>
+    );
+}
+
+
+===== C:\Users\adipr\Documents\Pipeline\src\shaders\integrityShader.ts =====
+/**
+ * Custom GLSL shaders for pipeline integrity visualization
+ * Maps integrity values (0-1) to color gradients with PBR-style metallic rendering
+ */
+
+export const vertexShader = `
+  varying vec3 vNormal;
+  varying vec3 vPosition;
+  varying vec2 vUv;
+  
+  void main() {
+    vNormal = normalize(normalMatrix * normal);
+    vPosition = position;
+    vUv = uv;
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+  }
+`;
+
+export const fragmentShader = `
+  uniform float uIntegrity; // 0-1: 1 = healthy, 0 = critical
+  uniform float uTime;
+  uniform bool uSelected;
+  
+  varying vec3 vNormal;
+  varying vec3 vPosition;
+  varying vec2 vUv;
+  
+  // Color mapping based on integrity
+  vec3 getIntegrityColor(float integrity) {
+    vec3 critical = vec3(0.937, 0.267, 0.267); // #ef4444 red-500
+    vec3 warning = vec3(0.961, 0.620, 0.043);  // #f59e0b amber-500
+    vec3 mild = vec3(0.024, 0.714, 0.831);     // #06b6d4 cyan-500
+    vec3 healthy = vec3(0.133, 0.827, 0.933);  // #22d3ee cyan-400
+    
+    if (integrity >= 0.8) {
+      // Healthy range: interpolate between healthy and mild
+      float t = (integrity - 0.8) / 0.2;
+      return mix(mild, healthy, t);
+    } else if (integrity >= 0.6) {
+      // Mild degradation: interpolate between warning and mild
+      float t = (integrity - 0.6) / 0.2;
+      return mix(warning, mild, t);
+    } else if (integrity >= 0.3) {
+      // Warning range: interpolate between critical and warning
+      float t = (integrity - 0.3) / 0.3;
+      return mix(critical, warning, t);
+    } else {
+      // Critical range: stay red with slight darkening
+      return critical * (0.7 + 0.3 * integrity / 0.3);
+    }
+  }
+  
+  void main() {
+    // Base color from integrity
+    vec3 baseColor = getIntegrityColor(uIntegrity);
+    
+    // Simple directional lighting
+    vec3 lightDir = normalize(vec3(1.0, 1.0, 1.0));
+    float diffuse = max(dot(vNormal, lightDir), 0.0);
+    
+    // Ambient + diffuse lighting
+    float ambient = 0.4;
+    float lighting = ambient + diffuse * 0.6;
+    
+    // Metallic effect
+    vec3 viewDir = normalize(cameraPosition - vPosition);
+    float fresnel = pow(1.0 - max(dot(vNormal, viewDir), 0.0), 3.0);
+    vec3 metallicHighlight = vec3(0.8) * fresnel * 0.3;
+    
+    // Final color with lighting
+    vec3 finalColor = baseColor * lighting + metallicHighlight;
+    
+    // Selection highlight (pulsing glow)
+    if (uSelected) {
+      float pulse = 0.5 + 0.5 * sin(uTime * 3.0);
+      finalColor += vec3(0.2, 0.6, 1.0) * pulse * 0.3;
+    }
+    
+    gl_FragColor = vec4(finalColor, 1.0);
+  }
+`;
+
+
+===== C:\Users\adipr\Documents\Pipeline\src\store\usePipelineStore.ts =====
+import { create } from 'zustand';
+import type { SegmentData, FeedbackEntry, CVOutput, PINNOutput, XAIOutput } from '../types/index.js';
+
+interface PipelineStore {
+    // State
+    segments: Map<string, SegmentData>;
+    selectedSegmentId: string | null;
+    feedbackQueue: FeedbackEntry[];
+    wsConnected: boolean;
+    lastUpdate: string | null;
+
+    // Actions
+    setSegments: (segments: SegmentData[]) => void;
+    updateSegment: (segmentId: string, data: Partial<SegmentData>) => void;
+    selectSegment: (segmentId: string | null) => void;
+    addFeedback: (feedback: FeedbackEntry) => void;
+    setWSConnected: (connected: boolean) => void;
+    updateCV: (cv: CVOutput) => void;
+    updatePINN: (pinn: PINNOutput) => void;
+    updateXAI: (xai: XAIOutput) => void;
+}
+
+export const usePipelineStore = create<PipelineStore>((set, get) => ({
+    // Initial state
+    segments: new Map(),
+    selectedSegmentId: null,
+    feedbackQueue: [],
+    wsConnected: false,
+    lastUpdate: null,
+
+    // Actions
+    setSegments: (segments) => {
+        const segmentMap = new Map<string, SegmentData>();
+        segments.forEach(seg => segmentMap.set(seg.segment_id, seg));
+        set({ segments: segmentMap, lastUpdate: new Date().toISOString() });
+    },
+
+    updateSegment: (segmentId, data) => {
+        const segments = new Map(get().segments);
+        const existing = segments.get(segmentId);
+        if (existing) {
+            segments.set(segmentId, { ...existing, ...data, lastUpdated: new Date().toISOString() });
+            set({ segments, lastUpdate: new Date().toISOString() });
+        }
+    },
+
+    selectSegment: (segmentId) => {
+        set({ selectedSegmentId: segmentId });
+    },
+
+    addFeedback: (feedback) => {
+        set(state => ({
+            feedbackQueue: [...state.feedbackQueue, feedback]
+        }));
+    },
+
+    setWSConnected: (connected) => {
+        set({ wsConnected: connected });
+    },
+
+    updateCV: (cv) => {
+        const segments = new Map(get().segments);
+        const existing = segments.get(cv.segment_id);
+        if (existing) {
+            segments.set(cv.segment_id, {
+                ...existing,
+                cv,
+                lastUpdated: new Date().toISOString()
+            });
+            set({ segments, lastUpdate: new Date().toISOString() });
+        }
+    },
+
+    updatePINN: (pinn) => {
+        const segments = new Map(get().segments);
+        const existing = segments.get(pinn.segment_id);
+        if (existing) {
+            segments.set(pinn.segment_id, {
+                ...existing,
+                pinn,
+                lastUpdated: new Date().toISOString()
+            });
+            set({ segments, lastUpdate: new Date().toISOString() });
+        }
+    },
+
+    updateXAI: (xai) => {
+        const segments = new Map(get().segments);
+        const existing = segments.get(xai.segment_id);
+        if (existing) {
+            segments.set(xai.segment_id, {
+                ...existing,
+                xai,
+                lastUpdated: new Date().toISOString()
+            });
+            set({ segments, lastUpdate: new Date().toISOString() });
+        }
+    },
+}));
+
+
+===== C:\Users\adipr\Documents\Pipeline\src\types\index.ts =====
+/**
+ * Data Contracts for Digital Twin Pipeline Integrity System
+ * These interfaces mirror the outputs from ML models (CV, PINN, XAI)
+ * and must match the production API specifications exactly.
+ */
+
+/**
+ * Computer Vision Output - YOLOv8-Seg corrosion detection
+ */
+export interface CVOutput {
+    segment_id: string;
+    corrosion_surface_pct: number; // 0-100: percentage of surface area affected
+    confidence: number; // 0-1: model confidence in detection
+    polygon_mask: number[][]; // normalized [x, y] coordinates for corrosion region
+    frame_timestamp: string; // ISO 8601 date string
+}
+
+/**
+ * Physics-Informed Neural Network Output - Subsurface degradation forecast
+ */
+export interface PINNOutput {
+    segment_id: string;
+    historical_integrity: Array<{ time: string; value: number }>; // Past sensor readings
+    predicted_integrity: Array<{ time: string; value: number }>; // Future projections
+    remaining_useful_life_days: number; // Days until critical threshold
+    governing_equation: 'Fick_2nd_Law'; // Physics model used
+}
+
+/**
+ * Explainable AI Output - SHAP-style feature contributions
+ */
+export interface XAIOutput {
+    segment_id: string;
+    contributors: Array<{
+        feature: string; // Feature name (e.g., "Surface Corrosion", "Humidity")
+        contribution_pct: number; // Percentage contribution (must sum to 100)
+    }>;
+    model_confidence: number; // 0-1: overall model confidence
+}
+
+/**
+ * Unified segment data combining all outputs
+ */
+export interface SegmentData {
+    segment_id: string;
+    position: [number, number, number]; // 3D position in scene
+    integrity: number; // 0-1: current integrity (1 = healthy, 0 = critical)
+    cv?: CVOutput;
+    pinn?: PINNOutput;
+    xai?: XAIOutput;
+    lastUpdated: string; // ISO timestamp
+}
+
+/**
+ * Human-in-the-loop feedback for CV detections
+ */
+export interface FeedbackEntry {
+    segment_id: string;
+    detection_timestamp: string;
+    feedback_type: 'confirm' | 'false_positive';
+    user_id?: string;
+    timestamp: string;
+}
+
+/**
+ * WebSocket message types
+ */
+export interface WSMessage {
+    type: 'segment_update' | 'cv_detection' | 'pinn_forecast' | 'xai_explanation';
+    data: SegmentData | CVOutput | PINNOutput | XAIOutput;
+    timestamp: string;
+}
+
+/**
+ * Urgency levels for RUL (Remaining Useful Life)
+ */
+export type UrgencyLevel = 'low' | 'medium' | 'high' | 'critical';
+
+/**
+ * Chart data point for time series
+ */
+export interface ChartDataPoint {
+    time: string;
+    value: number;
+    label?: string;
+}
+
+
+===== C:\Users\adipr\Documents\Pipeline\src\utils\colors.ts =====
+import type { UrgencyLevel } from '../types';
+
+/**
+ * Maps integrity value (0-1) to color
+ * 1.0 = Healthy (green)
+ * 0.0 = Critical (red)
+ */
+export function getIntegrityColor(integrity: number): string {
+    if (integrity >= 0.8) return '#22d3ee'; // cyan-400 (healthy)
+    if (integrity >= 0.6) return '#06b6d4'; // cyan-500 (mild)
+    if (integrity >= 0.3) return '#f59e0b'; // amber-500 (warning)
+    return '#ef4444'; // red-500 (critical)
+}
+
+/**
+ * Maps integrity value to CSS class name
+ */
+export function getIntegrityColorClass(integrity: number): string {
+    if (integrity >= 0.8) return 'text-healthy';
+    if (integrity >= 0.6) return 'text-healthy-dark';
+    if (integrity >= 0.3) return 'text-warning';
+    return 'text-critical';
+}
+
+/**
+ * Maps RUL (Remaining Useful Life) in days to urgency level
+ */
+export function getUrgencyLevel(rulDays: number): UrgencyLevel {
+    if (rulDays < 30) return 'critical';
+    if (rulDays < 90) return 'high';
+    if (rulDays < 180) return 'medium';
+    return 'low';
+}
+
+/**
+ * Maps urgency level to color
+ */
+export function getUrgencyColor(level: UrgencyLevel): string {
+    switch (level) {
+        case 'critical': return '#dc2626'; // red-600
+        case 'high': return '#ef4444'; // red-500
+        case 'medium': return '#f59e0b'; // amber-500
+        case 'low': return '#22d3ee'; // cyan-400
+    }
+}
+
+/**
+ * Formats a number as percentage
+ */
+export function formatPercentage(value: number, decimals: number = 1): string {
+    return `${(value * 100).toFixed(decimals)}%`;
+}
+
+/**
+ * Formats ISO date string to readable format
+ */
+export function formatDate(isoString: string): string {
+    const date = new Date(isoString);
+    return date.toLocaleDateString('en-US', {
+        month: 'short',
+        day: 'numeric',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+    });
+}
+
+/**
+ * Formats ISO date to short time format
+ */
+export function formatTime(isoString: string): string {
+    const date = new Date(isoString);
+    return date.toLocaleTimeString('en-US', {
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+    });
+}
+
+
+===== C:\Users\adipr\Documents\Pipeline\src\utils\websocket.ts =====
+import { usePipelineStore } from '../store/usePipelineStore';
+import type { WSMessage } from '../types';
+
+let ws: WebSocket | null = null;
+let reconnectTimeout: NodeJS.Timeout | null = null;
+const RECONNECT_DELAY = 3000;
+
+/**
+ * Initialize WebSocket connection to backend
+ */
+export function initWebSocket(url: string = 'ws://localhost:3001') {
+    if (ws && ws.readyState === WebSocket.OPEN) {
+        console.log('WebSocket already connected');
+        return;
+    }
+
+    try {
+        ws = new WebSocket(url);
+
+        ws.onopen = () => {
+            console.log('WebSocket connected');
+            usePipelineStore.getState().setWSConnected(true);
+
+            // Clear any pending reconnect
+            if (reconnectTimeout) {
+                clearTimeout(reconnectTimeout);
+                reconnectTimeout = null;
+            }
+        };
+
+        ws.onmessage = (event) => {
+            try {
+                const message: WSMessage = JSON.parse(event.data);
+                handleWSMessage(message);
+            } catch (error) {
+                console.error('Failed to parse WebSocket message:', error);
+            }
+        };
+
+        ws.onerror = (error) => {
+            console.error('WebSocket error:', error);
+        };
+
+        ws.onclose = () => {
+            console.log('WebSocket disconnected');
+            usePipelineStore.getState().setWSConnected(false);
+            ws = null;
+
+            // Attempt to reconnect
+            reconnectTimeout = setTimeout(() => {
+                console.log('Attempting to reconnect...');
+                initWebSocket(url);
+            }, RECONNECT_DELAY);
+        };
+    } catch (error) {
+        console.error('Failed to initialize WebSocket:', error);
+        usePipelineStore.getState().setWSConnected(false);
+    }
+}
+
+/**
+ * Handle incoming WebSocket messages
+ */
+function handleWSMessage(message: WSMessage) {
+    const store = usePipelineStore.getState();
+
+    switch (message.type) {
+        case 'segment_update':
+            if ('segment_id' in message.data && 'integrity' in message.data) {
+                store.updateSegment(message.data.segment_id, message.data);
+            }
+            break;
+
+        case 'cv_detection':
+            if ('segment_id' in message.data && 'corrosion_surface_pct' in message.data) {
+                store.updateCV(message.data);
+            }
+            break;
+
+        case 'pinn_forecast':
+            if ('segment_id' in message.data && 'remaining_useful_life_days' in message.data) {
+                store.updatePINN(message.data);
+            }
+            break;
+
+        case 'xai_explanation':
+            if ('segment_id' in message.data && 'contributors' in message.data) {
+                store.updateXAI(message.data);
+            }
+            break;
+
+        default:
+            console.warn('Unknown message type:', message.type);
+    }
+}
+
+/**
+ * Send message through WebSocket
+ */
+export function sendWSMessage(message: any) {
+    if (ws && ws.readyState === WebSocket.OPEN) {
+        ws.send(JSON.stringify(message));
+    } else {
+        console.warn('WebSocket not connected, cannot send message');
+    }
+}
+
+/**
+ * Close WebSocket connection
+ */
+export function closeWebSocket() {
+    if (reconnectTimeout) {
+        clearTimeout(reconnectTimeout);
+        reconnectTimeout = null;
+    }
+
+    if (ws) {
+        ws.close();
+        ws = null;
+    }
+}
+
+
+===== C:\Users\adipr\Documents\Pipeline\src\App.css =====
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+
+===== C:\Users\adipr\Documents\Pipeline\src\App.tsx =====
+import { useEffect } from 'react';
+import DashboardLayout from './components/Layout/DashboardLayout';
+import { initWebSocket, closeWebSocket } from './utils/websocket';
+import { usePipelineStore } from './store/usePipelineStore';
+import './index.css';
+
+function App() {
+  useEffect(() => {
+    // Initialize WebSocket connection
+    initWebSocket('ws://localhost:3001');
+
+    // Cleanup on unmount
+    return () => {
+      closeWebSocket();
+    };
+  }, []);
+
+  // Initialize mock data on mount (will be replaced by WebSocket data)
+  useEffect(() => {
+    const initializeMockData = async () => {
+      try {
+        const response = await fetch('http://localhost:3001/api/segments');
+        const data = await response.json();
+        usePipelineStore.getState().setSegments(data);
+      } catch (error) {
+        console.error('Failed to fetch initial segment data:', error);
+      }
+    };
+
+    initializeMockData();
+  }, []);
+
+  return <DashboardLayout />;
+}
+
+export default App;
+
+
+===== C:\Users\adipr\Documents\Pipeline\src\index.css =====
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Industrial color palette */
+  --color-bg-primary: #0f172a;
+  --color-bg-secondary: #1e293b;
+  --color-bg-tertiary: #334155;
+
+  /* Status colors */
+  --color-healthy: #22d3ee;
+  --color-warning: #f59e0b;
+  --color-critical: #ef4444;
+
+  /* Text colors */
+  --color-text-primary: #f1f5f9;
+  --color-text-secondary: #cbd5e1;
+  --color-text-muted: #94a3b8;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  width: 100%;
+  height: 100vh;
+}
+
+/* Custom scrollbar for industrial theme */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg-secondary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-bg-tertiary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #475569;
+}
+
+===== C:\Users\adipr\Documents\Pipeline\src\main.tsx =====
+import { StrictMode } from 'react'
+import { createRoot } from 'react-dom/client'
+import './index.css'
+import App from './App.tsx'
+
+createRoot(document.getElementById('root')!).render(
+  <StrictMode>
+    <App />
+  </StrictMode>,
+)
+
+
+===== C:\Users\adipr\Documents\Pipeline\eslint.config.js =====
+import js from '@eslint/js'
+import globals from 'globals'
+import reactHooks from 'eslint-plugin-react-hooks'
+import reactRefresh from 'eslint-plugin-react-refresh'
+import tseslint from 'typescript-eslint'
+import { defineConfig, globalIgnores } from 'eslint/config'
+
+export default defineConfig([
+  globalIgnores(['dist']),
+  {
+    files: ['**/*.{ts,tsx}'],
+    extends: [
+      js.configs.recommended,
+      tseslint.configs.recommended,
+      reactHooks.configs.flat.recommended,
+      reactRefresh.configs.vite,
+    ],
+    languageOptions: {
+      ecmaVersion: 2020,
+      globals: globals.browser,
+    },
+  },
+])
+
+
+===== C:\Users\adipr\Documents\Pipeline\index.html =====
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>pipeline-digital-twin</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
+
+
+===== C:\Users\adipr\Documents\Pipeline\package.json =====
+{
+  "name": "pipeline-digital-twin",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "lint": "eslint .",
+    "preview": "vite preview",
+    "server": "node server/index.js"
+  },
+  "dependencies": {
+    "@react-three/drei": "^10.7.7",
+    "@react-three/fiber": "^9.5.0",
+    "cors": "^2.8.6",
+    "express": "^5.2.1",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "recharts": "^3.7.0",
+    "three": "^0.182.0",
+    "ws": "^8.19.0",
+    "zustand": "^5.0.10"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/node": "^24.10.1",
+    "@types/react": "^19.2.5",
+    "@types/react-dom": "^19.2.3",
+    "@types/three": "^0.182.0",
+    "@types/ws": "^8.18.1",
+    "@vitejs/plugin-react": "^5.1.1",
+    "autoprefixer": "^10.4.23",
+    "eslint": "^9.39.1",
+    "eslint-plugin-react-hooks": "^7.0.1",
+    "eslint-plugin-react-refresh": "^0.4.24",
+    "globals": "^16.5.0",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.19",
+    "typescript": "~5.9.3",
+    "typescript-eslint": "^8.46.4",
+    "vite": "^7.2.4"
+  }
+}
+
+
+===== C:\Users\adipr\Documents\Pipeline\postcss.config.js =====
+export default {
+    plugins: {
+        tailwindcss: {},
+        autoprefixer: {},
+    },
+}
+
+
+===== C:\Users\adipr\Documents\Pipeline\README.md =====
+# Pipeline Integrity Digital Twin Dashboard
+
+Production-grade MVP for Oil & Gas Pipeline Integrity Management using AI-driven monitoring with Computer Vision, Physics-Informed Neural Networks, and Explainable AI.
+
+## ðŸš€ Quick Start
+
+### Installation & Running
+
+1. **Install dependencies:**
+```bash
+npm install
+```
+
+2. **Start the backend server (Terminal 1):**
+```bash
+npm run server
+```
+
+3. **Start the frontend (Terminal 2):**
+```bash
+npm run dev
+```
+
+4. **Open browser:**
+Navigate to `http://localhost:5173`
+
+## ðŸ—ï¸ Architecture
+
+### System Components
+
+- **3D Digital Twin**: Interactive pipeline visualization with custom GLSL shaders
+- **CV Inspection Panel**: YOLOv8-Seg corrosion detection with human-in-the-loop feedback
+- **Analytics Panel**: PINN-based integrity forecasts using Fick's 2nd Law
+- **XAI Diagnostics**: SHAP-style feature contributions and natural language explanations
+
+### Technology Stack
+
+**Frontend**: React 19 + TypeScript + React-Three-Fiber + Zustand + Recharts + Tailwind CSS
+
+**Backend**: Express + WebSocket (mock server for demo)
+
+## ðŸ“Š Features
+
+1. **3D Digital Twin Engine** - Custom shaders, color-coded integrity heatmap, interactive segments
+2. **Computer Vision Panel** - Mock video feed, polygon overlays, corrosion metrics, feedback controls
+3. **Physics-Informed Analytics** - Historical vs predicted charts, RUL widget, physics-constrained forecasts
+4. **Explainable AI** - Feature contributions, confidence meter, natural language explanations
+
+## ðŸŽ¯ Usage
+
+1. Click any pipeline segment in the 3D view
+2. View CV inspection data in the right panel
+3. Check Analytics tab for integrity forecasts
+4. Review XAI Diagnostics for prediction explanations
+5. Use âœ…/âŒ buttons to validate CV detections
+
+## ðŸ”® Future Integration
+
+- Replace mock data with actual ML inference endpoints
+- Connect to real YOLOv8-Seg, PINN, and SHAP services
+- Add MQTT/Kafka for real sensor data
+- Implement authentication and RBAC
+
+---
+
+Built for industrial digital twin applications with engineering trust and explainability at the core.
+
+
+===== C:\Users\adipr\Documents\Pipeline\tailwind.config.js =====
+/** @type {import('tailwindcss').Config} */
+export default {
+    content: [
+        "./index.html",
+        "./src/**/*.{js,ts,jsx,tsx}",
+    ],
+    theme: {
+        extend: {
+            colors: {
+                // Industrial dark theme
+                'industrial': {
+                    900: '#0f172a', // slate-900
+                    800: '#1e293b',
+                    700: '#334155',
+                },
+                // Status colors
+                'healthy': {
+                    DEFAULT: '#22d3ee', // cyan-400
+                    dark: '#06b6d4',    // cyan-500
+                    light: '#67e8f9',   // cyan-300
+                },
+                'warning': {
+                    DEFAULT: '#f59e0b', // amber-500
+                    dark: '#d97706',    // amber-600
+                    light: '#fbbf24',   // amber-400
+                },
+                'critical': {
+                    DEFAULT: '#ef4444', // red-500
+                    dark: '#dc2626',    // red-600
+                    light: '#f87171',   // red-400
+                },
+            },
+            fontFamily: {
+                sans: ['Inter', 'system-ui', 'sans-serif'],
+            },
+            animation: {
+                'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+            },
+        },
+    },
+    plugins: [],
+}
+
+
+===== C:\Users\adipr\Documents\Pipeline\tsconfig.app.json =====
+{
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "target": "ES2022",
+    "useDefineForClassFields": true,
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "types": ["vite/client"],
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+    "jsx": "react-jsx",
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "erasableSyntaxOnly": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true
+  },
+  "include": ["src"]
+}
+
+
+===== C:\Users\adipr\Documents\Pipeline\tsconfig.json =====
+{
+  "files": [],
+  "references": [
+    { "path": "./tsconfig.app.json" },
+    { "path": "./tsconfig.node.json" }
+  ]
+}
+
+
+===== C:\Users\adipr\Documents\Pipeline\tsconfig.node.json =====
+{
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
+    "target": "ES2023",
+    "lib": ["ES2023"],
+    "module": "ESNext",
+    "types": ["node"],
+    "skipLibCheck": true,
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",
+    "allowImportingTsExtensions": true,
+    "verbatimModuleSyntax": true,
+    "moduleDetection": "force",
+    "noEmit": true,
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "erasableSyntaxOnly": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true
+  },
+  "include": ["vite.config.ts"]
+}
+
+
+===== C:\Users\adipr\Documents\Pipeline\vite.config.ts =====
+import { defineConfig } from 'vite'
+import react from '@vitejs/plugin-react'
+
+// https://vite.dev/config/
+export default defineConfig({
+  plugins: [react()],
+})
+

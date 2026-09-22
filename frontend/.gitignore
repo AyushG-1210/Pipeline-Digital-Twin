@@ -1,0 +1,42 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# PINN model artefacts — large binaries, not tracked by git (except the
+# canonical checkpoints below, which are pushed through Git LFS)
+pinn_model/data/
+pinn_model/results/model_files/**/*.pt
+!pinn_model/results/model_files/strong_form/sf_wbc1_s42_adam.pt
+!pinn_model/results/model_files/strong_form/sf_wbc1_s43_adam.pt
+!pinn_model/results/model_files/strong_form/sf_wbc1_s44_adam.pt
+!pinn_model/results/model_files/strong_form/sf_wbc1_s45_adam.pt
+!pinn_model/results/model_files/strong_form/sf_wbc1_s46_adam.pt
+pinn_model/diagnostics/*.npz
+pinn_model/diagnostics/*.png
+pinn_model/pinn_insights.json
+pinn_model/venv/
+pinn_model/history/
+
+__pycache__/
+*.pyc

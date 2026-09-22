@@ -12,6 +12,7 @@ YOLO_Pipeline/test_video.mp4
 __pycache__/
 *.pt
 !yolov8n-seg.pt
+!frontend/pinn_model/results/model_files/**/*.pt
 *.npy
 *.npz
 .ipynb_checkpoints/

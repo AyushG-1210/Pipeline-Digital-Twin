@@ -1,0 +1,146 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  /* Working palette — warm off-white canvas, navy ink, teal secondary, restrained coral accent.
+     Stored as "R G B" triplets so Tailwind's rgb(var(...) / <alpha-value>) tokens (tailwind.config.js)
+     can apply opacity modifiers. .dark below redefines every one of these for the dark theme. */
+  --color-canvas: 244 243 238;
+  --color-surface: 255 255 255;
+  --color-surface-sunken: 234 232 225;
+  --color-line: 225 222 211;
+  --color-line-strong: 207 203 188;
+
+  --color-ink: 19 34 87;
+  --color-ink-soft: 69 76 103;
+  --color-ink-muted: 139 142 155;
+
+  --color-primary: 19 34 87;
+  --color-primary-hover: 28 47 110;
+  --color-primary-soft: 229 232 240;
+
+  --color-secondary: 104 176 171;
+  --color-secondary-hover: 86 158 153;
+  --color-secondary-soft: 226 241 239;
+
+  --color-accent: 254 76 64;
+  --color-accent-soft: 255 230 227;
+
+  /* Status colors — kept identical across themes, already saturated enough for both */
+  --color-healthy: #4C9A78;
+  --color-warning: #D98E2B;
+  --color-critical: #D6473C;
+}
+
+:root.dark {
+  /* Dark theme — #1e1e1e base, everything else picked to sit comfortably on it */
+  --color-canvas: 30 30 30;
+  --color-surface: 46 46 46;
+  --color-surface-sunken: 23 23 23;
+  --color-line: 58 58 58;
+  --color-line-strong: 77 77 77;
+
+  --color-ink: 237 237 232;
+  --color-ink-soft: 181 184 196;
+  --color-ink-muted: 124 128 140;
+
+  --color-primary: 108 132 214;
+  --color-primary-hover: 132 152 224;
+  --color-primary-soft: 30 38 64;
+
+  --color-secondary: 104 176 171;
+  --color-secondary-hover: 126 193 188;
+  --color-secondary-soft: 22 48 46;
+
+  --color-accent: 254 76 64;
+  --color-accent-soft: 58 24 21;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
+  background-color: rgb(var(--color-canvas));
+  color: rgb(var(--color-ink-soft));
+  min-height: 100vh;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+#root {
+  width: 100%;
+  height: 100vh;
+}
+
+/* Panel & card components — flat, light, hairline borders. No gradients/gloss. */
+.panel {
+  background: rgb(var(--color-surface));
+  border: 1px solid rgb(var(--color-line));
+  box-shadow: 0 1px 2px rgb(var(--color-ink) / 0.04);
+  border-radius: 0.75rem;
+  overflow: hidden;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.panel-header {
+  background: rgb(var(--color-surface));
+  border-bottom: 1px solid rgb(var(--color-line));
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+  color: rgb(var(--color-ink));
+}
+
+/* Inner content cards — subtly sunken relative to the panel */
+.inner-card {
+  background: rgb(var(--color-surface-sunken));
+  border: 1px solid rgb(var(--color-line));
+  border-radius: 0.625rem;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.25rem 0.625rem;
+  border-radius: 0.375rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+  border: 1px solid rgb(var(--color-line));
+}
+
+/* Focus rings use the accent colour — the one place it's allowed to read clearly */
+:focus-visible {
+  outline: 2px solid rgb(var(--color-accent));
+  outline-offset: 1px;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgb(var(--color-line-strong));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(var(--color-ink-muted));
+}
