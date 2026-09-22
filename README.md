@@ -202,7 +202,7 @@ All figures are **median [min–max] across seeds**, with $n$ stated. Training i
 
 ### Ablation Findings
 
-**Objective–accuracy misalignment.** Training the weak form for longer lowers the weak-form objective while raising the error. From 7,205 to 13,200 gradient steps at bs=64, `weak_total` fell 2.08e-2 → 1.16e-2 while flux error rose 0.54 → 1.36 and C rel. $L_2$ rose 0.174 → 0.286. All five seeds, monotone.
+**Objective–accuracy misalignment.** Training the weak form for longer lowers the weak-form objective while raising the error. From 7,205 to 13,200 gradient steps at bs=64, `weak_total` fell 2.07e-2 → 1.16e-2 while flux error rose 0.54 → 1.36 and C rel. $L_2$ rose 0.174 → 0.286. All five seeds, monotone.
 
 **The weak form does not identify the solution without supervision.** With the semi-supervised FDM anchor removed, the weak form reaches C rel. $L_2 = 1.027$ with *negative* along-pipe correlation — a non-solution rather than a degraded solution. The strong form under the identical ablation reaches 0.108 with $x_{\text{corr}} = +0.491$.
 
@@ -242,7 +242,22 @@ This is the third instance in this project of a high correlation accompanied by 
 
 ## Verification & Deployment Strategy
 
-The trained operator serves as the backend engine for an interactive web dashboard. Pipeline asset operators adjust structural configurations or environmental parameters via a GUI, triggering a forward pass that updates localized degradation heatmaps without placing computational load on cluster hardware.
+The trained operator is served through an interactive web dashboard (`frontend/`): an Express + WebSocket backend and a React/TypeScript/Vite frontend, with a light/dark themeable UI.
+
+### PINN integration
+
+Per-segment diagnostics are precomputed offline rather than generated on demand from a random seed. `frontend/pinn_model/build_benchmarks.py` runs the canonical checkpoint (`sf_wbc1_s42`, per `MANIFEST.json`) once over real environmental scenarios recovered from the FDM training/holdout dataset — not fabricated GRF draws — and, for the same scenarios, the four other trained seeds (43–46) to produce ensemble statistics. The result is a stratified set of 60 segments spanning healthy to critical, each carrying:
+
+- concentration/potential profiles and hold-set errors ($C$/$\phi$ rel. $L_2$) computed against that scenario's own FDM ground truth, rather than a single static hold-set-median number;
+- an **exact** linear decomposition of the predicted wall concentration into the boundary condition plus each branch net's contribution, exploiting the architecture's additive branch-summing property — not a SHAP/Integrated-Gradients approximation;
+- 5-seed ensemble mean/std for integrity and RUL, standing in for a "confidence" score that a deterministic forward pass has no basis for reporting;
+- a 5-axis fingerprint (environmental integrity, soil resistivity, O$_2$ scarcity, model accuracy, ensemble agreement) normalized against the full 750-scenario population, plus the real soil-resistivity/O$_2$-concentration curves the prediction was computed from.
+
+The backend assigns one of these real benchmarks to each pipeline segment at startup. There is no manual "run inference" action and no per-request random seed in the deployed dashboard.
+
+The computer-vision layer (per-segment surface defect detection) is still mock pending `YOLOv8` integration into the live dashboard — out of scope for this pass.
+
+`frontend/pinn_model/` holds only the deployed checkpoints (5 ensemble seeds, tracked via Git LFS) and the generated benchmark artifacts the dashboard consumes, not the PINN research project itself, which remains under the root `PINN/` directory.
 
 Recommended display constraints: wall-adjacent quantities on a log axis (a linear axis cannot separate 1e-2 from 1e-6), whole-pipe attribution only, and no confidence bands — seed spread is available but is not calibrated uncertainty.
 
@@ -265,7 +280,7 @@ Model checkpoints are tracked under `results/model_files/`. All five weak-form s
 
 Evaluation JSON under `results/json_files/` is sufficient to regenerate every reported figure without the checkpoints.
 
-`papers/` (third-party PDFs) and `ignore/` are gitignored and local-only.
+The committed `PINN/data/dataset_v2.pt` carries an older 6-field fingerprint, while cell 3 of `main.ipynb` now expects the current 11-field `DATA_FINGERPRINT`. On a fresh clone this makes the cache check report stale and silently regenerate the tensors on the next run — harmless (same seed, verified to reproduce the FDM `rho(x)`/`c_bulk(x)` files to float32 rounding) but it takes ~30 minutes and rewrites the tracked file.
 
 ---
 
@@ -275,7 +290,7 @@ If you utilize the AmorFlux architectural framework or system design pipelines i
 
 ```bibtex
 @misc{Gouda2026:AmorFlux,
-  author       = {Ayush Gouda and Aditya Prakash and Swaraag Hebbar N.},
+  author       = {Ayush Gouda and Swaraag Hebbar N and Aditya Prakash},
   title        = {{AmorFlux: Multi-Branch Physics-Informed Neural Operators with GraphRAG for Amortized Pipeline Corrosion Prognostics}},
   howpublished = {\url{https://github.com/AyushG-1210/Pipeline-Digital-Twin}},
   year         = {2026},

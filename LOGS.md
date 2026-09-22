@@ -117,7 +117,7 @@ Automated diagnostics verified the structural integrity of the exported tensor. 
 ## Progress updates: [Phase 7 - 22/08/2026]
 >Task : Finalize the PINN Model.
 - Objective-accuracy misalignment: training the weak form longer lowers weak_total
-(2.08e-2 -> 1.16e-2) while flux error rises (0.54 -> 1.36). 5/5 seeds, monotone.
+(2.07e-2 -> 1.16e-2) while flux error rises (0.54 -> 1.36). 5/5 seeds, monotone.
 - Weak form can't identify the solution without the FDM anchor: C_l2 ~0.99, negative
 x_corr. Strong form under the same ablation gets 0.109.
 - Strong form beats weak on everything except op_corr. Awkward, since weak was the
@@ -137,4 +137,15 @@ form identifies the solution" is a stronger claim than "both misbehave."
 - **Issue 1 (API 5L Verification)**: Verified API Spec 5L (46th Ed) and PHMSA HL Part H bin standards. Widened WT range to `[0.188, 1.500]` in and OD range to `[4.0, 56.0]` in (covering X42–X80 transmission grades and PHMSA reportable bins up to 56"). Created single-source registry `api5l_ranges.py` and updated `main.ipynb`.
 - **Issue 2 (Dual Tensor Schema)**: Standardized column schema `META_COL_WT = 0`, `META_COL_OD = 1`, `META_COL_YOLO = 2` across `meta_tensor` (normalized [0,1]) and `raw_tensor` (physical units in inches). Renamed internal variables to `wt_norm`, `od_norm`, `wt_raw`, `od_raw`. Updated `DATA_FINGERPRINT` to `v2` to force clean cache invalidation.
 - **Issue 3 (Soil Branch Shape Resolution)**: Formally documented the 4-column real-world soil schema `[lat, lon, soil_moisture, temperature]` with normalization bounds in `generate_tensor.py` and `api5l_ranges.py`. Confirmed `FactoredMIONet` uses `soil_dim=4` for real data, while retaining 8-point GRF profiles for synthetic PINN pre-training.
-- **Issue 4 (Fluid Branch Assessment)**: Completed audit of PHMSA HL Annual Report (Parts A–J) and RRC GIS datasets. Confirmed per-segment operating pressure and fluid flow rates are absent from historical public data. Explicitly declared Branch 2 (Fluid) as synthetic (`FLUID_BRANCH_IS_SYNTHETIC = True`) with 50-node GRF profiles mapped to `c_bulk(x)` in `[0.3, 1.0]`. Noted Part J %SMYS aggregate bands as a potential constraint for future phases.
+- **Issue 4 (Fluid Branch Assessment)**: Completed audit of PHMSA HL Annual Report (Parts A–J) and RRC GIS datasets. Confirmed per-segment operating pressure and fluid flow rates are absent from historical public data. Explicitly declared Branch 2 (Fluid) as synthetic (`FLUID_BRANCH_IS_SYNTHETIC = True`) with 50-node GRF profiles mapped to `c_bulk(x)` in `[0.3, 1.0]`. Noted Part J %SMYS aggregate bands as a potential constraint for future phases.
+
+## Progress updates: [Phase 9 - 22/09/2026]
+### Ayush:
+> Task: Rebuild the frontend dashboard and wire it to the real PINN model instead of mock/random data.
+- Full UI rework: fixed the broken file layout (wrong YOLO path, duplicate PINN folders), moved to a light/dark themeable design system (`#F4F3EE` canvas / `#132257` primary / `#68B0AB` secondary / `#FE4C40` accent, used sparingly), added a theme toggle in the header.
+- Killed the "Run PINN Analysis" button and the random per-request seed picker. Replaced with `build_benchmarks.py`, which runs the canonical checkpoint (`sf_wbc1_s42`) plus the 4 other trained seeds over real scenarios recovered from the FDM train/holdout `.npz` files — not fabricated GRF draws. Produces 60 segments, stratified healthy→critical, generated once offline and served from `benchmarks.json`.
+- Found and worked around a real bug in `pinn_inference.py`: its own integrity formula saturates to 0.0 always, because it compares wall concentration against bulk-range bounds. Substituted population-relative flux normalization instead; root cause documented in code rather than silently patched over.
+- XAI panel rehaul: exact linear waterfall decomposition of predicted wall concentration into branch contributions (exploits the architecture's additive branch-summing property — not a SHAP/IG approximation), 5-seed ensemble agreement standing in for "model confidence" (a deterministic forward pass has no softmax to read one from), a 5-axis segment fingerprint, and the real soil-resistivity/O2 curves behind each prediction — this last pair was needed because the waterfall's own meta branch is legitimately constant across the benchmark set (no per-segment pipe geometry in the FDM data).
+- Cleaned up `frontend/PINN` (72MB → 4.8MB): dropped unused ablation checkpoints/results (the entire weak-form tree, non-canonical strong-form variants), kept only the 5 ensemble checkpoints plus whatever the app or the regeneration script actually reads. Renamed to `frontend/pinn_model` since `PINN` was already taken by the root research folder, and this one only holds deployed artifacts, not the PINN project itself.
+- Folded `frontend/` into this repo — it had been tracked as its own clone off a different fork — and pushed the 5 checkpoint files through Git LFS.
+- CV/YOLO wiring into the live dashboard is still mock; out of scope for this pass, handed off.
