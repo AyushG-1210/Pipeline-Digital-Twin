@@ -6,6 +6,10 @@ Production-grade MVP for Oil & Gas Pipeline Integrity Management using AI-driven
 
 ### Installation & Running
 
+```bash
+cd frontend
+```
+
 1. **Install dependencies:**
 ```bash
 npm install
