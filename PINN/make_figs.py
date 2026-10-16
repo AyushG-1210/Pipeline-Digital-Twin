@@ -12,12 +12,15 @@ READS
                                     ramp_fix_3seeds, band_and_icweight_electrochem
     heat_results/results/*.json     heat runs (plain weak / strong, band)
     gm_heat_results/results/*.json  heat runs (dual-norm weak)
+    heat_matched/results/*.json     heat strong-form IC sweep and matched runs (x970, x10 ... x10000)
 WRITES (in --out)
     fig1_drift.pdf/.png         the failure: error at 3 times, weak IC on/off vs strong, warm/cold, 3 seeds
     fig2_probe.pdf/.png         mechanism: change in each training objective along the IC term's pull
     fig3_heat.pdf/.png          generality: heat 1D/2D, matching vs clashing IC, error over time
     fig4_icweight.pdf/.png      mitigation: early vs late error as the IC weight varies; validation pick starred
-    tables.md / tables.tex      robustness (what doesn't fix it), heat dual-norm, heat "what each form gives up"
+    fig6_sweep.pdf/.png         scale: IC weight sweeps on heat, strong raised and weak lowered (1D and 2D)
+    tables.md / tables.tex      robustness (what doesn't fix it), heat dual-norm, heat "what each form gives up",
+                                heat IC sweep
     per_seed.csv                every number behind the figures, one row per seed
 Anything missing is reported at the end instead of crashing.
 
@@ -27,6 +30,14 @@ CHANGES (Oct 5)
           (markers encode seed, as in the right panel).
     fig4: late panel on a log y-axis so strong / IC-off / validation pick are separable.
     csv:  each arm is logged once (arms used by several figures/tables were duplicated before).
+CHANGES (Oct 12, later)
+    fig6 + sweep tables now include the weak-form sweep (weight lowered). Left: early/late error of both forms on one
+          axis (weak multipliers scaled by k). Right: each form's worst gap to the other form's default.
+CHANGES (Oct 12)
+    fig6 + sweep table: strong form, clashing IC, warm start, IC weight x1 ... x10000 against the weak default.
+          Left: early (t=0.01) and late (t=1) error vs multiplier. Right: worst gap to the weak default over the
+          five times, with the 0.02 rule. Both shade the measured range of k. Sweep runs are loaded separately,
+          so they never enter fig3 or the other heat tables.
 """
 import os, json, glob, csv, argparse
 import numpy as np
@@ -38,12 +49,16 @@ from matplotlib.ticker import NullFormatter
 
 # Okabe-Ito (colour-blind safe)
 C = dict(start="#7F7F7F", weak_on="#D55E00", weak_off="#56B4E9", strong="#009E73", strong_off="#7FD3B8",
-         dual="#E69F00", warm="#0072B2", cold="#CC79A7")
+         dual="#E69F00", warm="#0072B2", cold="#CC79A7", early="#E69F00", late="#0072B2", k="#000000")
 TAGS = ("0.25/Fo", "1/Fo", "t=1")
 TAG_LABEL = {"0.25/Fo": r"$t=0.25/\mathrm{Fo}$", "1/Fo": r"$t=1/\mathrm{Fo}$", "t=1": r"$t=1$"}
 SEEDS = (42, 43, 44)
 STEADY_GUESS = 0.326   # error at 0.25/Fo of a model that outputs only the t=1 steady state (measured in-notebook)
 LINEAR_MAX_STEP = 3e-4  # probe steps above this are outside the near-linear range
+HEAT_T = ("t=0.01", "t=0.05", "t=0.1", "t=0.3", "t=1.0")
+MATCH_RULE = 0.02       # decision rule fixed before the sweep: split gone if |strong - weak| <= 0.02 at every time
+K_RANGE = {1: (970, 2800), 2: (1.2e5, 2.1e5)}   # two independent sets of ten draws (paper, Appendix "Spread")
+K_ALIGN = {1: 970.0, 2: 1.2e5}                  # first estimate of k; weak multipliers are scaled by it in fig6 (left)
 plt.rcParams.update({"font.size": 9, "axes.titlesize": 9, "axes.labelsize": 9, "legend.fontsize": 8,
                      "xtick.labelsize": 8, "ytick.labelsize": 8, "axes.spines.top": False,
                      "axes.spines.right": False, "savefig.bbox": "tight", "savefig.dpi": 200})
@@ -91,6 +106,18 @@ def load_heat(root):
             r = json.load(open(f)); r.setdefault("band", 0.0); r.setdefault("dual", False); rows.append(r)
     if not rows:
         note("no heat result JSONs found")
+    return rows
+
+def load_sweep(root):
+    """IC multiplier runs, both forms (strong x10 ... x10000, weak x0.3 ... x1e-6). Kept apart from load_heat on
+    purpose, so they never enter fig3 or the other heat tables."""
+    rows = []
+    for f in glob.glob(os.path.join(root, "heat_matched", "results", "*.json")):
+        r = json.load(open(f)); r.setdefault("band", 0.0); r.setdefault("dual", False)
+        if r.get("case") == "clash" and r.get("init") == "warm" and r["band"] == 0 and r.get("ic", 1) not in (0, 1):
+            rows.append(r)
+    if not rows:
+        note("no heat_matched/results JSONs found (sweep figure skipped)")
     return rows
 
 def early(R, arm):
@@ -196,7 +223,7 @@ def fig_probe(R, out):
 def fig_heat(H, out):
     if not H:
         return
-    T_EVAL = ["t=0.01", "t=0.05", "t=0.1", "t=0.3", "t=1.0"]
+    T_EVAL = list(HEAT_T)
     tv = [float(t[2:]) for t in T_EVAL]
     lines = [("Weak, IC on", dict(form="weak", ic=1, dual=False), C["weak_on"], "-"),
              ("Weak (dual norm), IC on", dict(form="weak", ic=1, dual=True), C["dual"], "--"),
@@ -286,8 +313,78 @@ def fig_icweight(R, out):
     fig.tight_layout()
     save(fig, out, "fig4_icweight")
 
+# ----------------------------------------------------------------------------- figure 6: heat IC sweeps
+def _err(rs):
+    return np.array([[r["err"][t] for t in HEAT_T] for r in rs])
+
+def sweep_arms(H, S, dim):
+    """Per dim: {mult: runs} for the strong sweep and the weak sweep (x1 = the default runs from heat_results),
+    plus the default strong and weak runs used as each other's targets."""
+    sel = lambda form: heat_sel(H, dim=dim, case="clash", init="warm", form=form, ic=1, band=0.0, dual=False)
+    sdef, wdef = sel("strong"), sel("weak")
+    arms = {"strong": {}, "weak": {}}
+    if sdef: arms["strong"][1.0] = sdef
+    if wdef: arms["weak"][1.0] = wdef
+    for r in S:
+        if r["dim"] == dim and r["form"] in arms:
+            arms[r["form"]].setdefault(float(r["ic"]), []).append(r)
+    arms = {f: dict(sorted(a.items())) for f, a in arms.items() if len(a) >= 3}
+    return arms, sdef, wdef
+
+def fig_sweep(H, S, out):
+    dims = [d for d in (1, 2) if sweep_arms(H, S, d)[0] and sweep_arms(H, S, d)[1] and sweep_arms(H, S, d)[2]]
+    if not dims:
+        note("not enough sweep runs for fig6_sweep"); return
+    fig, axes = plt.subplots(len(dims), 2, figsize=(6.8, 2.7 * len(dims)), squeeze=False)
+    for row, dim in enumerate(dims):
+        arms, sdef, wdef = sweep_arms(H, S, dim)
+        target = {"strong": _err(wdef).mean(0), "weak": _err(sdef).mean(0)}   # each form vs the other's default
+        a1, a2 = axes[row]
+        for form, A in arms.items():
+            ms = np.array(list(A)); E = {m: _err(rs) for m, rs in A.items()}
+            for m, rs in A.items():
+                if first_time(("sweep", dim, form, m)):
+                    for r in rs:
+                        for t in HEAT_T:
+                            CSV_ROWS.append(("heat_sweep", f"d{dim}_clash_warm_{form}_x{m:g}", r["seed"], t, r["err"][t]))
+            # left: early and late error against the effective weight relative to the strong default
+            x = ms * (K_ALIGN[dim] if form == "weak" else 1.0)
+            ls, mfc = ("-", None) if form == "strong" else ("--", "white")
+            for t, col in (("t=0.01", C["early"]), ("t=1.0", C["late"])):
+                k = HEAT_T.index(t)
+                mean = np.array([E[m][:, k].mean() for m in ms])
+                lo = np.array([E[m][:, k].min() for m in ms]); hi = np.array([E[m][:, k].max() for m in ms])
+                a1.plot(x, mean, ls, marker="o", ms=3.5, lw=1.2, color=col, mfc=mfc or col)
+                a1.fill_between(x, lo, hi, color=col, alpha=0.15, lw=0)
+            # right: worst gap to the other form's default against the form's own multiplier
+            gap = np.array([np.abs(E[m].mean(0) - target[form]).max() for m in ms])
+            a2.plot(ms, gap, ls, marker="o", ms=3.5, lw=1.2, color="black", mfc=mfc or "black")
+        if "strong" not in arms and sdef:                     # no strong sweep (2D): still show the strong default
+            for t, col in (("t=0.01", C["early"]), ("t=1.0", C["late"])):
+                a1.plot([1.0], [_err(sdef)[:, HEAT_T.index(t)].mean()], "o", ms=4.5, color=col)
+        klo, khi = K_RANGE[dim]
+        a1.axvspan(klo, khi, color="0.9", lw=0, zorder=0)
+        bands = ([(klo, khi)] if "strong" in arms else []) + ([(1 / khi, 1 / klo)] if "weak" in arms else [])
+        for lo_, hi_ in bands:
+            a2.axvspan(lo_, hi_, color="0.9", lw=0, zorder=0)
+        a2.axhline(MATCH_RULE, color="0.4", ls=":", lw=1)
+        a2.axvline(1, color="0.6", lw=0.6)
+        a2.text(0.02, MATCH_RULE * 1.12, f"{MATCH_RULE:g} rule", fontsize=7, color="0.4", transform=a2.get_yaxis_transform())
+        a1.set(xscale="log", yscale="log", xlabel="effective IC weight / strong default", ylabel="rel. error of the transient")
+        a2.set(xscale="log", yscale="log", xlabel="IC weight / own default", ylabel="worst gap to other form's default")
+        a1.set_title(f"{dim}D heat: one curve for both forms"); a2.set_title(f"{dim}D heat: match near $k$ and $1/k$")
+    handles = [Line2D([], [], color=C["early"], lw=1.4, label="$t=0.01$"),
+               Line2D([], [], color=C["late"], lw=1.4, label="$t=1$"),
+               Line2D([], [], color="black", marker="o", ms=4, lw=1.2, label="strong form, weight raised"),
+               Line2D([], [], color="black", marker="o", ms=4, lw=1.2, ls="--", mfc="white", label="weak form, weight lowered")]
+    fig.legend(handles=handles, ncol=4, frameon=False, loc="upper center", bbox_to_anchor=(0.5, 1.04), fontsize=7)
+    fig.text(0.99, -0.01, "clashing IC, warm start; mean of 3 seeds, bands min-max; left: weak multipliers scaled by k "
+             "(970 in 1D, 1.2e5 in 2D); shaded: measured k and 1/k", ha="right", fontsize=6.5, color="0.4")
+    fig.tight_layout()
+    save(fig, out, "fig6_sweep")
+
 # ----------------------------------------------------------------------------- tables
-def tables(R, H, out):
+def tables(R, H, S, out):
     md, tex = [], []
 
     def emit(title, header, rows):
@@ -356,6 +453,24 @@ def tables(R, H, out):
     emit("Heat 2D, clashing IC, warm start: what each form gives up",
          ["Model", "IC loss", "pointwise PDE residual", "error t=0.01", "error t=1"], rows)
 
+    # Table 4: heat IC sweeps (each form vs the other form's default), one block per dim and form
+    for dim in (1, 2):
+        arms, sdef, wdef = sweep_arms(H, S, dim)
+        for form, A in arms.items():
+            other = sdef if form == "weak" else wdef
+            if not other:
+                continue
+            om = _err(other).mean(0)
+            rows = [[f"{'Strong' if form == 'weak' else 'Weak'}, default (target)"]
+                    + [cell([r["err"][t] for r in other]) for t in HEAT_T] + ["--", "--", "--"]]
+            for m, rs in A.items():
+                rows.append([f"{form.capitalize()}, x{m:g}"] + [cell([r["err"][t] for r in rs]) for t in HEAT_T]
+                            + [cell([r["terms"]["ic"] for r in rs]), cell([r["terms"]["strong"] for r in rs]),
+                               f"{np.abs(_err(rs).mean(0) - om).max():.3f}"])
+            emit(f"Heat {dim}D, clashing IC, warm start: {form}-form IC weight sweep (mean [min-max])",
+                 ["Arm"] + [f"error {t}" for t in HEAT_T] + ["IC loss", "pointwise PDE residual", "max gap to other default"],
+                 rows)
+
     open(os.path.join(out, "tables.md"), "w").write("\n".join(md) + "\n")
     open(os.path.join(out, "tables.tex"), "w").write("\n".join(tex) + "\n")
     print("  wrote tables.md / tables.tex")
@@ -368,9 +483,10 @@ if __name__ == "__main__":
     a = ap.parse_args()
     out = os.path.join(a.root, a.out) if not os.path.isabs(a.out) else a.out
     os.makedirs(out, exist_ok=True)
-    R, H = load_electrochem(a.root), load_heat(a.root)
-    print(f"loaded {len(R)} electrochem keys, {len(H)} heat runs")
-    fig_drift(R, out); fig_probe(R, out); fig_heat(H, out); fig_icweight(R, out); tables(R, H, out)
+    R, H, S = load_electrochem(a.root), load_heat(a.root), load_sweep(a.root)
+    print(f"loaded {len(R)} electrochem keys, {len(H)} heat runs, {len(S)} sweep runs")
+    fig_drift(R, out); fig_probe(R, out); fig_heat(H, out); fig_icweight(R, out); fig_sweep(H, S, out)
+    tables(R, H, S, out)
     with open(os.path.join(out, "per_seed.csv"), "w", newline="") as f:
         w = csv.writer(f); w.writerow(["source", "arm", "seed", "metric", "value"]); w.writerows(CSV_ROWS)
     print(f"  wrote per_seed.csv ({len(CSV_ROWS)} rows)")

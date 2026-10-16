@@ -1,0 +1,35 @@
+  iter 0: loss 2.590e+02 | phys 4.923e+00
+Traceback (most recent call last):
+  File "C:\Users\anshu\Desktop\Major Project\PINN\heat_drift.py", line 455, in <module>
+    else: run_one(a)
+          ~~~~~~~^^^
+  File "C:\Users\anshu\Desktop\Major Project\PINN\heat_drift.py", line 282, in run_one
+    m = train(m, dim, case, a.form, W_IC * a.ic, ITERS[a.init], LR[a.init], W, band=a.band)
+  File "C:\Users\anshu\Desktop\Major Project\PINN\heat_drift.py", line 210, in train
+    opt.zero_grad(set_to_none=True); loss.backward(); opt.step(); sch.step()
+                                     ~~~~~~~~~~~~~^^
+  File "C:\Users\anshu\Desktop\Major Project\venv\Lib\site-packages\torch\_tensor.py", line 630, in backward
+    torch.autograd.backward(
+    ~~~~~~~~~~~~~~~~~~~~~~~^
+        self, gradient, retain_graph, create_graph, inputs=inputs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\anshu\Desktop\Major Project\venv\Lib\site-packages\torch\autograd\__init__.py", line 364, in backward
+    _engine_run_backward(
+    ~~~~~~~~~~~~~~~~~~~~^
+        tensors,
+        ^^^^^^^^
+    ...<5 lines>...
+        accumulate_grad=True,
+        ^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\anshu\Desktop\Major Project\venv\Lib\site-packages\torch\autograd\graph.py", line 865, in _engine_run_backward
+    return Variable._execution_engine.run_backward(  # Calls into the C++ engine to run the backward pass
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        t_outputs, *args, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )  # Calls into the C++ engine to run the backward pass
+    ^
+KeyboardInterrupt

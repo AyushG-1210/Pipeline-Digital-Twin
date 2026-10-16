@@ -14,7 +14,7 @@ Both have exact solutions (separable Fourier series), so no FDM is needed.
 
 Weak loss  = your FastVPINN loss (Legendre-difference test functions, per-time residual), BC term dropped.
 Strong loss = your strong-form PINN loss (pointwise u_t - a*lap u), BC term dropped.
-Weights are your solvers' (physics 12, IC 3). Schedule is cosine (as in the main notebook).
+Weights are your solvers' (physics 12, IC 3). Schedule is cosine (as in the main notebook). No gradient clipping.
 
 Arms, per dim x case x seed:
     start               supervised fit to the exact solution (the warm-start probe)
@@ -26,6 +26,25 @@ USAGE
     python heat_drift.py --band-sweep --jobs 8         # band-masked IC fix (2D by default; --dims 1 2 for both)
     python heat_drift.py --dim 2 --case clash --init warm --form weak --ic 1 --seed 42   # one run
     add --smoke for a tiny check run, --out DIR to change the output folder (default ./heat_results)
+
+SCALE-MATCHED CONTROL (new)
+    python heat_drift.py --measure --dims 1 2 --out heat_matched --starts DIR
+        gradient norms of the IC term and the physics term, weak vs strong, clashing IC, at the point each
+        run starts from (warm: the supervised start; cold: the seeded random init). Writes
+        <out>/matched_measure.json and prints the strong-form IC multiplier k that makes the IC term as loud,
+        relative to the physics gradient, as in the weak form at the default weight.
+        Add --case compat (and --starts pointing at the compat starts) to measure the matching-IC problem; that
+        writes <out>/matched_measure_compat.json instead.
+    python heat_drift.py --matched --dims 1 2 --jobs 4 --out heat_matched --starts DIR
+        trains the strong form on the clashing IC at that multiplier: dims x {warm, cold} x seeds 42-44.
+    DIR is the folder holding the EXISTING supervised starts (d{1,2}_clash_start_s{42,43,44}.pt), so warm runs
+    start from the same fits as every other heat run. Both modes stop if a start is missing.
+
+IC-WEIGHT SWEEP (dose-response for the matched control)
+    python heat_drift.py --sweep --dims 1 --jobs 3 --out heat_matched --starts DIR
+        strong form, clashing IC, warm start, seeds 42-44, at each multiplier in --mults
+        (default 10 30 100 300 3000 10000). Finished runs are skipped, so it can be restarted.
+        Results land next to the x970 matched runs, and --summary shows one ICx<mult> arm per multiplier.
 """
 import os, sys, json, math, time, argparse, subprocess, glob
 os.environ.setdefault("CUBLAS_WORKSPACE_CONFIG", ":4096:8")
@@ -226,7 +245,18 @@ def terms(model, dim, case, W, band=0.0):
 def names(dim, case, init, form, ic, seed, band=0.0):
     if init == "pre":
         return f"d{dim}_{case}_start_s{seed}"
-    return f"d{dim}_{case}_{init}_{form}_ic{ic}" + (f"_b{band:g}" if band > 0 else "") + f"_s{seed}"
+    # ic:g keeps the old names (ic1, ic0) and gives e.g. ic450 for a matched multiplier
+    return f"d{dim}_{case}_{init}_{form}_ic{ic:g}" + (f"_b{band:g}" if band > 0 else "") + f"_s{seed}"
+
+def start_path(a, dim, case, seed):
+    """Where the supervised start lives: --starts if given (must exist there), else <out>/ckpt."""
+    fn = names(dim, case, "pre", "", 0, seed) + ".pt"
+    if getattr(a, "starts", None):
+        p = os.path.join(a.starts, fn)
+        if not os.path.exists(p):
+            sys.exit(f"missing supervised start {p} -- point --starts at the folder with the existing starts")
+        return p
+    return os.path.join(a.out, "ckpt", fn)
 
 def run_one(a):
     ck, rs = os.path.join(a.out, "ckpt"), os.path.join(a.out, "results")
@@ -235,7 +265,7 @@ def run_one(a):
         for k in ITERS: ITERS[k] = 30
     dim, case, seed = a.dim, a.case, a.seed
     W = build_weak(dim, **CFG[dim])
-    start_ck = os.path.join(ck, names(dim, case, "pre", "", 0, seed) + ".pt")
+    start_ck = start_path(a, dim, case, seed)
 
     def get_start():
         m = HardBC(dim).to(DEV)
@@ -261,6 +291,87 @@ def run_one(a):
                err=report(m, dim, case), terms=terms(m, dim, case, W, a.band), minutes=(time.time() - t0) / 60)
     json.dump(res, open(os.path.join(rs, name + ".json"), "w"), indent=2)
     print(name, " ".join(f"{k}:{v:.3f}" for k, v in res["err"].items()), flush=True)
+
+# ----------------------------------------------------------------------------- scale-matched control (new)
+def _grad_vec(model, loss):
+    params = list(model.parameters())
+    gs = torch.autograd.grad(loss, params, allow_unused=True)
+    return torch.cat([(g if g is not None else torch.zeros_like(p)).reshape(-1) for g, p in zip(gs, params)]).detach()
+
+def measure(a):
+    """Gradient norms of W_IC*IC and W_PHYS*physics for both forms, clashing IC, averaged over D fixed draws.
+    The IC draws use the same seeds for both forms, so the IC gradient is identical between them.
+    k = ||g_phys_strong|| / ||g_phys_weak||: a strong-form IC multiplier of k matches the weak form at 1."""
+    os.makedirs(a.out, exist_ok=True)
+    case, out = (a.case or "clash"), {}
+    for dim in (int(d) for d in a.dims):
+        W = build_weak(dim, **CFG[dim]); cfg = CFG[dim]; nf = n_strong(dim, W)
+        for init in a.inits:
+            rows = {}
+            for seed in SEEDS:
+                if init == "warm":
+                    m = HardBC(dim).to(DEV); m.load_state_dict(torch.load(start_path(a, dim, case, seed), map_location=DEV))
+                else:
+                    torch.manual_seed(seed); m = HardBC(dim).to(DEV)          # same init as a cold run
+                acc = {}
+                for d in range(a.D):
+                    gi = torch.Generator(device=DEV); gi.manual_seed(2000 + d)
+                    gw = torch.Generator(device=DEV); gw.manual_seed(1000 + d)
+                    gs = torch.Generator(device=DEV); gs.manual_seed(1000 + d)
+                    parts = dict(ic=W_IC * ic_loss(m, dim, case, cfg["n_ic"], gi),
+                                 weak=W_PHYS * weak_residual(m, W, cfg["n_t"], gw),
+                                 strong=W_PHYS * strong_residual(m, dim, nf, gs))
+                    for k, L in parts.items():
+                        acc[k] = acc.get(k, 0) + _grad_vec(m, L) / a.D
+                n = {k: v.norm().item() for k, v in acc.items()}
+                rows[seed] = dict(ic=n["ic"], phys_weak=n["weak"], phys_strong=n["strong"],
+                                  ratio_weak=n["ic"] / n["weak"], ratio_strong=n["ic"] / n["strong"],
+                                  k=n["strong"] / n["weak"])
+            ks = [r["k"] for r in rows.values()]
+            kg = math.exp(sum(map(math.log, ks)) / len(ks))
+            out[f"d{dim}_{init}"] = dict(per_seed=rows, k=kg, k_rounded=float(f"{kg:.2g}"))
+            print(f"\n=== {dim}D {case}, {init} start ===")
+            print(f"{'seed':>6}{'||g_IC||':>12}{'||g_phys|| weak':>17}{'||g_phys|| strong':>19}"
+                  f"{'IC/phys weak':>14}{'IC/phys strong':>16}{'k':>10}")
+            for s, r in rows.items():
+                print(f"{s:>6}{r['ic']:>12.3e}{r['phys_weak']:>17.3e}{r['phys_strong']:>19.3e}"
+                      f"{r['ratio_weak']:>14.3g}{r['ratio_strong']:>16.3g}{r['k']:>10.3g}")
+            print(f"  k (geometric mean) = {kg:.3g}  -> matched strong-form IC multiplier {float(f'{kg:.2g}'):g}"
+                  f"  (IC weight {W_IC * float(f'{kg:.2g}'):g})")
+    # the clash file is what --matched reads; other cases get their own file so nothing is overwritten
+    path = os.path.join(a.out, "matched_measure.json" if case == "clash" else f"matched_measure_{case}.json")
+    json.dump(out, open(path, "w"), indent=2)
+    print(f"\nsaved {path}")
+
+def launch_matched(a):
+    """Strong form, clashing IC, at the matched multiplier for each dim and start: dims x inits x seeds."""
+    path = os.path.join(a.out, "matched_measure.json")
+    if not os.path.exists(path):
+        sys.exit(f"run --measure first ({path} not found)")
+    M = json.load(open(path))
+    jobs = []
+    for dim in (int(d) for d in a.dims):
+        for init in a.inits:
+            key = f"d{dim}_{init}"
+            if key not in M:
+                sys.exit(f"{key} missing from {path}: rerun --measure with the same --dims/--inits")
+            for s in SEEDS:
+                if init == "warm":
+                    start_path(a, dim, "clash", s)                            # stops early if a start is missing
+                jobs.append((dim, "clash", init, "strong", M[key]["k_rounded"], s, 0.0))
+    print("matched strong-form multipliers: " + ", ".join(f"{k}: x{v['k_rounded']:g}" for k, v in M.items()))
+    run_waves(a, (("matched strong-form runs", jobs),))
+
+def launch_sweep(a):
+    """Dose-response: strong form, clashing IC, warm start, at each multiplier in --mults: dims x mults x seeds.
+    Uses the same supervised starts as every other heat run; nothing is measured, the multipliers are fixed."""
+    jobs = []
+    for dim in (int(d) for d in a.dims):
+        for s in SEEDS:
+            start_path(a, dim, "clash", s)                                    # stops early if a start is missing
+        jobs += [(dim, "clash", "warm", "strong", float(m), s, 0.0) for m in a.mults for s in SEEDS]
+    print("strong-form IC multipliers: " + ", ".join(f"x{m:g}" for m in a.mults))
+    run_waves(a, (("strong-form IC sweep", jobs),))
 
 # ----------------------------------------------------------------------------- parallel launcher
 def launch_all(a):
@@ -291,6 +402,7 @@ def run_waves(a, waves):
                 cmd = [sys.executable, "-u", os.path.abspath(__file__), "--dim", str(d), "--case", c,
                        "--init", i, "--form", f, "--ic", str(ic), "--seed", str(s), "--band", str(b),
                        "--out", a.out]
+                if getattr(a, "starts", None): cmd += ["--starts", a.starts]
                 if a.smoke: cmd.append("--smoke")
                 fh = open(os.path.join(logs, tag + ".log"), "w")
                 live.append((tag, subprocess.Popen(cmd, stdout=fh, stderr=subprocess.STDOUT), fh))
@@ -305,6 +417,17 @@ def run_waves(a, waves):
     summary(a)
 
 # ----------------------------------------------------------------------------- summary
+def _ic_label(ic):
+    return "ICoff" if ic == 0 else ("ICon" if ic == 1 else f"ICx{ic:g}")     # matched runs get their own arm
+
+def _ic_order(arm):
+    """Sort ICx<mult> arms by multiplier so the sweep reads as a curve; other arms keep name order."""
+    tail = arm.rsplit("ICx", 1)
+    try:
+        return (tail[0], float(tail[1]))
+    except (IndexError, ValueError):
+        return (arm, 0.0)
+
 def summary(a):
     rows = [json.load(open(f)) for f in glob.glob(os.path.join(a.out, "results", "*.json"))]
     if not rows:
@@ -312,11 +435,11 @@ def summary(a):
     groups = {}
     for r in rows:
         b = r.get("band", 0.0)
-        arm = "start" if r["init"] == "pre" else (f"{r['init']} {r['form']} IC{'on' if r['ic'] else 'off'}"
+        arm = "start" if r["init"] == "pre" else (f"{r['init']} {r['form']} {_ic_label(r['ic'])}"
                                                   + (f" band{b:g}" if b > 0 else ""))
         groups.setdefault((r["dim"], r["case"], arm), []).append(r)
     order = ["start"] + [f"{i} {f} IC{x}" for i in ("warm", "cold") for f in ("weak", "strong") for x in ("on", "off")]
-    order += sorted({k[2] for k in groups} - set(order))           # band arms
+    order += sorted({k[2] for k in groups} - set(order), key=_ic_order)   # band, matched and sweep arms
     for d in (1, 2):
         for c in ("compat", "clash"):
             print(f"\n=== {d}D, {c} IC  (transient rel. error, mean over seeds [max]) ===")
@@ -337,13 +460,25 @@ if __name__ == "__main__":
     p.add_argument("--smoke", action="store_true")
     p.add_argument("--dim", type=int, choices=(1, 2)); p.add_argument("--case", choices=("compat", "clash"))
     p.add_argument("--init", choices=("pre", "warm", "cold")); p.add_argument("--form", default="weak")
-    p.add_argument("--ic", type=int, default=1); p.add_argument("--seed", type=int, default=42)
+    p.add_argument("--ic", type=float, default=1.0, help="IC weight multiplier (0 = off, 1 = default W_IC)")
+    p.add_argument("--seed", type=int, default=42)
     p.add_argument("--band", type=float, default=0.0, help="skip IC points within this distance of the boundary")
     p.add_argument("--band-sweep", action="store_true", help="run the band-masked IC arms (see launch_band)")
     p.add_argument("--bands", type=float, nargs="+", default=[0.05, 0.1])
-    p.add_argument("--dims", nargs="+", default=["2"], help="dims for --band-sweep, e.g. --dims 1 2")
+    p.add_argument("--dims", nargs="+", default=["2"], help="dims for --band-sweep/--measure/--matched/--sweep, e.g. --dims 1 2")
+    p.add_argument("--measure", action="store_true", help="gradient balance at the start, weak vs strong (clash)")
+    p.add_argument("--matched", action="store_true", help="strong form at the measured matched IC multiplier")
+    p.add_argument("--sweep", action="store_true", help="strong form, warm, clash, at each IC multiplier in --mults")
+    p.add_argument("--mults", type=float, nargs="+", default=[10, 30, 100, 300, 3000, 10000],
+                   help="strong-form IC multipliers for --sweep")
+    p.add_argument("--inits", nargs="+", default=["warm", "cold"], help="starts for --measure/--matched")
+    p.add_argument("--D", type=int, default=10, help="draws averaged per gradient in --measure")
+    p.add_argument("--starts", default=None, help="folder with the existing supervised starts (*_start_s*.pt)")
     a = p.parse_args()
     if a.all: launch_all(a)
     elif a.band_sweep: launch_band(a)
+    elif a.measure: measure(a)
+    elif a.matched: launch_matched(a)
+    elif a.sweep: launch_sweep(a)
     elif a.summary: summary(a)
     else: run_one(a)
