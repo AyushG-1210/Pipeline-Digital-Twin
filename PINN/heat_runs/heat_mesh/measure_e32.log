@@ -1,0 +1,10 @@
+
+=== 1D clash, warm start ===
+  seed    ||g_IC||  ||g_phys|| weak  ||g_phys|| strong  IC/phys weak  IC/phys strong         k
+    42   2.896e-01        6.682e-01          2.046e+03         0.433        0.000142  3.06e+03
+    43   3.906e-01        3.795e-01          1.311e+03          1.03        0.000298  3.45e+03
+    44   2.856e-01        6.784e-01          2.091e+03         0.421        0.000137  3.08e+03
+  k (geometric mean) = 3.19e+03  -> matched strong-form IC multiplier 3200  (IC weight 9600)
+  k with the weak residual divided by the element measure (0.0312): 3.12  (a constant factor, so this equals turning the weak IC weight down by 1.02e+03)
+
+saved heat_mesh/matched_measure_e32.json

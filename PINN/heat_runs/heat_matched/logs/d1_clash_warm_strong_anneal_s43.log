@@ -1,0 +1,7 @@
+  iter 0: loss 2.053e+04 | phys 3.433e+00 | IC weight 8.865e+05
+  iter 2000: loss 8.842e+04 | phys 2.901e+01 | IC weight 5.545e+06
+  iter 4000: loss 1.809e+04 | phys 7.829e+00 | IC weight 1.261e+06
+  iter 6000: loss 3.149e+05 | phys 2.341e+01 | IC weight 2.393e+07
+  iter 8000: loss 4.288e+04 | phys 1.094e+01 | IC weight 5.160e+06
+  iter 9999: loss 6.624e+05 | phys 5.340e+01 | IC weight 5.516e+07
+d1_clash_warm_strong_anneal_s43 t=0.01:0.092 t=0.05:0.424 t=0.1:0.882 t=0.3:1.552 t=1.0:0.991

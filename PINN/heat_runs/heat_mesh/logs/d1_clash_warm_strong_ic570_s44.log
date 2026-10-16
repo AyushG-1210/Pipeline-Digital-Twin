@@ -1,0 +1,53 @@
+  iter 0: loss 9.341e+01 | phys 5.032e+00
+  iter 2000: loss 7.491e+01 | phys 1.420e+00
+Traceback (most recent call last):
+  File "H:\My Drive\amorflux\heat_drift.py", line 596, in <module>
+    else: run_one(a)
+          ~~~~~~~^^^
+  File "H:\My Drive\amorflux\heat_drift.py", line 331, in run_one
+    m = train(m, dim, case, a.form, W_IC * a.ic, ITERS[a.init], LR[a.init], W, band=a.band, anneal=ann)
+  File "H:\My Drive\amorflux\heat_drift.py", line 239, in train
+    ic = ic_loss(model, dim, case, cfg["n_ic"], band=band) if w_ic > 0 else None
+         ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "H:\My Drive\amorflux\heat_drift.py", line 203, in ic_loss
+    return ((model(X)[:, 0] - u0(xs, case)) ** 2).mean()
+             ~~~~~^^^
+  File "C:\Users\anshu\AppData\Local\Programs\Python\Python313\Lib\site-packages\torch\nn\modules\module.py", line 1773, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\anshu\AppData\Local\Programs\Python\Python313\Lib\site-packages\torch\nn\modules\module.py", line 1784, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "H:\My Drive\amorflux\heat_drift.py", line 149, in forward
+    return 1.0 + B * self.net(X)
+                     ~~~~~~~~^^^
+  File "C:\Users\anshu\AppData\Local\Programs\Python\Python313\Lib\site-packages\torch\nn\modules\module.py", line 1773, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\anshu\AppData\Local\Programs\Python\Python313\Lib\site-packages\torch\nn\modules\module.py", line 1784, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "H:\My Drive\amorflux\heat_drift.py", line 136, in forward
+    return self.pinn(x)
+           ~~~~~~~~~^^^
+  File "C:\Users\anshu\AppData\Local\Programs\Python\Python313\Lib\site-packages\torch\nn\modules\module.py", line 1773, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\anshu\AppData\Local\Programs\Python\Python313\Lib\site-packages\torch\nn\modules\module.py", line 1784, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "C:\Users\anshu\AppData\Local\Programs\Python\Python313\Lib\site-packages\torch\nn\modules\container.py", line 244, in forward
+    input = module(input)
+  File "C:\Users\anshu\AppData\Local\Programs\Python\Python313\Lib\site-packages\torch\nn\modules\module.py", line 1773, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\anshu\AppData\Local\Programs\Python\Python313\Lib\site-packages\torch\nn\modules\module.py", line 1784, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "C:\Users\anshu\AppData\Local\Programs\Python\Python313\Lib\site-packages\torch\nn\modules\container.py", line 244, in forward
+    input = module(input)
+  File "C:\Users\anshu\AppData\Local\Programs\Python\Python313\Lib\site-packages\torch\nn\modules\module.py", line 1773, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\anshu\AppData\Local\Programs\Python\Python313\Lib\site-packages\torch\nn\modules\module.py", line 1784, in _call_impl
+    return forward_call(*args, **kwargs)
+  File "C:\Users\anshu\AppData\Local\Programs\Python\Python313\Lib\site-packages\torch\nn\modules\linear.py", line 125, in forward
+    return F.linear(input, self.weight, self.bias)
+           ~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+KeyboardInterrupt

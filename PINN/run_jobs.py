@@ -25,7 +25,7 @@ LOG_DIR  = os.path.join(ROOT, "results", "logs")
 #            "ts144"   test space 24 elements x 6 x-modes = 144 functions
 # Listed in priority order: the queue runs top to bottom.
 W3 = (0.01, 0.1, 0.3)
-JOBS = [
+'''JOBS = [
     # 1) IC-weight sweep, seeds 43-44 (seed 42 done) -- 12 runs
     *[(i, "weak", s, 0.0, w, "") for w in W3 for i in ("warm", "cold") for s in (43, 44)],
     # 2) test-space size: is the drift just an under-resolved test space? warm weak, IC w=1 -- 6 runs
@@ -34,6 +34,12 @@ JOBS = [
     *[("warm", "weak", s, 0.0, 1.0, v) for v in ("noA", "pertime") for s in (43, 44)],
     # 4) finer IC-weight grid around 0.1, seed 42 only (lowest priority, runs last) -- 6 runs
     *[(i, "weak", 42, 0.0, w, "") for w in (0.03, 0.05, 0.2) for i in ("warm", "cold")],
+]'''
+JOBS = [
+    ("warm", "strong", 42, 0.0, 71,  ""),
+    ("warm", "strong", 43, 0.0, 71,  ""),
+    ("warm", "strong", 44, 0.0, 71,  ""),
+    ("warm", "strong", 44, 0.0, 210, ""),
 ]
 
 # (num_elements_d, num_modes_x, x-quadrature points). Default notebook test space: (12, 2, 8) = 36 functions.

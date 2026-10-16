@@ -3,17 +3,17 @@ pull_paper_values.py -- CPU only (numpy + json). Reads the cleaned repo layout a
   1) prints every number the paper still marks % CHECK, and saves them to paper_values.md
   2) writes the appendix tables as small .tex files that paper.tex pulls in with \\inputif{...}
 
-USAGE (from the repo root, the folder that holds data/, results/, ignore/):
+USAGE (from the repo root, the PINN folder: electrochem/, heat_runs/, results/):
     python pull_paper_values.py
     python pull_paper_values.py --root . --out results/paper_figs
 
 READS
-    results/results.json                                   electrochem results
-    results/json_files/heat_clash|heat_compat/*.json       heat runs (plain weak, strong, band, starts)
-    results/json_files/gram_matrix_clash|_compat/*.json    heat dual-norm runs (their *_start_* re-scores are skipped,
+    electrochem/results/results.json                                 electrochem results
+    heat_runs/heat_results/results/*.json                   heat runs (plain weak, strong, band, starts)
+    heat_runs/gm_heat_results/results/*.json                heat dual-norm runs (their *_start_* re-scores are skipped,
                                                            so each supervised start is counted once)
-    results/positive_control/*.json                        Da = 0 control
-    ignore/logs/**.log, val_refs.py                        run settings and the validation safety checks
+    electrochem/results/positive_control/*.json                     Da = 0 control
+    run logs under electrochem/ and heat_runs/, val_refs.py                     run settings and the validation safety checks
 WRITES (in --out)
     paper_values.md
     app_ec_perseed.tex  app_ec_extra.tex  app_heat_1d.tex  app_heat_2d.tex  app_heat_terms.tex  app_heat_band.tex
@@ -92,10 +92,13 @@ def load_json(p):
 
 def load_heat(root):
     rows = []
-    for d in ("heat_clash", "heat_compat", "gram_matrix_clash", "gram_matrix_compat"):
-        files = sorted(glob.glob(os.path.join(root, "results", "json_files", d, "*.json")))
+    # (folder under heat_runs, legacy tag, filename marker)
+    for src, d, mark in (("heat_results", "heat_clash", "_clash_"), ("heat_results", "heat_compat", "_compat_"),
+                         ("gm_heat_results", "gram_matrix_clash", "_clash_"), ("gm_heat_results", "gram_matrix_compat", "_compat_")):
+        files = [f for f in sorted(glob.glob(os.path.join(root, "heat_runs", src, "results", "*.json")))
+                 if mark in os.path.basename(f)]
         if not files:
-            miss(f"results/json_files/{d}/*.json")
+            miss(f"heat_runs/{src}/results/*{mark}*.json")
         for f in files:
             if d.startswith("gram") and "_start_" in os.path.basename(f):
                 continue                                  # duplicate re-score of a start; keep the original only
@@ -133,7 +136,7 @@ def ec_summary(R, pat):
 def ec_values(R, out):
     say("\n## Electrochem\n")
     if not R:
-        miss("results/results.json"); return
+        miss("electrochem/results/results.json"); return
     say("results.json top-level keys: " + ", ".join(R.keys()))
     vc = R.get("rework_summary", {}).get("val_choice", {})
     say(f"validation choice: {json.dumps(vc)[:400]}")
@@ -290,19 +293,19 @@ def heat_values(H, out):
 # ------------------------------------------------------------------------------------------------ other checks
 def other_checks(root):
     say("\n## Positive control (Da = 0)\n")
-    for f in sorted(glob.glob(os.path.join(root, "results", "positive_control", "*.json"))):
+    for f in sorted(glob.glob(os.path.join(root, "electrochem", "results", "positive_control", "*.json"))):
         say(f"### {os.path.basename(f)}")
         for k, v in list(flat(load_json(f)))[:60]:
             say(f"  {k}: {v}")
 
     say("\n## Run settings from logs\n")
     pat = re.compile(r"batch|bs[ =:]|epoch|step|lr[ =:]|phase|split|w_ic|icw|W_IC|device|cuda|A100|T4|H100|L4|GPU", re.I)
-    for rel in ("electrochem/warmstart_s43.log", "electrochem/warm_weak_s43.log", "electrochem/warm_strong_s43.log",
-                "electrochem/icw0.1_warm_weak_s43.log", "heat_results/d2_clash_warm_weak_ic1_s42.log",
-                "gm_heat_results/d2_clash_warm_weak_ic1_dual_s42.log"):
-        p = os.path.join(root, "ignore", "logs", rel)
+    for rel in ("electrochem/results/logs/warmstart_s43.log", "electrochem/results/logs/warm_weak_s43.log", "electrochem/results/logs/warm_strong_s43.log",
+                "electrochem/results/logs/icw0.1_warm_weak_s43.log", "heat_runs/heat_results/logs/d2_clash_warm_weak_ic1_s42.log",
+                "heat_runs/gm_heat_results/logs/d2_clash_warm_weak_ic1_dual_s42.log"):
+        p = os.path.join(root, rel)
         if not os.path.exists(p):
-            miss(f"ignore/logs/{rel}"); continue
+            miss(rel); continue
         say(f"### {rel}")
         hits = [ln.rstrip() for ln in open(p, errors="replace").readlines()[:400] if pat.search(ln)]
         for ln in hits[:15]:
@@ -327,7 +330,7 @@ if __name__ == "__main__":
     out = a.out if os.path.isabs(a.out) else os.path.join(a.root, a.out)
     os.makedirs(out, exist_ok=True)
     say("# Paper values (generated by pull_paper_values.py)")
-    R = load_json(os.path.join(a.root, "results", "results.json"))
+    R = load_json(os.path.join(a.root, "electrochem", "results", "results.json"))
     H = load_heat(a.root)
     ec_values(R, out)
     heat_values(H, out)

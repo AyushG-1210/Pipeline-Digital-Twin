@@ -31,7 +31,7 @@ NX, NY, NT = 21, 61, 200
 # local layout: this file lives in PINN/rework/
 PINN_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_DIR = os.path.join(PINN_DIR, "data")                            # fdm_hold_950_1000.npz in, fdm_hold_te*.npz out
-DA0_DIR  = os.path.join(PINN_DIR, "results", "positive_control")     # fdm_hold_da0_te.npz
+DA0_DIR  = os.path.join(PINN_DIR, "electrochem", "results", "positive_control")     # fdm_hold_da0_te.npz
 
 # =============================================================================
 # FDM solver -- copied unchanged from main.ipynb (Section 3)

@@ -1,0 +1,10 @@
+  iter 0: loss 1.488e-01 | phys 1.527e-09 | IC weight 3.092e-01
+  iter 2000: loss 1.391e-03 | phys 8.427e-06 | IC weight 6.571e+01
+  iter 4000: loss 4.769e-03 | phys 1.748e-06 | IC weight 1.062e-01
+  iter 6000: loss 8.447e-03 | phys 2.249e-06 | IC weight 3.746e+01
+  iter 8000: loss 2.516e-04 | phys 6.815e-07 | IC weight 7.118e+00
+  iter 10000: loss 4.971e-05 | phys 2.169e-07 | IC weight 7.847e-01
+  iter 12000: loss 4.349e-05 | phys 1.413e-07 | IC weight 6.932e+01
+  iter 14000: loss 2.755e-04 | phys 2.370e-07 | IC weight 6.411e+02
+  iter 14999: loss 2.319e-04 | phys 1.678e-07 | IC weight 5.912e+02
+d1_compat_cold_weak_anneal_s44 t=0.01:0.001 t=0.05:0.002 t=0.1:0.002 t=0.3:0.003 t=1.0:0.004

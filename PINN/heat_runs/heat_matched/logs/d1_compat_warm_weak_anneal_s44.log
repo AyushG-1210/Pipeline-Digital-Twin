@@ -1,0 +1,9 @@
+/content/drive/MyDrive/amorflux/heat_drift.py:112: UserWarning: Specified kernel cache directory could not be created! This disables kernel caching. Specified directory is /root/.cache/torch/kernels. This warning will appear only once per process. (Triggered internally at /pytorch/aten/src/ATen/native/cuda/jit_utils.cpp:1505.)
+  return 1.0 - torch.prod(torch.sin(math.pi * xs), dim=1)
+  iter 0: loss 2.736e-03 | phys 1.349e-06 | IC weight 2.572e+02
+  iter 2000: loss 1.404e-04 | phys 8.867e-07 | IC weight 6.107e+01
+  iter 4000: loss 1.554e-04 | phys 3.915e-07 | IC weight 8.021e+01
+  iter 6000: loss 2.315e-05 | phys 3.017e-07 | IC weight 1.145e+01
+  iter 8000: loss 1.873e-04 | phys 4.296e-07 | IC weight 1.145e+02
+  iter 9999: loss 4.635e-05 | phys 2.790e-07 | IC weight 2.989e+01
+d1_compat_warm_weak_anneal_s44 t=0.01:0.002 t=0.05:0.002 t=0.1:0.003 t=0.3:0.006 t=1.0:0.003

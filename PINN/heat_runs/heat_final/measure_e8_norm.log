@@ -1,0 +1,9 @@
+
+=== 1D clash, warm start ===
+  seed    ||g_IC||  ||g_phys|| weak  ||g_phys|| strong  IC/phys weak  IC/phys strong         k
+    42   2.896e-01        2.365e+02          2.046e+03       0.00122        0.000142      8.65
+    43   3.906e-01        1.530e+02          1.311e+03       0.00255        0.000298      8.57
+    44   2.856e-01        2.311e+02          2.091e+03       0.00124        0.000137      9.05
+  k (geometric mean) = 8.75  -> matched strong-form IC multiplier 8.8  (IC weight 26.4)
+
+saved heat_final/matched_measure_e8_norm.json

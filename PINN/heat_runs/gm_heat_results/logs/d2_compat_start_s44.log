@@ -1,0 +1,7 @@
+  pretrain 0: 1.16e-01
+  pretrain 1000: 5.26e-05
+  pretrain 2000: 8.43e-06
+  pretrain 3000: 5.45e-06
+  pretrain 4000: 4.25e-06
+  pretrain 4999: 3.89e-06
+d2_compat_start_s44 t=0.01:0.004 t=0.05:0.003 t=0.1:0.003 t=0.3:0.006 t=1.0:0.041

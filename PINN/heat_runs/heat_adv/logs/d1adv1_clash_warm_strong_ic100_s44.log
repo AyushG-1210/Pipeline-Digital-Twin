@@ -1,0 +1,7 @@
+  iter 0: loss 4.145e+01 | phys 2.839e+00
+  iter 2000: loss 1.406e+01 | phys 1.617e-01
+  iter 4000: loss 1.379e+01 | phys 1.116e-01
+  iter 6000: loss 1.490e+01 | phys 2.440e-01
+  iter 8000: loss 1.296e+01 | phys 1.440e-01
+  iter 9999: loss 1.253e+01 | phys 1.371e-01
+d1adv1_clash_warm_strong_ic100_s44 t=0.01:0.036 t=0.05:0.011 t=0.1:0.010 t=0.3:0.015 t=1.0:0.042

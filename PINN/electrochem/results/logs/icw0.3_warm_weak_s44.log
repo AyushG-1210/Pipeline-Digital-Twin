@@ -1,0 +1,23 @@
+torch 2.11.0+cu130 | device cuda (NVIDIA A100-SXM4-80GB) | ROOT /content/drive/MyDrive/amorflux
+soil (1000, 8) | fluid (1000, 50) | WT 0.250..0.999 in
+gamma varies 4.6x along x (first 4 envs)
+train rho match: True | c_bulk match: True
+hold  rho match: True | c_bulk match: True
+WT vs references: max rel diff 3.3e-16
+dataset verified against the FDM references
+V_SPACE: torch.Size([36, 288])
+V_WALL_X: torch.Size([36, 8])
+NUM_HATS: 12
+2026-10-03 13:41:11,638 | INFO | MIONet init | trunk split='late' | trunk params=83,072
+2026-10-03 13:41:13,767 | INFO | Static weights: bounds=1.000e+02  ends_C=1.000e+00  ends_phi=1.000e+00  ic_C=3.000e-01  res_C=1.000e+01  res_phi=1.000e+00
+2026-10-03 13:41:13,773 | INFO |   W_ANCHOR=0.000e+00 | W_SMOOTH=2.000e+00
+2026-10-03 13:41:13,773 | INFO | Starting Factored Loop: Phase A (164 EPs) -> Phase C (491 EPs)...
+2026-10-03 13:41:20,460 | INFO | Epoch 0001/655 [A (Mass)] | LR: 1.00e-04 | Total: 4.585e-01 | res_C: 2.152e-04 | res_phi: 4.947e-02
+2026-10-03 13:54:55,980 | INFO | Epoch 0100/655 [A (Mass)] | LR: 3.38e-05 | Total: 2.571e-01 | res_C: 4.691e-04 | res_phi: 1.334e+00
+2026-10-03 14:03:43,146 | INFO | --- PHASE TRANSITION: Resetting LR for Coupled Physics ---
+2026-10-03 14:08:39,702 | INFO | Epoch 0200/655 [C (Coupled)] | LR: 9.87e-05 | Total: 2.664e-01 | res_C: 9.263e-04 | res_phi: 3.019e-03
+2026-10-03 14:22:23,500 | INFO | Epoch 0300/655 [C (Coupled)] | LR: 8.24e-05 | Total: 2.384e-01 | res_C: 7.696e-04 | res_phi: 1.093e-03
+2026-10-03 14:36:07,647 | INFO | Epoch 0400/655 [C (Coupled)] | LR: 5.35e-05 | Total: 1.600e-01 | res_C: 8.177e-04 | res_phi: 1.199e-03
+2026-10-03 14:49:51,577 | INFO | Epoch 0500/655 [C (Coupled)] | LR: 2.34e-05 | Total: 1.246e-01 | res_C: 3.847e-04 | res_phi: 1.652e-03
+2026-10-03 15:03:35,438 | INFO | Epoch 0600/655 [C (Coupled)] | LR: 4.03e-06 | Total: 1.210e-01 | res_C: 3.332e-04 | res_phi: 8.326e-04
+saved icw0.3_warm_weak_s44 (89.8 min)

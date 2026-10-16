@@ -1,0 +1,3 @@
+  iter 0: loss 3.209e-01 | phys 2.405e-04
+  iter 29: loss 2.139e-01 | phys 2.524e-04
+d1ramp0.01_clash_warm_weak_ic1_s43 t=0.01:0.380 t=0.05:0.699 t=0.1:0.669 t=0.3:0.536 t=1.0:0.323

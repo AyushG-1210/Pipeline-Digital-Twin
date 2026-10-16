@@ -1,0 +1,7 @@
+  iter 0: loss 3.585e-02 | phys 2.985e-03
+  iter 2000: loss 1.994e-04 | phys 1.649e-05
+  iter 4000: loss 2.200e-05 | phys 1.832e-06
+  iter 6000: loss 1.607e-05 | phys 1.330e-06
+  iter 8000: loss 1.243e-05 | phys 1.025e-06
+  iter 9999: loss 1.175e-05 | phys 9.674e-07
+d1_compat_warm_strong_ic1_s44 t=0.01:0.000 t=0.05:0.000 t=0.1:0.000 t=0.3:0.000 t=1.0:0.000

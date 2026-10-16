@@ -1,0 +1,43 @@
+  iter 0: loss 1.733e+02 | phys 4.923e+00
+  iter 2000: loss 1.369e+02 | phys 1.072e+00
+Traceback (most recent call last):
+  File "H:\My Drive\amorflux\heat_drift.py", line 596, in <module>
+    else: run_one(a)
+          ~~~~~~~^^^
+  File "H:\My Drive\amorflux\heat_drift.py", line 331, in run_one
+    m = train(m, dim, case, a.form, W_IC * a.ic, ITERS[a.init], LR[a.init], W, band=a.band, anneal=ann)
+  File "H:\My Drive\amorflux\heat_drift.py", line 252, in train
+    opt.zero_grad(set_to_none=True); loss.backward(); opt.step(); sch.step()
+                                                      ~~~~~~~~^^
+  File "C:\Users\anshu\AppData\Local\Programs\Python\Python313\Lib\site-packages\torch\optim\lr_scheduler.py", line 133, in wrapper
+    return func.__get__(opt, opt.__class__)(*args, **kwargs)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "C:\Users\anshu\AppData\Local\Programs\Python\Python313\Lib\site-packages\torch\optim\optimizer.py", line 516, in wrapper
+    out = func(*args, **kwargs)
+  File "C:\Users\anshu\AppData\Local\Programs\Python\Python313\Lib\site-packages\torch\optim\optimizer.py", line 81, in _use_grad
+    ret = func(*args, **kwargs)
+  File "C:\Users\anshu\AppData\Local\Programs\Python\Python313\Lib\site-packages\torch\optim\adam.py", line 247, in step
+    adam(
+    ~~~~^
+        params_with_grad,
+        ^^^^^^^^^^^^^^^^^
+    ...<19 lines>...
+        decoupled_weight_decay=group["decoupled_weight_decay"],
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\anshu\AppData\Local\Programs\Python\Python313\Lib\site-packages\torch\optim\optimizer.py", line 149, in maybe_fallback
+    return func(*args, **kwargs)
+  File "C:\Users\anshu\AppData\Local\Programs\Python\Python313\Lib\site-packages\torch\optim\adam.py", line 949, in adam
+    func(
+    ~~~~^
+        params,
+        ^^^^^^^
+    ...<17 lines>...
+        decoupled_weight_decay=decoupled_weight_decay,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "C:\Users\anshu\AppData\Local\Programs\Python\Python313\Lib\site-packages\torch\optim\adam.py", line 533, in _single_tensor_adam
+    denom = (exp_avg_sq.sqrt() / bias_correction2_sqrt).add_(eps)
+KeyboardInterrupt

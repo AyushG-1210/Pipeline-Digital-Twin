@@ -1,0 +1,21 @@
+weak-form IC multipliers: x1
+weak-form IC sweep: 3 to run, 0 done, up to 3 at once
+  done   d1_clash_warm_weak_ic1_e16_norm_s42 (8.0 min)
+  done   d1_clash_warm_weak_ic1_e16_norm_s44 (8.3 min)
+  done   d1_clash_warm_weak_ic1_e16_norm_s43 (8.3 min)
+
+=== 1D, compat IC  (transient rel. error, mean over seeds [max]) ===
+arm                                     t=0.01          t=0.05           t=0.1           t=0.3           t=1.0        ic   ic_band      weak    strong  n
+
+=== 1D, clash IC  (transient rel. error, mean over seeds [max]) ===
+arm                                     t=0.01          t=0.05           t=0.1           t=0.3           t=1.0        ic   ic_band      weak    strong  n
+warm weak ICon mesh32 norm       0.170 [0.20]   0.077 [0.11]   0.046 [0.08]   0.011 [0.02]   0.004 [0.00]  3.12e-01  3.12e-01  2.24e-02  4.12e-01  3
+warm weak ICon mesh4 norm        0.138 [0.15]   0.053 [0.07]   0.039 [0.06]   0.014 [0.02]   0.008 [0.01]  2.44e-01  2.44e-01  2.84e-02  3.24e+00  3
+warm weak ICon mesh8 norm        0.159 [0.18]   0.067 [0.09]   0.040 [0.07]   0.010 [0.02]   0.005 [0.01]  2.79e-01  2.79e-01  2.39e-02  1.36e+00  3
+warm weak ICon norm              0.166 [0.19]   0.072 [0.10]   0.042 [0.07]   0.010 [0.01]   0.005 [0.01]  3.04e-01  3.04e-01  2.28e-02  4.78e-01  3
+
+=== 2D, compat IC  (transient rel. error, mean over seeds [max]) ===
+arm                                     t=0.01          t=0.05           t=0.1           t=0.3           t=1.0        ic   ic_band      weak    strong  n
+
+=== 2D, clash IC  (transient rel. error, mean over seeds [max]) ===
+arm                                     t=0.01          t=0.05           t=0.1           t=0.3           t=1.0        ic   ic_band      weak    strong  n

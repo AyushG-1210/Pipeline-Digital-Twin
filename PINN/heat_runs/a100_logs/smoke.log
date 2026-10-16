@@ -1,0 +1,3 @@
+  iter 0: loss 8.975e+04 | phys 8.121e+00 | IC weight 3.580e+06
+  iter 29: loss 1.432e+05 | phys 9.814e+00 | IC weight 4.505e+06
+d1_clash_warm_strong_anneal_s42 t=0.01:0.048 t=0.05:0.043 t=0.1:0.053 t=0.3:0.083 t=1.0:0.236

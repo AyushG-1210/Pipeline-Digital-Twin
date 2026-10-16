@@ -1,0 +1,7 @@
+  pretrain 0: 4.75e-01
+  pretrain 1000: 7.49e-03
+  pretrain 2000: 1.84e-03
+  pretrain 3000: 7.27e-04
+  pretrain 4000: 6.21e-04
+  pretrain 4999: 5.90e-04
+d1adv1_clash_start_s44 t=0.01:0.040 t=0.05:0.028 t=0.1:0.016 t=0.3:0.030 t=1.0:0.109
