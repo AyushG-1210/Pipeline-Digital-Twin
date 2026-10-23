@@ -18,7 +18,7 @@
 
 Conventional physics-informed neural networks (PINNs) act as isolated numerical solvers, requiring computationally expensive retraining from scratch every time an environmental profile, pipe geometry, or fluid property changes. **AmorFlux** circumvents this boundary-value bottleneck by utilizing a Multi-Input Neural Operator (**MIONet**) architecture. By training on continuous parameter spaces, the framework functions as an *amortized solver*—executing instantaneous forward-pass inferences across arbitrary pipeline networks without re-optimization.
 
-The neural operator component is the subject of an in-preparation paper on objective–accuracy behaviour in weak-form operator training. Measured results are reported below.
+Measured results for the neural operator are reported below.
 
 ### System Architecture Pipeline
 
@@ -208,7 +208,7 @@ All figures are **median [min–max] across seeds**, with $n$ stated. Training i
 
 **The FDM reference does satisfy the weak objective.** Substituting the finite-difference field into the weak residual gives `res_C` = 3.66e-7, roughly four thousand times below what trained networks reach (~6e-4 to 3e-3). The loss and the reference encode the same problem, so the failure above is attributable to identifiability and not to a formulation mismatch.
 
-**The supervised anchor dominates the gradient.** At `W_ANCHOR=1` the anchor contributes a median 56% of total gradient norm (range 47–73%, $n = 5$, 50 draws) against 14% (7–16%) for both weak residual terms combined. The ratio exceeds 3× in every seed.
+**The supervised anchor dominates the gradient.** At `W_ANCHOR=1` the anchor contributes a median 53.7% of total gradient norm (range 45.5–68.3%, $n = 5$, 50 draws per seed) against 13.4% (7.6–17.2%) for both weak residual terms combined. The ratio is at least 2.6× in every seed (2.6–9.0×). Earlier 5-draw estimates of this share ranged from 50.9% to 57.7% depending on the draw; 50 draws is the low-variance figure (`PINN/electrochem/figures/anchor_share_recompute.py`).
 
 **The anchor degrades pointwise accuracy while improving rank correlation.** Removing it improves the strong form on C rel. $L_2$, $\phi$ rel. $L_2$ and `x_var_ratio` — 5/5 seeds, non-overlapping ranges on all three — and on flux in 4/5 seeds with overlapping ranges. The anchored arm wins `op_corr` and `x_corr` in 5/5 seeds, but at an `x_var_ratio` of 1.75 [1.43–2.09] against 1.23 [1.14–1.26]: it tracks the shape of the along-pipe profile more closely while overshooting its amplitude by roughly 75%.
 
@@ -234,9 +234,15 @@ Attribution of wall flux to the three input branches, cross-checked with input×
 
 These shares reflect how much each input **varies across this dataset**, not a universal ranking of physical importance. Bulk concentration sets the boundary condition the solution scales from, and it varies widely here by construction.
 
-**Per-section attribution was tested and does not hold.** Correlation between attribution centroid and queried section appeared strong (+0.97 strong form, +0.55 weak), but correlation is scale-free. The regression slope is ≈0.2 for every model across both loss forms — a section's attribution centroid moves a fifth as far as the section does — and attribution spread (0.306–0.323) exceeds a uniform distribution over the domain (0.289). The operator learned a global response to the $C_{\text{bulk}}$ profile rather than a spatially resolved one. Retained in `diagnostics/` as a negative result; no per-section attribution view should be built on it.
+**Per-section attribution was tested and does not hold.** Correlation between attribution centroid and queried section appeared strong (+0.97 strong form, +0.55 weak), but correlation is scale-free. The regression slope is ≈0.2 for every model across both loss forms — a section's attribution centroid moves a fifth as far as the section does — and attribution spread (0.306–0.323) exceeds a uniform distribution over the domain (0.289). The operator learned a global response to the $C_{\text{bulk}}$ profile rather than a spatially resolved one. Retained in `PINN/history/5_fifth_version/diagnostics/` as a negative result; no per-section attribution view should be built on it.
 
 This is the third instance in this project of a high correlation accompanied by a wrong amplitude, alongside the anchored strong-form arm above (`x_corr` +0.70 at `x_var_ratio` 2.01) and an earlier operator revision (+0.946 correlation at 6.6% of the true across-environment spread). Every correlation reported here is therefore paired with a magnitude check.
+
+---
+
+## Initial-Condition Weight on the Electrochemical Model
+
+The electrochemical problem starts from an initial condition (`C = 0`) that disagrees with its Dirichlet boundary value, and the weak form is sensitive to the weight placed on that initial-condition term. On the warm-started reacting problem ($n = 3$, error at $t=1$), the weak form at IC weight 1 gives 0.886 [0.774–1.11], against 0.116 with the IC term off, 0.138 at the validation-chosen weight 0.05, and 0.105 for the strong form. Per-seed values are in `PINN/electrochem/results.json` and `PINN/electrochem/electrochem_figs/`.
 
 ---
 
@@ -276,11 +282,30 @@ Four constraints bound the results above and are not scheduled for resolution wi
 
 ## Repository Notes
 
-Model checkpoints are tracked under `results/model_files/`. All five weak-form seeds are retained — they are the evidence base for the seed-variance claim, and regenerating them requires retraining.
+### `PINN/` layout
 
-Evaluation JSON under `results/json_files/` is sufficient to regenerate every reported figure without the checkpoints.
+```
+PINN/
+├── main.ipynb              electrochemical MIONet: dataset, FDM checks, weak/strong training, evaluation
+├── matched_control.ipynb   scale-matched strong-form control on the electrochemical model
+├── fdm_700.py, val_refs.py early-time and validation-slice FDM references (rows 950–999, 700–749)
+├── run_jobs.py             extra electrochemical jobs, run alongside the notebook on Colab
+├── data/                   dataset.pt and the FDM reference .npz files (.npz is git-ignored)
+├── electrochem/            json_files/, model_files/, logs/, figures/, electrochem_figs/, positive_control/, results.json
+└── history/                earlier notebook versions and the XAI diagnostics
+```
 
-The committed `PINN/data/dataset_v2.pt` carries an older 6-field fingerprint, while cell 3 of `main.ipynb` now expects the current 11-field `DATA_FINGERPRINT`. On a fresh clone this makes the cache check report stale and silently regenerate the tensors on the next run — harmless (same seed, verified to reproduce the FDM `rho(x)`/`c_bulk(x)` files to float32 rounding) but it takes ~30 minutes and rewrites the tracked file.
+`PINN/papers/` and `PINN/ignore/` hold reference PDFs and scratch work and are git-ignored.
+
+### Checkpoints and results
+
+Electrochemical model checkpoints are tracked under `PINN/electrochem/model_files/` (`weak_form/`, `strong_form/`, `electrochem/`). All five weak-form seeds are retained — they are the evidence base for the seed-variance claim, and regenerating them requires retraining.
+
+Evaluation JSON under `PINN/electrochem/json_files/` is sufficient to regenerate every reported electrochemical figure without the checkpoints.
+
+### Dataset
+
+`main.ipynb` regenerates the synthetic dataset deterministically (same seed and draw order) and checks every row against the stored FDM references, stopping with a message if a file is missing or does not match. `PINN/data/dataset.pt` is the cached copy of those tensors.
 
 ---
 
