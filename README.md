@@ -1,7 +1,6 @@
 # AmorFlux: Multi-Branch Physics-Informed Neural Operators with GraphRAG for Amortized Pipeline Corrosion Prognostics
 
 > Ayush Gouda, Aditya Prakash, Swaraag Hebbar N  
-> Department of Computer Science & Engineering, RV Institute of Technology and Management
 
 ---
 
@@ -11,6 +10,20 @@
 ![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)
 
 ---
+### Publications
+### Project & Patent Information
+
+- **Live demo:** [AmorFlux](https://amorflux-45k9.onrender.com/)
+
+**Patent filing**
+
+| Field | Details |
+| --- | --- |
+| Title | AMORFLUX: AI-DRIVEN PIPELINE DIGITAL TWIN FOR PREDICTIVE MAINTENANCE |
+| Application number | 202641135823 |
+| Filed on | 12-11-2026 |
+
+
 
 ## Overview
 
