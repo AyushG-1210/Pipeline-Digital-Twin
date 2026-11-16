@@ -10,7 +10,7 @@
 ![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)
 
 ---
-### Publications
+## Publications
 ### Project & Patent Information
 
 - **Live demo:** [AmorFlux](https://amorflux-45k9.onrender.com/)
