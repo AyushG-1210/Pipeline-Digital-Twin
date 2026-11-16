@@ -1,5 +1,6 @@
 import { usePipelineStore } from '../store/usePipelineStore';
 import type { WSMessage } from '../types';
+import { WS_URL } from '../config';
 
 let ws: WebSocket | null = null;
 let reconnectTimeout: ReturnType<typeof setTimeout> | null = null;
@@ -8,7 +9,7 @@ const RECONNECT_DELAY = 3000;
 /**
  * Initialize WebSocket connection to backend
  */
-export function initWebSocket(url: string = 'ws://localhost:3001') {
+export function initWebSocket(url: string = WS_URL) {
     if (ws && ws.readyState === WebSocket.OPEN) {
         console.log('WebSocket already connected');
         return;

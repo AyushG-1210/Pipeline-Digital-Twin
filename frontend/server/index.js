@@ -10,7 +10,7 @@ import { generateSegments, updateRandomSegment } from './mockData.js';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app = express();
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
 
 // Paths to the YOLO pipeline (sibling repo)
 const YOLO_DIR = path.resolve(__dirname, '../../Pipeline-Digital-Twin/YOLO_Pipeline');

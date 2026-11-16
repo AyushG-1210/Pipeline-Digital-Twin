@@ -31,7 +31,7 @@ export default function ChatbotPanel() {
         {
             id: 'init-1',
             sender: 'assistant',
-            text: `Hello! I am your Pipeline Digital Twin AI Assistant. I have live access to telemetry from ${segments.size || 10} pipeline segments, YOLOv8-Seg external surface corrosion data, and PINN physics forecasts. How can I help you today?`,
+            text: `Hello! I am your Pipeline Digital Twin AI Assistant. I have live access to telemetry from ${segments.size || 10} pipeline segments, mock external surface scan placeholders (YOLOv8 is not integrated yet), and PINN physics forecasts. How can I help you today?`,
             timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
         },
     ]);
@@ -55,9 +55,9 @@ export default function ChatbotPanel() {
             return `**${matchedSeg.segment_id} Telemetry Report:**\n` +
                 `• **Status:** ${statusLabel}\n` +
                 `• **Integrity Score:** ${formatPercentage(matchedSeg.integrity)}\n` +
-                `• **External Surface Corrosion:** ${extCorrosion}\n` +
+                `• **External Surface Corrosion (mock, no YOLO yet):** ${extCorrosion}\n` +
                 `• **Remaining Useful Life (RUL):** ${rulDays}\n` +
-                (matchedSeg.cv?.confidence ? `• **YOLOv8 Detection Confidence:** ${(matchedSeg.cv.confidence * 100).toFixed(0)}%\n` : '') +
+                (matchedSeg.cv?.confidence ? `• **Detection Confidence (mock placeholder):** ${(matchedSeg.cv.confidence * 100).toFixed(0)}%\n` : '') +
                 `Would you like me to highlight ${matchedSeg.segment_id} on the 3D twin?`;
         }
 
