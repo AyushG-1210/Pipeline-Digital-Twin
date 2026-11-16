@@ -16,19 +16,33 @@ function App() {
     };
   }, []);
 
-  // Initialize mock data on mount (will be replaced by WebSocket data)
+  // Load initial segments over HTTP. Free-tier hosts put the API to sleep, so the first
+  // request(s) can fail while it wakes up — retry until it succeeds. (The WebSocket
+  // 'initial_data' message is a second path that fills the same store.)
   useEffect(() => {
-    const initializeMockData = async () => {
+    let cancelled = false;
+    let timer: ReturnType<typeof setTimeout> | undefined;
+
+    const load = async (attempt: number) => {
       try {
         const response = await fetch(`${API_URL}/api/segments`);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
         const data = await response.json();
-        usePipelineStore.getState().setSegments(data);
+        if (!cancelled) usePipelineStore.getState().setSegments(data);
       } catch (error) {
-        console.error('Failed to fetch initial segment data:', error);
+        if (cancelled) return;
+        console.error(`Failed to fetch initial segment data (attempt ${attempt}):`, error);
+        // Stop retrying once the WebSocket has delivered the data.
+        if (usePipelineStore.getState().segments.size > 0) return;
+        timer = setTimeout(() => load(attempt + 1), Math.min(2000 * attempt, 10000));
       }
     };
 
-    initializeMockData();
+    load(1);
+    return () => {
+      cancelled = true;
+      if (timer) clearTimeout(timer);
+    };
   }, []);
 
   return <DashboardLayout />;

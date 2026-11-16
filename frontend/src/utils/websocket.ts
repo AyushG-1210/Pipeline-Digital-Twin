@@ -66,8 +66,16 @@ function handleWSMessage(message: WSMessage) {
     const store = usePipelineStore.getState();
 
     switch (message.type) {
+        case 'initial_data':
+            // Server sends the full segment list on connect. This is the fallback when the
+            // initial HTTP fetch failed (e.g. API was asleep on a free-tier host).
+            if (Array.isArray(message.data)) {
+                store.setSegments(message.data);
+            }
+            break;
+
         case 'segment_update':
-            if ('segment_id' in message.data && 'integrity' in message.data) {
+            if (!Array.isArray(message.data) && 'segment_id' in message.data && 'integrity' in message.data) {
                 store.updateSegment(message.data.segment_id, message.data);
             }
             break;
