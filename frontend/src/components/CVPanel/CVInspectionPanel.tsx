@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { usePipelineStore } from '../../store/usePipelineStore';
 import ExternalSurfaceFeed from './ExternalSurfaceFeed';
 import FeedbackControls from './FeedbackControls';
@@ -32,42 +31,12 @@ const CLASS_COLORS: Record<string, string> = {
 export default function CVInspectionPanel() {
     const selectedSegmentId = usePipelineStore(state => state.selectedSegmentId);
     const segments = usePipelineStore(state => state.segments);
-    const updateSegment = usePipelineStore(state => state.updateSegment);
 
     const selectedSegment = selectedSegmentId ? segments.get(selectedSegmentId) : null;
     const cvData = selectedSegment?.cv;
 
-    const [isAnalyzing, setIsAnalyzing] = useState(false);
-    const [analyzeError, setAnalyzeError] = useState<string | null>(null);
-
-    const handleRunYOLO = async () => {
-        if (!selectedSegmentId) return;
-        setIsAnalyzing(true);
-        setAnalyzeError(null);
-
-        try {
-            const res = await fetch('http://localhost:3001/api/cv/analyze', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ segment_id: selectedSegmentId }),
-            });
-
-            if (!res.ok) {
-                const err = await res.json();
-                throw new Error(err.error || `HTTP ${res.status}`);
-            }
-
-            const result = await res.json();
-            // Patch local store immediately (WebSocket will also update, but this is instant)
-            if (result.success && result.cv) {
-                updateSegment(selectedSegmentId, { cv: result.cv });
-            }
-        } catch (e: unknown) {
-            setAnalyzeError(e instanceof Error ? e.message : 'Unknown error');
-        } finally {
-            setIsAnalyzing(false);
-        }
-    };
+    // YOLOv8 inference is not wired up yet — the button below is a "coming soon" placeholder.
+    // The original handler POSTed to /api/cv/analyze; restore it when the YOLO pipeline is deployable.
 
     const isYolo = cvData?.is_yolo_result === true;
     const className = cvData?.class_name ?? 'none';
@@ -80,6 +49,12 @@ export default function CVInspectionPanel() {
                 <div className="flex items-center justify-between">
                     <span className="text-sm font-semibold text-ink">External Damage &amp; Surface Inspection</span>
                     <div className="flex items-center gap-2">
+                        {!isYolo && (
+                            <span className="text-[10px] font-bold px-2 py-0.5 rounded border"
+                                style={{ color: '#8A6100', borderColor: '#EBD9A8', background: '#FBF2D9' }}>
+                                YOLO: COMING SOON
+                            </span>
+                        )}
                         {isYolo && (
                             <span className="text-[10px] font-bold px-2 py-0.5 rounded border"
                                 style={{ color: '#3C7C61', borderColor: '#BFE0D8', background: '#E2F1EF' }}>
@@ -107,46 +82,27 @@ export default function CVInspectionPanel() {
                             <ExternalSurfaceFeed segmentId={selectedSegmentId} />
                         </div>
 
-                        {/* Run YOLO Analysis button */}
+                        {/* YOLO analysis — coming soon */}
                         <button
-                            onClick={handleRunYOLO}
-                            disabled={isAnalyzing}
-                            className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-semibold text-sm transition-colors"
+                            disabled
+                            title="YOLOv8 segmentation analysis is under development"
+                            className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-semibold text-sm"
                             style={{
-                                background: isAnalyzing ? '#8B8E9B' : '#132257',
+                                background: '#8B8E9B',
                                 color: '#fff',
                                 border: 'none',
-                                opacity: isAnalyzing ? 0.7 : 1,
-                                cursor: isAnalyzing ? 'not-allowed' : 'pointer',
+                                opacity: 0.7,
+                                cursor: 'not-allowed',
                             }}
                         >
-                            {isAnalyzing ? (
-                                <>
-                                    {/* Spinner */}
-                                    <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none">
-                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
-                                    </svg>
-                                    Running YOLOv8 Inference…
-                                </>
-                            ) : (
-                                <>
-                                    {/* YOLO icon */}
-                                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18" />
-                                    </svg>
-                                    Run YOLOv8 Segmentation Analysis
-                                </>
-                            )}
+                            <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18" />
+                            </svg>
+                            YOLOv8 Segmentation Analysis — Coming Soon
                         </button>
-
-                        {/* Error state */}
-                        {analyzeError && (
-                            <div className="rounded-lg px-3 py-2 text-xs font-mono"
-                                style={{ background: '#FBE4E1', border: '1px solid #EFC1BB', color: '#B33529' }}>
-                                {analyzeError}
-                            </div>
-                        )}
+                        <p className="text-[11px] text-ink-muted text-center -mt-1">
+                            Live defect segmentation is under development. Readings below are simulated optical-scan data.
+                        </p>
 
                         {/* Detection metadata */}
                         {cvData && (
