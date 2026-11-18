@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import type { LiveFeedItem, LiveFeedSummary } from '../../types';
 import LiveFeedViewer from './LiveFeedViewer';
+import { API_URL } from '../../config';
+import { usePipelineStore } from '../../store/usePipelineStore';
 
 interface LiveFeedGalleryModalProps {
     isOpen: boolean;
@@ -9,6 +11,7 @@ interface LiveFeedGalleryModalProps {
 }
 
 export default function LiveFeedGalleryModal({ isOpen, onClose }: LiveFeedGalleryModalProps) {
+    const selectSegment = usePipelineStore(state => state.selectSegment);
     const [items, setItems] = useState<LiveFeedItem[]>([]);
     const [summary, setSummary] = useState<LiveFeedSummary | null>(null);
     const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -21,7 +24,7 @@ export default function LiveFeedGalleryModal({ isOpen, onClose }: LiveFeedGaller
             try {
                 let data = null;
                 try {
-                    const res = await fetch('http://localhost:3001/api/cv/live-feed');
+                    const res = await fetch(`${API_URL}/api/cv/live-feed`);
                     if (res.ok) data = await res.json();
                 } catch {
                     // Fall back
@@ -215,7 +218,13 @@ export default function LiveFeedGalleryModal({ isOpen, onClose }: LiveFeedGaller
                         </div>
                     ) : (
                         <div className="max-w-4xl mx-auto">
-                            <LiveFeedViewer initialImageFile={selectedImage || undefined} />
+                            <LiveFeedViewer
+                                initialImageFile={selectedImage || undefined}
+                                onViewDiagnostics={(segmentId) => {
+                                    selectSegment(segmentId);
+                                    onClose();
+                                }}
+                            />
                         </div>
                     )}
                 </div>

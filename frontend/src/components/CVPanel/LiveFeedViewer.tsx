@@ -1,10 +1,17 @@
 import { useState, useEffect } from 'react';
 import type { LiveFeedItem, LiveFeedSummary } from '../../types';
+import { API_URL } from '../../config';
+import { usePipelineStore } from '../../store/usePipelineStore';
+import { getIntegrityColor } from '../../utils/colors';
 
 interface LiveFeedViewerProps {
     initialImageFile?: string;
     onSelectImage?: (imageFile: string) => void;
     compact?: boolean;
+    /** Lock the viewer to the one section it was opened for: no prev/next, no section jump strip. */
+    singleSection?: boolean;
+    /** When provided, shows a "View diagnostics" button below the CAM SECTION bar. */
+    onViewDiagnostics?: (segmentId: string) => void;
 }
 
 const CLASS_COLORS: Record<string, { bg: string; text: string; border: string }> = {
@@ -19,7 +26,13 @@ const SEVERITY_COLORS: Record<string, { bg: string; text: string }> = {
     LOW: { bg: '#FEF9C3', text: '#854D0E' },
 };
 
-export default function LiveFeedViewer({ initialImageFile, compact = false }: LiveFeedViewerProps) {
+export default function LiveFeedViewer({
+    initialImageFile,
+    compact = false,
+    singleSection = false,
+    onViewDiagnostics,
+}: LiveFeedViewerProps) {
+    const segments = usePipelineStore(state => state.segments);
     const [feedItems, setFeedItems] = useState<LiveFeedItem[]>([]);
     const [summary, setSummary] = useState<LiveFeedSummary | null>(null);
     const [loading, setLoading] = useState(true);
@@ -39,7 +52,7 @@ export default function LiveFeedViewer({ initialImageFile, compact = false }: Li
                 // Try backend endpoint first
                 let data = null;
                 try {
-                    const res = await fetch('http://localhost:3001/api/cv/live-feed');
+                    const res = await fetch(`${API_URL}/api/cv/live-feed`);
                     if (res.ok) {
                         data = await res.json();
                     }
@@ -124,6 +137,11 @@ export default function LiveFeedViewer({ initialImageFile, compact = false }: Li
 
     const sectionNum = activeItem.image_file.replace(/[^0-9]/g, '');
 
+    // Camera section N covers segment SEG-00N (inverse of the segment -> image mapping used elsewhere)
+    const diagnosticsSegmentId = `SEG-${String(parseInt(sectionNum || '1', 10)).padStart(3, '0')}`;
+    const diagnosticsSegment = segments.get(diagnosticsSegmentId);
+    const diagnosticsColor = diagnosticsSegment ? getIntegrityColor(diagnosticsSegment.integrity) : '#6B7280';
+
     return (
         <div className="flex flex-col space-y-3">
             {/* Top Toolbar: Section Selector + View Mode */}
@@ -136,9 +154,11 @@ export default function LiveFeedViewer({ initialImageFile, compact = false }: Li
                     <span className="text-xs font-bold text-ink tracking-wide font-mono">
                         CAM SECTION {sectionNum}
                     </span>
-                    <span className="text-[10px] text-ink-muted hidden sm:inline">
-                        ({currentIndex + 1} of {feedItems.length})
-                    </span>
+                    {!singleSection && (
+                        <span className="text-[10px] text-ink-muted hidden sm:inline">
+                            ({currentIndex + 1} of {feedItems.length})
+                        </span>
+                    )}
                 </div>
 
                 {/* Navigation & Mode toggles */}
@@ -178,7 +198,7 @@ export default function LiveFeedViewer({ initialImageFile, compact = false }: Li
                     </div>
 
                     {/* Prev / Next Buttons */}
-                    <div className="flex items-center gap-1">
+                    {!singleSection && <div className="flex items-center gap-1">
                         <button
                             type="button"
                             onClick={() => setCurrentIndex((prev) => (prev > 0 ? prev - 1 : feedItems.length - 1))}
@@ -199,12 +219,28 @@ export default function LiveFeedViewer({ initialImageFile, compact = false }: Li
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                             </svg>
                         </button>
-                    </div>
+                    </div>}
                 </div>
             </div>
 
+            {/* View diagnostics: jumps to this section's segment and closes the live feed */}
+            {onViewDiagnostics && (
+                <button
+                    type="button"
+                    onClick={() => onViewDiagnostics(diagnosticsSegmentId)}
+                    className="w-full flex items-center justify-center gap-2 px-4 py-2 rounded-lg font-semibold text-sm text-white shadow-sm transition-opacity hover:opacity-90"
+                    style={{ background: diagnosticsColor }}
+                    title={`Open diagnostics for ${diagnosticsSegmentId}`}
+                >
+                    View diagnostics
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                </button>
+            )}
+
             {/* Quick Section Jump Strip */}
-            <div className="flex items-center gap-1 overflow-x-auto pb-1 scrollbar-thin">
+            {!singleSection && <div className="flex items-center gap-1 overflow-x-auto pb-1 scrollbar-thin">
                 {feedItems.map((item, idx) => {
                     const isSelected = idx === currentIndex;
                     const num = item.image_file.replace(/[^0-9]/g, '');
@@ -231,7 +267,7 @@ export default function LiveFeedViewer({ initialImageFile, compact = false }: Li
                         </button>
                     );
                 })}
-            </div>
+            </div>}
 
             {/* Main Visual Display */}
             <div className="relative rounded-lg overflow-hidden border border-line bg-black shadow-inner">

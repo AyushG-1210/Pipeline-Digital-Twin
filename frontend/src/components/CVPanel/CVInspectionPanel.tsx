@@ -37,15 +37,12 @@ const CLASS_COLORS: Record<string, string> = {
 export default function CVInspectionPanel() {
     const selectedSegmentId = usePipelineStore(state => state.selectedSegmentId);
     const segments = usePipelineStore(state => state.segments);
-    const updateSegment = usePipelineStore(state => state.updateSegment);
 
     const selectedSegment = selectedSegmentId ? segments.get(selectedSegmentId) : null;
     const cvData = selectedSegment?.cv;
 
     // View selector: 'camera' | 'scanner'
     const [viewTab, setViewTab] = useState<'camera' | 'scanner'>('camera');
-    const [isAnalyzing, setIsAnalyzing] = useState(false);
-    const [analyzeError, setAnalyzeError] = useState<string | null>(null);
 
     // Compute corresponding live feed image file for this segment
     let segmentImageFile = cvData?.image_file;
@@ -54,34 +51,6 @@ export default function CVInspectionPanel() {
         const imgNum = ((segNum - 1) % 20) + 1;
         segmentImageFile = `pipeline_section_${String(imgNum).padStart(2, '0')}.png`;
     }
-
-    const handleRunYOLO = async () => {
-        if (!selectedSegmentId) return;
-        setIsAnalyzing(true);
-        setAnalyzeError(null);
-
-        try {
-            const res = await fetch('http://localhost:3001/api/cv/analyze', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ segment_id: selectedSegmentId, image_file: segmentImageFile }),
-            });
-
-            if (!res.ok) {
-                const err = await res.json();
-                throw new Error(err.error || `HTTP ${res.status}`);
-            }
-
-            const result = await res.json();
-            if (result.success && result.cv) {
-                updateSegment(selectedSegmentId, { cv: result.cv });
-            }
-        } catch (e: unknown) {
-            setAnalyzeError(e instanceof Error ? e.message : 'Unknown error');
-        } finally {
-            setIsAnalyzing(false);
-        }
-    };
 
     const isYolo = cvData?.is_yolo_result === true;
     const className = cvData?.class_name ?? 'none';
@@ -147,7 +116,7 @@ export default function CVInspectionPanel() {
                         {viewTab === 'camera' ? (
                             /* Live Feed & Predictions View */
                             <div className="space-y-3">
-                                <LiveFeedViewer initialImageFile={segmentImageFile} />
+                                <LiveFeedViewer initialImageFile={segmentImageFile} singleSection />
                             </div>
                         ) : (
                             /* Scanner View */
@@ -155,44 +124,6 @@ export default function CVInspectionPanel() {
                                 <div style={{ height: '170px' }} className="bg-[#050505] rounded-lg overflow-hidden border border-line w-full">
                                     <ExternalSurfaceFeed segmentId={selectedSegmentId} />
                                 </div>
-                            </div>
-                        )}
-
-                        {/* Trigger YOLO Analysis Button */}
-                        <button
-                            onClick={handleRunYOLO}
-                            disabled={isAnalyzing}
-                            className="w-full flex items-center justify-center gap-2 px-4 py-2.5 rounded-lg font-semibold text-sm transition-all shadow-sm"
-                            style={{
-                                background: isAnalyzing ? '#8B8E9B' : '#132257',
-                                color: '#fff',
-                                border: 'none',
-                                opacity: isAnalyzing ? 0.7 : 1,
-                                cursor: isAnalyzing ? 'not-allowed' : 'pointer',
-                            }}
-                        >
-                            {isAnalyzing ? (
-                                <>
-                                    <svg className="animate-spin w-4 h-4" viewBox="0 0 24 24" fill="none">
-                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
-                                    </svg>
-                                    Running YOLOv8-Seg Inference…
-                                </>
-                            ) : (
-                                <>
-                                    <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 3H5a2 2 0 00-2 2v4m6-6h10a2 2 0 012 2v4M9 3v18m0 0h10a2 2 0 002-2V9M9 21H5a2 2 0 01-2-2V9m0 0h18" />
-                                    </svg>
-                                    Re-Run YOLOv8 Segmentation on {segmentImageFile || selectedSegmentId}
-                                </>
-                            )}
-                        </button>
-
-                        {/* Error state */}
-                        {analyzeError && (
-                            <div className="rounded-lg px-3 py-2 text-xs font-mono bg-red-50 border border-red-200 text-red-700">
-                                {analyzeError}
                             </div>
                         )}
 
