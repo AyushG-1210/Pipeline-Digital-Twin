@@ -24,6 +24,44 @@ export interface CVOutput {
     frames_with_detections?: number;
     yolo_mask_px?: number[][];   // raw pixel coords [x,y] from YOLO (640x640 space)
     is_yolo_result?: boolean;    // true when populated by real inference
+
+    // Live Feed Camera & Prediction fields
+    image_file?: string;
+    raw_image_url?: string;
+    annotated_image_url?: string;
+    detections_count?: number;
+    detections?: Array<YOLODetection>;
+}
+
+export interface YOLODetection {
+    detection_id: number;
+    class_id: number;
+    class_name: string;
+    confidence: number;
+    severity: 'HIGH' | 'MODERATE' | 'LOW' | string;
+    bbox_xyxy: number[];
+    mask_coords: number[][];
+}
+
+export interface LiveFeedItem {
+    image_file: string;
+    raw_image_url: string;
+    annotated_image_url: string;
+    detections_count: number;
+    defect_detected: boolean;
+    detections: YOLODetection[];
+    annotated_output?: string;
+}
+
+export interface LiveFeedSummary {
+    total_images_processed: number;
+    total_detections: number;
+    images_with_detections: number;
+    detection_rate_pct: number;
+    highest_confidence_image: string | null;
+    highest_confidence_score: number;
+    model_used: string;
+    annotated_images_dir: string;
 }
 
 /**

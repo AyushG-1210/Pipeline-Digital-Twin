@@ -1,9 +1,11 @@
+import { useState } from 'react';
 import { usePipelineStore } from '../../store/usePipelineStore';
 import { useThemeStore } from '../../store/useThemeStore';
 import { formatTime } from '../../utils/colors';
+import LiveFeedGalleryModal from '../CVPanel/LiveFeedGalleryModal';
 
 /**
- * Application header — segment health summary and connection status.
+ * Application header — segment health summary, live camera feeds launcher, and connection status.
  */
 export default function Header() {
     const wsConnected = usePipelineStore(state => state.wsConnected);
@@ -11,6 +13,8 @@ export default function Header() {
     const segments = usePipelineStore(state => state.segments);
     const theme = useThemeStore(state => state.theme);
     const toggleTheme = useThemeStore(state => state.toggleTheme);
+
+    const [isGalleryOpen, setIsGalleryOpen] = useState(false);
 
     const segmentArray = Array.from(segments.values());
     const criticalCount = segmentArray.filter(s => s.integrity < 0.3).length;
@@ -25,22 +29,43 @@ export default function Header() {
                         Pipeline Integrity Digital Twin
                     </h1>
                     <p className="text-xs text-ink-muted mt-0.5">
-                        Physics-informed inspection &amp; degradation forecasting
+                        Physics-informed inspection, live camera feed &amp; degradation forecasting
                     </p>
                 </div>
 
-                <div className="flex items-center gap-5">
+                <div className="flex items-center gap-4 sm:gap-5">
+                    {/* Live Camera Feed & YOLO Predictions Button */}
+                    <button
+                        type="button"
+                        onClick={() => setIsGalleryOpen(true)}
+                        className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-line bg-surface hover:bg-surface-sunken text-xs font-semibold text-ink transition-all shadow-sm group"
+                        title="Open Live Optical Camera Feeds & YOLOv8 Defect Predictions Gallery"
+                    >
+                        <div className="relative flex items-center justify-center">
+                            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                        </div>
+                        <svg className="w-4 h-4 text-primary group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                        </svg>
+                        <span>Live Feed &amp; CV</span>
+                        <span className="px-1.5 py-0.2 rounded-full text-[10px] font-mono bg-emerald-100 text-emerald-800 border border-emerald-300 font-bold">
+                            20 CAM
+                        </span>
+                    </button>
+
+                    <div className="w-px h-6 bg-line hidden sm:block" />
+
                     {/* Benchmark summary */}
                     <div className="flex items-center gap-3 text-xs">
-                        <span className="flex items-center gap-1.5">
+                        <span className="flex items-center gap-1.5" title="Healthy segments">
                             <span className="w-2 h-2 rounded-full" style={{ background: '#4C9A78' }} />
                             <span className="text-ink-soft font-medium">{healthyCount}</span>
                         </span>
-                        <span className="flex items-center gap-1.5">
+                        <span className="flex items-center gap-1.5" title="Warning tier">
                             <span className="w-2 h-2 rounded-full" style={{ background: '#D98E2B' }} />
                             <span className="text-ink-soft font-medium">{warningCount}</span>
                         </span>
-                        <span className="flex items-center gap-1.5">
+                        <span className="flex items-center gap-1.5" title="Critical alert">
                             <span className="w-2 h-2 rounded-full" style={{ background: '#D6473C' }} />
                             <span className="text-ink-soft font-medium">{criticalCount}</span>
                         </span>
@@ -60,7 +85,7 @@ export default function Header() {
                     </div>
 
                     {lastUpdate && (
-                        <div className="text-xs font-mono text-ink-muted">
+                        <div className="text-xs font-mono text-ink-muted hidden md:block">
                             {formatTime(lastUpdate)}
                         </div>
                     )}
@@ -95,6 +120,12 @@ export default function Header() {
                     </button>
                 </div>
             </div>
+
+            {/* Live Feed Gallery Modal */}
+            <LiveFeedGalleryModal
+                isOpen={isGalleryOpen}
+                onClose={() => setIsGalleryOpen(false)}
+            />
         </header>
     );
 }

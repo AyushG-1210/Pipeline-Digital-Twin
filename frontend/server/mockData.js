@@ -15,12 +15,28 @@
  * CV is still mock — that's the last pass (YOLO wiring).
  */
 
-import { readFileSync } from 'fs';
+import { readFileSync, existsSync } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const BENCHMARKS_PATH = path.join(__dirname, '..', 'pinn_model', 'benchmarks.json');
+const DETECTIONS_PATH = path.join(__dirname, '..', '..', 'YOLO_Pipeline', 'results', 'detections.json');
+const DETECTIONS_FALLBACK = path.join(__dirname, '..', 'public', 'data', 'detections.json');
+
+function loadLiveDetections() {
+    try {
+        const p = existsSync(DETECTIONS_PATH) ? DETECTIONS_PATH : DETECTIONS_FALLBACK;
+        if (existsSync(p)) {
+            return JSON.parse(readFileSync(p, 'utf-8'));
+        }
+    } catch (e) {
+        console.warn('Could not load live detections:', e.message);
+    }
+    return [];
+}
+
+const liveDetections = loadLiveDetections();
 
 const SEGMENT_COUNT = 60; // Increased length for a more impressive pipeline
 const SEGMENT_LENGTH = 2; // meters
@@ -87,7 +103,7 @@ function generateSegments() {
             position: position,
             direction: direction,
             integrity: integrity,
-            cv: generateCVOutput(segmentId, integrity),
+            cv: generateCVOutput(segmentId, integrity, i),
             pinn: { ...pinnFields, segment_id: segmentId },
             xai: { ...xai, segment_id: segmentId },
             lastUpdated: new Date().toISOString()
@@ -106,11 +122,51 @@ function generateSegments() {
 /**
  * Generate CV (Computer Vision) output
  */
-function generateCVOutput(segmentId, integrity) {
+function generateCVOutput(segmentId, integrity, index = 0) {
+    const liveItem = liveDetections.length > 0 ? liveDetections[index % liveDetections.length] : null;
+
+    if (liveItem) {
+        const topDet = liveItem.detections && liveItem.detections.length > 0
+            ? [...liveItem.detections].sort((a, b) => b.confidence - a.confidence)[0]
+            : null;
+
+        const polygonMask = topDet && topDet.mask_coords && topDet.mask_coords.length > 0
+            ? topDet.mask_coords.map(([x, y]) => [x / 320, y / 320])
+            : [[0.4, 0.4], [0.6, 0.4], [0.6, 0.6], [0.4, 0.6]];
+
+        const corrosionPct = topDet
+            ? Math.round(topDet.confidence * 40 + (liveItem.detections_count * 3))
+            : Math.round((1 - integrity) * 100 * 0.8);
+
+        return {
+            segment_id: segmentId,
+            corrosion_surface_pct: Math.max(2, Math.min(95, corrosionPct)),
+            confidence: topDet ? topDet.confidence : 0.75,
+            polygon_mask: polygonMask,
+            frame_timestamp: new Date().toISOString(),
+
+            // Real YOLO & Live Feed fields
+            corrosion_detected: liveItem.defect_detected,
+            class_id: topDet ? topDet.class_id : 0,
+            class_name: topDet ? topDet.class_name : 'rust',
+            severity_score: topDet ? topDet.confidence : 0,
+            detection_rate: 1.0,
+            total_frames: 1,
+            frames_with_detections: liveItem.defect_detected ? 1 : 0,
+            yolo_mask_px: topDet ? topDet.mask_coords : [],
+            is_yolo_result: true,
+
+            image_file: liveItem.image_file,
+            raw_image_url: `/data/live_feed/${liveItem.image_file}`,
+            annotated_image_url: `/data/annotated_feed/annotated_${liveItem.image_file}`,
+            detections_count: liveItem.detections_count,
+            detections: liveItem.detections || [],
+        };
+    }
+
     const corrosionPct = (1 - integrity) * 100 * (0.8 + Math.random() * 0.4);
     const confidence = 0.7 + Math.random() * 0.25;
 
-    // Generate polygon mask (normalized coordinates)
     const polygonMask = [
         [0.4 + Math.random() * 0.1, 0.3 + Math.random() * 0.1],
         [0.5 + Math.random() * 0.1, 0.3 + Math.random() * 0.1],
@@ -139,7 +195,7 @@ function updateRandomSegment(segments) {
     const index = Math.floor(Math.random() * segments.length);
     const segment = segments[index];
 
-    segment.cv = generateCVOutput(segment.segment_id, segment.integrity);
+    segment.cv = generateCVOutput(segment.segment_id, segment.integrity, index);
     segment.lastUpdated = new Date().toISOString();
 
     return segment;

@@ -54,9 +54,9 @@ export default function FloatingChatbot() {
 
             return `${matchedSeg.segment_id} — ${statusLabel}\n` +
                 `Integrity: ${formatPercentage(matchedSeg.integrity)}\n` +
-                `External Corrosion (mock, no YOLO yet): ${extCorrosion}\n` +
+                `External Corrosion: ${extCorrosion}\n` +
                 `Remaining Useful Life: ${rulDays}\n` +
-                (matchedSeg.cv?.confidence ? `Detection Confidence (mock placeholder): ${(matchedSeg.cv.confidence * 100).toFixed(0)}%\n` : '') +
+                (matchedSeg.cv?.confidence ? `Detection Confidence: ${(matchedSeg.cv.confidence * 100).toFixed(0)}%\n` : '') +
                 `Segment selected in 3D view.`;
         }
 

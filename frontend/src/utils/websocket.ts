@@ -1,6 +1,5 @@
 import { usePipelineStore } from '../store/usePipelineStore';
 import type { WSMessage } from '../types';
-import { WS_URL } from '../config';
 
 let ws: WebSocket | null = null;
 let reconnectTimeout: ReturnType<typeof setTimeout> | null = null;
@@ -9,7 +8,7 @@ const RECONNECT_DELAY = 3000;
 /**
  * Initialize WebSocket connection to backend
  */
-export function initWebSocket(url: string = WS_URL) {
+export function initWebSocket(url: string = 'ws://localhost:3001') {
     if (ws && ws.readyState === WebSocket.OPEN) {
         console.log('WebSocket already connected');
         return;
@@ -66,16 +65,8 @@ function handleWSMessage(message: WSMessage) {
     const store = usePipelineStore.getState();
 
     switch (message.type) {
-        case 'initial_data':
-            // Server sends the full segment list on connect. This is the fallback when the
-            // initial HTTP fetch failed (e.g. API was asleep on a free-tier host).
-            if (Array.isArray(message.data)) {
-                store.setSegments(message.data);
-            }
-            break;
-
         case 'segment_update':
-            if (!Array.isArray(message.data) && 'segment_id' in message.data && 'integrity' in message.data) {
+            if ('segment_id' in message.data && 'integrity' in message.data) {
                 store.updateSegment(message.data.segment_id, message.data);
             }
             break;

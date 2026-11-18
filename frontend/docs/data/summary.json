@@ -1,0 +1,10 @@
+{
+  "total_images_processed": 20,
+  "total_detections": 130,
+  "images_with_detections": 20,
+  "detection_rate_pct": 100.0,
+  "highest_confidence_image": "pipeline_section_01.png",
+  "highest_confidence_score": 0.6813,
+  "model_used": "D:\\Pipeline-Digital-Twin\\YOLO_Pipeline\\weights\\best.pt",
+  "annotated_images_dir": "D:\\Pipeline-Digital-Twin\\YOLO_Pipeline\\results\\images"
+}

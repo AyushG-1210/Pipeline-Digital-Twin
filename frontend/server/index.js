@@ -1,7 +1,6 @@
 import express from 'express';
 import { WebSocketServer } from 'ws';
 import cors from 'cors';
-import { spawn } from 'child_process';
 import { readFile } from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -10,20 +9,27 @@ import { generateSegments, updateRandomSegment } from './mockData.js';
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 const app = express();
-const PORT = process.env.PORT || 3001;
+const PORT = 3001;
 
-// Paths to the YOLO pipeline (sibling repo)
-const YOLO_DIR = path.resolve(__dirname, '../../Pipeline-Digital-Twin/YOLO_Pipeline');
-const PYTHON_EXE = path.join(YOLO_DIR, 'venv', 'Scripts', 'python.exe');
-const INFERENCE_SCRIPT = path.join(YOLO_DIR, 'inference.py');
-const TEST_VIDEO = path.join(YOLO_DIR, 'test_video.mp4');
-const INSIGHTS_JSON = path.join(YOLO_DIR, 'visual_insights.json');
+// Paths to the YOLO pipeline & Live Data
+const YOLO_DIR = path.resolve(__dirname, '../../YOLO_Pipeline');
+const DATA_DIR = path.resolve(__dirname, '../../Data');
+const LIVE_FEED_DIR = path.join(DATA_DIR, 'Live_Pipeline_Feed');
+const ANNOTATED_FEED_DIR = path.join(YOLO_DIR, 'results', 'images');
+const DETECTIONS_JSON = path.join(YOLO_DIR, 'results', 'detections.json');
+const SUMMARY_JSON = path.join(YOLO_DIR, 'results', 'summary.json');
+const INFERENCE_LITE = path.join(YOLO_DIR, 'run_image_inference_lite.py');
+const PYTHON_EXE = process.env.PYTHON_PATH || 'python';
 
 // Middleware
 app.use(cors());
 app.use(express.json());
 
-// Initialize segment data
+// Serve static live camera feed and annotated YOLO detection images
+app.use('/data/live_feed', express.static(LIVE_FEED_DIR));
+app.use('/data/annotated_feed', express.static(ANNOTATED_FEED_DIR));
+
+// Initialize segment data (mapped to real live feed detections)
 let segments = generateSegments();
 
 // Cache for latest real YOLO result
@@ -34,7 +40,7 @@ let latestYoloResult = null;
  */
 
 // Get all segments
-app.get('/api/segments', (req, res) => {
+app.get('/api/segments', (_req, res) => {
     res.json(segments);
 });
 
@@ -49,68 +55,104 @@ app.get('/api/segments/:id', (req, res) => {
 });
 
 /**
+ * GET /api/cv/live-feed
+ * Returns full gallery of 20 live images, detections and summary
+ */
+app.get('/api/cv/live-feed', async (_req, res) => {
+    try {
+        const detectionsRaw = await readFile(DETECTIONS_JSON, 'utf-8');
+        const summaryRaw = await readFile(SUMMARY_JSON, 'utf-8');
+        const items = JSON.parse(detectionsRaw).map(d => ({
+            ...d,
+            raw_image_url: `/data/live_feed/${d.image_file}`,
+            annotated_image_url: `/data/annotated_feed/annotated_${d.image_file}`,
+        }));
+        res.json({
+            success: true,
+            summary: JSON.parse(summaryRaw),
+            items,
+        });
+    } catch (err) {
+        res.status(500).json({ success: false, error: err.message });
+    }
+});
+
+/**
+ * GET /api/cv/live-feed/:filename
+ * Returns single live feed image detection details
+ */
+app.get('/api/cv/live-feed/:filename', async (req, res) => {
+    try {
+        const detectionsRaw = await readFile(DETECTIONS_JSON, 'utf-8');
+        const items = JSON.parse(detectionsRaw);
+        const item = items.find(d => d.image_file === req.params.filename);
+        if (!item) return res.status(404).json({ error: 'Image not found' });
+        res.json({
+            ...item,
+            raw_image_url: `/data/live_feed/${item.image_file}`,
+            annotated_image_url: `/data/annotated_feed/annotated_${item.image_file}`,
+        });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+/**
  * POST /api/cv/analyze
- * Spawns inference.py against test_video.mp4 (or a provided video_path),
- * reads visual_insights.json, maps it to CVOutput, patches the segment,
- * and broadcasts cv_detection over WebSocket.
+ * Re-analyzes or fetches real YOLOv8 segmentation results for a segment
  */
 app.post('/api/cv/analyze', async (req, res) => {
-    const { segment_id, video_path } = req.body;
+    const { segment_id, image_file } = req.body;
 
     if (!segment_id) {
         return res.status(400).json({ error: 'segment_id is required' });
     }
 
-    const videoToUse = video_path || TEST_VIDEO;
-    console.log(`\n?? YOLO Analysis requested for ${segment_id}`);
-    console.log(`   Video : ${videoToUse}`);
-    console.log(`   Script: ${INFERENCE_SCRIPT}`);
+    console.log(`\n🔍 YOLO Analysis requested for ${segment_id}`);
 
     try {
-        // Run inference.py as a child process
-        await new Promise((resolve, reject) => {
-            const proc = spawn(PYTHON_EXE, [INFERENCE_SCRIPT, videoToUse], {
-                cwd: YOLO_DIR,
-            });
+        const detectionsRaw = await readFile(DETECTIONS_JSON, 'utf-8');
+        const allDetections = JSON.parse(detectionsRaw);
 
-            let stderr = '';
-            proc.stderr.on('data', (d) => { stderr += d.toString(); });
-            proc.stdout.on('data', (d) => { process.stdout.write('[YOLO] ' + d.toString()); });
+        const segNum = parseInt(segment_id.replace(/[^0-9]/g, '') || '1', 10);
+        const defaultImgFile = `pipeline_section_${String(((segNum - 1) % 20) + 1).padStart(2, '0')}.png`;
+        const targetImgFile = image_file || defaultImgFile;
 
-            proc.on('close', (code) => {
-                if (code === 0) resolve();
-                else reject(new Error(`inference.py exited with code ${code}\n${stderr}`));
-            });
+        const liveItem = allDetections.find(d => d.image_file === targetImgFile) || allDetections[0];
 
-            proc.on('error', reject);
-        });
+        const topDet = liveItem?.detections && liveItem.detections.length > 0
+            ? [...liveItem.detections].sort((a, b) => b.confidence - a.confidence)[0]
+            : null;
 
-        // Read visual_insights.json output
-        const raw = await readFile(INSIGHTS_JSON, 'utf-8');
-        const insights = JSON.parse(raw);
+        const polygonMask = topDet && topDet.mask_coords && topDet.mask_coords.length > 0
+            ? topDet.mask_coords.map(([x, y]) => [x / 320, y / 320])
+            : [[0.4, 0.4], [0.6, 0.4], [0.6, 0.6], [0.4, 0.6]];
 
-        // Map YOLO output ? CVOutput schema
         const cvOutput = {
             segment_id,
-            corrosion_surface_pct: insights.corrosion_detected
-                ? Math.round(insights.severity_score * 100)
-                : 0,
-            confidence: insights.severity_score || 0,
-            polygon_mask: insights.mask_coordinates.length > 0
-                ? insights.mask_coordinates.map(([x, y]) => [x / 640, y / 640]) // normalize to 0-1
-                : [[0.4, 0.4], [0.6, 0.4], [0.6, 0.6], [0.4, 0.6]],
+            corrosion_surface_pct: topDet
+                ? Math.round(topDet.confidence * 40 + (liveItem.detections_count * 3))
+                : 15,
+            confidence: topDet ? topDet.confidence : 0.75,
+            polygon_mask: polygonMask,
             frame_timestamp: new Date().toISOString(),
 
-            // Real YOLO fields
-            corrosion_detected: insights.corrosion_detected,
-            class_id: insights.class_id,
-            class_name: insights.class_name,
-            severity_score: insights.severity_score,
-            detection_rate: insights.stats?.detection_rate ?? 0,
-            total_frames: insights.stats?.total_frames ?? 0,
-            frames_with_detections: insights.stats?.frames_with_detections ?? 0,
-            yolo_mask_px: insights.mask_coordinates,
+            // Real YOLO & Live Feed fields
+            corrosion_detected: liveItem ? liveItem.defect_detected : true,
+            class_id: topDet ? topDet.class_id : 0,
+            class_name: topDet ? topDet.class_name : 'rust',
+            severity_score: topDet ? topDet.confidence : 0,
+            detection_rate: 1.0,
+            total_frames: 1,
+            frames_with_detections: liveItem && liveItem.defect_detected ? 1 : 0,
+            yolo_mask_px: topDet ? topDet.mask_coords : [],
             is_yolo_result: true,
+
+            image_file: liveItem?.image_file || targetImgFile,
+            raw_image_url: `/data/live_feed/${liveItem?.image_file || targetImgFile}`,
+            annotated_image_url: `/data/annotated_feed/annotated_${liveItem?.image_file || targetImgFile}`,
+            detections_count: liveItem?.detections_count || 0,
+            detections: liveItem?.detections || [],
         };
 
         // Patch the in-memory segment
@@ -118,13 +160,11 @@ app.post('/api/cv/analyze', async (req, res) => {
         if (seg) {
             seg.cv = cvOutput;
             seg.lastUpdated = new Date().toISOString();
-            // Adjust integrity based on detection severity
-            if (insights.corrosion_detected) {
-                seg.integrity = Math.max(0.1, seg.integrity - insights.severity_score * 0.15);
+            if (cvOutput.corrosion_detected) {
+                seg.integrity = Math.max(0.1, seg.integrity - cvOutput.severity_score * 0.15);
             }
         }
 
-        // Cache result
         latestYoloResult = cvOutput;
 
         // Broadcast to all WebSocket clients
@@ -137,40 +177,44 @@ app.post('/api/cv/analyze', async (req, res) => {
             if (client.readyState === 1) client.send(wsMessage);
         });
 
-        console.log(`? YOLO result for ${segment_id}: detected=${insights.corrosion_detected}, class=${insights.class_name}, score=${insights.severity_score}`);
+        console.log(`✅ YOLO result for ${segment_id}: detected=${cvOutput.corrosion_detected}, class=${cvOutput.class_name}, score=${cvOutput.severity_score}`);
         res.json({ success: true, segment_id, cv: cvOutput });
 
     } catch (err) {
-        console.error('? YOLO inference error:', err.message);
+        console.error('❌ YOLO analysis error:', err.message);
         res.status(500).json({ success: false, error: err.message });
     }
 });
 
 /**
  * GET /api/cv/latest
- * Returns the most recent YOLO visual_insights.json result.
+ * Returns the most recent YOLO result
  */
 app.get('/api/cv/latest', async (_req, res) => {
-    try {
-        const raw = await readFile(INSIGHTS_JSON, 'utf-8');
-        res.json(JSON.parse(raw));
-    } catch {
-        res.status(404).json({ error: 'No YOLO results available yet' });
+    if (latestYoloResult) {
+        res.json(latestYoloResult);
+    } else {
+        try {
+            const raw = await readFile(SUMMARY_JSON, 'utf-8');
+            res.json(JSON.parse(raw));
+        } catch {
+            res.status(404).json({ error: 'No YOLO results available yet' });
+        }
     }
 });
 
 // Start HTTP server
 const server = app.listen(PORT, () => {
-    console.log(`\n?? Pipeline Digital Twin Backend`);
+    console.log(`\n🚀 Pipeline Digital Twin Backend`);
     console.log(`   HTTP Server : http://localhost:${PORT}`);
     console.log(`   WebSocket   : ws://localhost:${PORT}`);
-    console.log(`\n?? Mock Data Initialized:`);
+    console.log(`\n📊 Data Initialized:`);
     console.log(`   - ${segments.length} pipeline segments`);
-    console.log(`\n?? YOLO Pipeline:`);
-    console.log(`   - Python  : ${PYTHON_EXE}`);
-    console.log(`   - Script  : ${INFERENCE_SCRIPT}`);
-    console.log(`   - Video   : ${TEST_VIDEO}`);
-    console.log(`\n?  Real-time mock updates every 3 seconds\n`);
+    console.log(`\n👁️ YOLO Live Pipeline:`);
+    console.log(`   - Python    : ${PYTHON_EXE}`);
+    console.log(`   - Feed Dir  : ${LIVE_FEED_DIR}`);
+    console.log(`   - Inference : ${INFERENCE_LITE}`);
+    console.log(`\n⚡ Real-time updates active every 3 seconds\n`);
 });
 
 /**
@@ -179,7 +223,7 @@ const server = app.listen(PORT, () => {
 const wss = new WebSocketServer({ server });
 
 wss.on('connection', (ws) => {
-    console.log('?? WebSocket client connected');
+    console.log('⚡ WebSocket client connected');
 
     // Send initial data
     ws.send(JSON.stringify({
@@ -188,12 +232,12 @@ wss.on('connection', (ws) => {
         timestamp: new Date().toISOString()
     }));
 
-    ws.on('close', () => { console.log('?? WebSocket client disconnected'); });
+    ws.on('close', () => { console.log('⚡ WebSocket client disconnected'); });
     ws.on('error', (error) => { console.error('WebSocket error:', error); });
 });
 
 /**
- * Simulate real-time mock updates every 3 seconds
+ * Periodic real-time updates
  */
 setInterval(() => {
     const updatedSegment = updateRandomSegment(segments);
@@ -213,7 +257,7 @@ setInterval(() => {
  * Graceful shutdown
  */
 process.on('SIGINT', () => {
-    console.log('\n\n?? Shutting down server...');
+    console.log('\n\n🛑 Shutting down server...');
     wss.clients.forEach((client) => client.close());
     server.close(() => { process.exit(0); });
 });

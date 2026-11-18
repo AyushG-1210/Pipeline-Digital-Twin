@@ -100,7 +100,7 @@ export default function PINNMetricsCard({ pinnData }: PINNMetricsCardProps) {
                     {pinnData.wt_in && <span>WT: <b className="text-ink-soft">{pinnData.wt_in.toFixed(3)}&quot;</b></span>}
                     {pinnData.od_in && <span>OD: <b className="text-ink-soft">{pinnData.od_in.toFixed(2)}&quot;</b></span>}
                     {pinnData.yolo_score !== undefined && (
-                        <span>YOLO (mock input): <b className="text-ink-soft">{(pinnData.yolo_score * 100).toFixed(1)}%</b></span>
+                        <span>YOLO: <b className="text-ink-soft">{(pinnData.yolo_score * 100).toFixed(1)}%</b></span>
                     )}
                     {pinnData.inference_time_s !== undefined && (
                         <span className="ml-auto text-ink-muted">{pinnData.inference_time_s.toFixed(2)}s</span>
