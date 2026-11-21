@@ -15,14 +15,16 @@
 
 - **Live demo:** [AmorFlux](https://amorflux-45k9.onrender.com/)
 
-**Patent filing**
+**Patent published**
 
 | Field | Details |
 | --- | --- |
 | Title | AMORFLUX: AI-DRIVEN PIPELINE DIGITAL TWIN FOR PREDICTIVE MAINTENANCE |
 | Application number | 202641135823 |
 | Filed on | 12-11-2026 |
+| Published on | 20-11-2026 |
 
+[Patent Link](https://ayushgouda.me/assets/Amorflux_Patent-CwcmqMdQ.pdf)
 
 
 ## Overview
