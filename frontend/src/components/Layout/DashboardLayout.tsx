@@ -3,6 +3,7 @@ import Sidebar from './Sidebar';
 import SegmentInspector from './SegmentInspector';
 import PipelineScene from '../DigitalTwin/PipelineScene';
 import FloatingChatbot from '../Chatbot/FloatingChatbot';
+import { AppFooter } from './PatentInfo';
 
 /**
  * Main dashboard layout.
@@ -25,6 +26,8 @@ export default function DashboardLayout() {
                     </div>
                 </div>
             </div>
+
+            <AppFooter />
 
             <SegmentInspector />
             <FloatingChatbot />

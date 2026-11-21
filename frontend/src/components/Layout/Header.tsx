@@ -3,6 +3,7 @@ import { usePipelineStore } from '../../store/usePipelineStore';
 import { useThemeStore } from '../../store/useThemeStore';
 import { formatTime } from '../../utils/colors';
 import LiveFeedGalleryModal from '../CVPanel/LiveFeedGalleryModal';
+import { PatentBadge } from './PatentInfo';
 
 /**
  * Application header — segment health summary, live camera feeds launcher, and connection status.
@@ -52,6 +53,11 @@ export default function Header() {
                             20 CAM
                         </span>
                     </button>
+
+                    {/* Published patent badge */}
+                    <div className="hidden lg:block">
+                        <PatentBadge />
+                    </div>
 
                     <div className="w-px h-6 bg-line hidden sm:block" />
 
